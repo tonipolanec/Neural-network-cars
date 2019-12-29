@@ -1,0 +1,15 @@
+https://forum.processing.org/one/topic/pvector-rotation.html
+https://matthew-brett.github.io/teaching/rotation_2d.html
+https://www.youtube.com/watch?v=Aut32pR5PQA
+http://jeffreythompson.org/collision-detection/line-line.php
+https://arztsamuel.github.io/en/projects/unity/deepCars/deepCars.html
+
+https://web.math.pmf.unizg.hr/nastava/su/index.php/download_file/-/view/109/
+http://matematika.fkit.hr/novo/izborni/referati/Popcevic_Varga_Zuvela_Neuronske_mreze.pdf
+http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf
+https://en.wikipedia.org/wiki/Activation_function
+
+https://math.nist.gov/javanumerics/jama/#Package ----------Library za matrice
+https://math.nist.gov/javanumerics/jama/doc/Jama/Matrix.html ----^
+
+https://www.pycon.it/media/conference/slides/a-gentle-introduction-to-neural-networks-with-python.pdf

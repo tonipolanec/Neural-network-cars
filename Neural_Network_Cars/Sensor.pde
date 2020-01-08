@@ -24,6 +24,7 @@ class Sensor{
       line(0,0,dir.x,dir.y);
   }
   
+  
   float see(){
     float tempUdaljenost = 0;
     float udaljenost = sensorStrength;
@@ -37,8 +38,8 @@ class Sensor{
       float x2 = o.x2;
       float y2 = o.y2;
          
-      float uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
-      float uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+      float uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));  //Matematicki izracun za dobivanje tocke
+      float uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));  //do koje pojedini senzor "vidi".
       
       if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
         float tempX = x1 + (uA*(x2-x1));
@@ -47,8 +48,8 @@ class Sensor{
         
         if(tempUdaljenost < udaljenost){
           udaljenost = tempUdaljenost;
-          sjecisteX = tempX;
-          sjecisteY = tempY;
+          sjecisteX = tempX;    //Pronalazenje do koje tocke 
+          sjecisteY = tempY;    //senzor vidi (ne vidi dalje od zida).
         }
 
       }else if(uA <= 0 && uA >= 1 && uB <= 0 && uB >= 1){
@@ -58,10 +59,10 @@ class Sensor{
     
     strokeWeight(5);
     stroke(0,0,0,100);
-    line(x3,y3,sjecisteX,sjecisteY);  
+    line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
     
-    wallDist = udaljenost;
-    return udaljenost;
+    wallDist = udaljenost;   
+    return udaljenost;     // Vraca udaljenost od zida. BITNO!!
     
   }
   

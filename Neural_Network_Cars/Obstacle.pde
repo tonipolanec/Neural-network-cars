@@ -28,6 +28,9 @@ class Obstacle{
 
 void inicijalizacijaObstaclei(){
   
+  //Nazalost zbog samog nacina funkiconiranja programa
+  //postavljanje obstacle-i mora biti rucno
+  
 //Kreiranje zidova(svaki zid(crta) poprima 4 atributa -> x1,y1,x2,y2)
   obst[0] = new Obstacle(0,280,180,280);
   obst[1] = new Obstacle(0,440,300,440);

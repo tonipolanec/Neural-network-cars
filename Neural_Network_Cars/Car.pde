@@ -43,17 +43,17 @@ class Car {
 
       //Inicijalizacija senzora. (Kutevi:  0.349rad = 20deg, 0.873 = 50deg)   
       PVector norm = vel.get().normalize();
-      f = new Sensor(loc, norm);
-      fr = new Sensor(loc, norm.get().rotate(0.349));
-      fl = new Sensor(loc, norm.get().rotate(-0.349));
-      r = new Sensor(loc, norm.get().rotate(0.873));
-      l = new Sensor(loc, norm.get().rotate(-0.873));
+      f = new Sensor(loc, norm);                        //
+      fr = new Sensor(loc, norm.get().rotate(0.349));   // 
+      fl = new Sensor(loc, norm.get().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
+      r = new Sensor(loc, norm.get().rotate(0.873));    //
+      l = new Sensor(loc, norm.get().rotate(-0.873));   //
 
-      frontS = f.see();
-      frontRightS = fr.see();
-      frontLeftS = fl.see();
-      rightS = r.see();
-      leftS = l.see();
+      frontS = f.see();          //
+      frontRightS = fr.see();    //
+      frontLeftS = fl.see();     // Omogucavanje senzorima da "vide".
+      rightS = r.see();          // see() u Sensor class
+      leftS = l.see();           //
     }
   }
 
@@ -90,17 +90,16 @@ class Car {
   }
 
 
-  // Provjerava je li auto došao do checkpointa te
-  // postavlja fitness multiplier ovisno o tome.
-  void checkpointDetection() {
-    
+  
+  void checkpointDetection() {      // Provjerava je li auto došao do checkpointa te
+                                    // postavlja fitness multiplier ovisno o tome.
     textSize(24);
     fill(0);
     stroke(255,0,0);
     int i = 0;
     for (Checkpoint c : cp) {
       if (dist(loc.x, loc.y, c.location.x, c.location.y) < c.radius/2) { 
-        fitnessMultiplier = (i+1)*0.25 +1; // Ako auto dođe do cp-a tada se postavlja određeni multiplier.
+        fitnessMultiplier = (i+1)*0.25 +1;   // Ako auto dođe do checkpointa tada se postavlja određeni multiplier.
         c.passed = true;        
       } 
     i++;
@@ -110,8 +109,8 @@ class Car {
   }
 
 
-  //Ispituje dali je auto udario u zid (ako je; "umire")
-  boolean isDead() {
+  
+  boolean isDead() {      //Ispituje dali je auto udario u zid (ako je; "umire")
     //zid stazeii      
     if (wallDist <= 20) {
       return true;
@@ -127,7 +126,7 @@ class Car {
 
 
   void show() {
-    float theta = vel.heading2D() + PI/2; //Kut okretanja crteža auta.
+    float theta = vel.heading2D() + PI/2;   //Kut okretanja crteža auta.
     fill(210);
     noStroke();
 
@@ -147,7 +146,7 @@ class Car {
     rectMode(CENTER);
     if (!isDead()) {
       fill(200, 0, 0);
-      rect(0, 0, radius, 2*radius); //Auto
+      rect(0, 0, radius, 2*radius); //Tijelo auta
       fill(0, 0, 255);
       rect(0, -radius/1.6, radius-radius/5, radius/2); // Vjetrobransko staklo
     } else {

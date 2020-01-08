@@ -13,7 +13,7 @@ class Perceptron{
   }
   
   
-  float calculation(){
+  float calculation(){  //racunanje izlaza jednog perceptrona
     float output;
     float[] xw = new float[inputs.length];
     float xwSum=0;
@@ -27,7 +27,7 @@ class Perceptron{
   }
   
   
-  float activationF(float x){
+  float activationF(float x){ //funkcija koja "ugladuje" izlaz
     float value = 0;
     // f(x) = tanh(x) <-- formula funkcije
     value = (float)Math.tanh(x);

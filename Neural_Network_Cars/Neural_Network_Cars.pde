@@ -1,4 +1,4 @@
-Car c,c1,c2;
+Car car;
 PVector cl,cv;
 Obstacle[] obst = new Obstacle[27]; 
 Checkpoint[] cp = new Checkpoint[5];
@@ -10,11 +10,11 @@ background(151);
 
 start = new PVector(30,height/2);
 
-c = new Car(start.x,start.y);
+car = new Car(start.x,start.y);
 
 
-inicijalizacijaCheckpointi(); // U Checkpoint tabu.
-inicijalizacijaObstaclei();   // U Obstacle tabu.
+inicijalizacijaCheckpointi(); // Checkpoint tab.
+inicijalizacijaObstaclei();   // Obstacle tab.
 
 }
 
@@ -22,7 +22,7 @@ inicijalizacijaObstaclei();   // U Obstacle tabu.
 
 void draw(){
   background(151);
-  pisiPoEkranu(); // U Sensor tabu.
+  pisiPoEkranu(); // Sensor tab.
   
   for(Obstacle o : obst){
     o.show();
@@ -31,23 +31,23 @@ void draw(){
     c.show();
   }
   
-  c.move();
-  c.show();
+  car.move();
+  car.show();
   
 
 
 }
 
-//KONTROLE -------------
+//KONTROLE -------------Privremeno (dok jos nema NN)
      
      void keyPressed() {
       if (key == 'i') {
-        c.speed +=0.1;
+        car.speed +=0.1;
       } else if (key == 'k') {
-        c.speed-=0.1;
+        car.speed-=0.1;
       }else if(key == 'j'){
-        c.steering -= 0.01;
+        car.steering -= 0.01;
       }else if(key == 'l'){
-        c.steering += 0.01;
+        car.steering += 0.01;
       }
     } 

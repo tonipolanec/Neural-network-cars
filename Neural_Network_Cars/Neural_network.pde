@@ -9,7 +9,7 @@ class NeuralNetwork{
   
     Matrix input,iToH1,h1ToH2,h2ToO; // Matrice weightova.
     //Matrix h1B, h2B, oB;  // Matrice bias-eva pojedinih perceptrona.
-    Perceptron[] h1,h2,o;
+    //Perceptron[] h1,h2,o;
     Matrix output;
     
     NeuralNetwork(int _nInput, int _nHidden1, int _nHidden2, int _nOutput){
@@ -20,13 +20,13 @@ class NeuralNetwork{
       nOutput = _nOutput;
       output = new Matrix(nOutput, 1);
       
-      double[][] tempArray = new double[nHidden1][nInput];    //
+      double[][] tempArray = new double[nInput][nHidden1];    //
       iToH1 = new Matrix(randomValuesMatrice(tempArray));     // 
                                                               //    
-      tempArray = new double[nHidden2][nHidden1];             // Kreiranje matrica za weight-e    
+      tempArray = new double[nHidden1][nHidden2];             // Kreiranje matrica za weight-e    
       h1ToH2 = new Matrix(randomValuesMatrice(tempArray));    // (veze izmedu perceptrona)
                                                               //
-      tempArray = new double[nOutput][nHidden2];              //
+      tempArray = new double[nHidden2][nOutput];              //
       h2ToO = new Matrix(randomValuesMatrice(tempArray));     //
       
     }
@@ -34,11 +34,11 @@ class NeuralNetwork{
     
     
     void feedForward(double[] inputs){
-      input = new Matrix(inputs, 1);
+      input = new Matrix(inputs,1);
       output = input.copy();
-      output.times(iToH1);
-      output.times(h1ToH2);
-      output.times(h2ToO);
+      output = output.times(iToH1).copy();
+      output = output.times(h1ToH2).copy();
+      output = output.times(h2ToO).copy();
       
       double[][] outputArray = output.getArray();
       for(int i=0;i<outputArray.length;i++){
@@ -60,6 +60,5 @@ class NeuralNetwork{
       }
       return mat;
     }
-
 
 }

@@ -13,3 +13,7 @@ https://math.nist.gov/javanumerics/jama/#Package ----------Library za matrice
 https://math.nist.gov/javanumerics/jama/doc/Jama/Matrix.html ----^
 
 https://www.pycon.it/media/conference/slides/a-gentle-introduction-to-neural-networks-with-python.pdf
+
+https://towardsdatascience.com/artificial-neural-networks-optimization-using-genetic-algorithm-with-python-1fe8ed17733e ---> GA + ANN bitno
+
+https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html

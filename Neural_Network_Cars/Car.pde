@@ -1,6 +1,5 @@
 
-Sensor f, fr, fl, r, l;
-float frontS, frontRightS, frontLeftS, rightS, leftS;
+
 
 
 
@@ -12,6 +11,9 @@ class Car {
   float fitnessMultiplier;
 
   float distTravelled;
+  
+  Sensor f, fr, fl, r, l;
+  float frontS, frontRightS, frontLeftS, rightS, leftS;
 
 
   //int step = 0;
@@ -157,5 +159,17 @@ class Car {
     }
 
     popMatrix();
+    pisiPoEkranu();
   }
+  
+  void pisiPoEkranu(){
+    textSize(24);
+    fill(0);
+    text("l: " + leftS, 10, 590); 
+    text("fl: " + frontLeftS, 10, 620); 
+    text("f: " + frontS, 10, 650); 
+    text("fr: " + frontRightS, 10, 680); 
+    text("r: " + rightS, 10, 710); 
+  }
+
 }

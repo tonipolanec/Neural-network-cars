@@ -36,18 +36,20 @@ class NeuralNetwork{
     void feedForward(double[] inputs){
       input = new Matrix(inputs,1);
       output = input.copy();
-      output = output.times(iToH1).copy();
-      output = output.times(h1ToH2).copy();
-      output = output.times(h2ToO).copy();
+      output = activationF(output.times(iToH1).copy());
+      output = activationF(output.times(h1ToH2).copy());
+      output = activationF(output.times(h2ToO).copy());
       
       double[][] outputArray = output.getArray();
+      
+      //ispis outputa radi debugginga--------------
       for(int i=0;i<outputArray.length;i++){
         for(int j=0;j<outputArray[0].length;j++){
           print(outputArray[i][j] + " ");
         }
         println("");
       }
-
+      //-------------------------------------------
     }
 
     
@@ -59,6 +61,21 @@ class NeuralNetwork{
         }
       }
       return mat;
+    }
+    
+    Matrix activationF(Matrix a){   //funkcija koja "ugladuje" elemente matrice [-1,1]
+      double[][] tempArrayOfMatrix = a.getArray();
+      double[][] outArray = new double[tempArrayOfMatrix.length][tempArrayOfMatrix[0].length];
+      
+      for(int i=0;i<tempArrayOfMatrix.length;i++){
+        for(int j=0;j<tempArrayOfMatrix[0].length;j++){
+          outArray[i][j] = Math.tanh(tempArrayOfMatrix[i][j]); 
+        }
+      }
+      // value = (float)Math.tanh(x);
+      // f(x) = tanh(x) <-- formula funkcije
+      Matrix outMatrix = new Matrix(outArray);
+      return outMatrix;
     }
 
 }

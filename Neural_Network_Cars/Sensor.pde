@@ -69,7 +69,7 @@ class Sensor{
 }
 
 
-
+/*
 void pisiPoEkranu(){
   textSize(24);
   fill(0);
@@ -80,3 +80,4 @@ void pisiPoEkranu(){
   text("r: " + rightS, 10, 710); 
 
 }
+*/

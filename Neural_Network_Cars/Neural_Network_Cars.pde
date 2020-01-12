@@ -1,3 +1,4 @@
+
 Car car;
 PVector cl,cv;
 Obstacle[] obst = new Obstacle[27]; 
@@ -22,7 +23,7 @@ inicijalizacijaObstaclei();   // Obstacle tab.
 
 void draw(){
   background(151);
-  pisiPoEkranu(); // Sensor tab.
+  //pisiPoEkranu(); // Sensor tab.
   
   for(Obstacle o : obst){
     o.show();

@@ -1,5 +1,4 @@
 
-
 void drawLines(){noStroke();
   fill(255,0,0);
   rectMode(CENTER);

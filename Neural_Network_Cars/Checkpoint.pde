@@ -28,8 +28,9 @@ class Checkpoint{
 
 void inicijalizacijaCheckpointi(){
   cp[0] = new Checkpoint(start.x,start.y,50);
-  cp[1] = new Checkpoint(850,185,150);
-  cp[2] = new Checkpoint(800,600,150);
-  cp[3] = new Checkpoint(1100,550,150);
-  cp[4] = new Checkpoint(1150,50,150);
+  cp[1] = new Checkpoint(510,260,130);
+  cp[2] = new Checkpoint(850,185,150);
+  cp[3] = new Checkpoint(800,600,150);
+  cp[4] = new Checkpoint(1100,550,150);
+  cp[5] = new Checkpoint(1150,50,150);
 }

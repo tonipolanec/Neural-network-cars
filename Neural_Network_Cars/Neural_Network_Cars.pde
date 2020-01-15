@@ -1,18 +1,21 @@
+PImage stockAuto, grayAuto;
 
-Car car;
-PVector cl,cv;
+Car cars[] = new Car[20];
 Obstacle[] obst = new Obstacle[27]; 
-Checkpoint[] cp = new Checkpoint[5];
-PVector start;
+Checkpoint[] cp = new Checkpoint[6];
+
 
 void setup(){
 size(1280,720);
 background(151);
 
-start = new PVector(30,height/2);
+stockAuto = loadImage("cartemplate.png");    //
+grayAuto = loadImage("graycar.png");         // PNG fileovi za auteke.  
 
-car = new Car(start.x,start.y);
 
+for(int i=0;i<cars.length;i++){
+  cars[i] = new Car();
+}
 
 inicijalizacijaCheckpointi(); // Checkpoint tab.
 inicijalizacijaObstaclei();   // Obstacle tab.
@@ -23,7 +26,7 @@ inicijalizacijaObstaclei();   // Obstacle tab.
 
 void draw(){
   background(151);
-  //pisiPoEkranu(); // Sensor tab.
+  //pisiPoEkranu(); // U Car tabu
   
   for(Obstacle o : obst){
     o.show();
@@ -32,15 +35,17 @@ void draw(){
     c.show();
   }
   
-  car.move();
-  car.show();
+  for(Car car : cars){
+    car.move();
+    car.show();
+  }
   
 
 
 }
 
 //KONTROLE -------------Privremeno (dok jos nema NN)
-     
+     /*
      void keyPressed() {
       if (key == 'i') {
         car.speed +=0.1;
@@ -52,3 +57,4 @@ void draw(){
         car.steering += 0.01;
       }
     } 
+    */

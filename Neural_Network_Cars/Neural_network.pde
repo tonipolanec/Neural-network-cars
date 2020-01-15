@@ -33,23 +33,27 @@ class NeuralNetwork{
        
     
     
-    void feedForward(double[] inputs){
+    double[] feedForward(double[] inputs){
       input = new Matrix(inputs,1);
       output = input.copy();
       output = activationF(output.times(iToH1).copy());
       output = activationF(output.times(h1ToH2).copy());
       output = activationF(output.times(h2ToO).copy());
       
-      double[][] outputArray = output.getArray();
+      double[][] temp2DA = output.getArray();
       
-      //ispis outputa radi debugginga--------------
-      for(int i=0;i<outputArray.length;i++){
-        for(int j=0;j<outputArray[0].length;j++){
-          print(outputArray[i][j] + " ");
+      /*//ispis outputa radi debugginga--------------
+      for(int i=0;i<temp2DA.length;i++){
+        for(int j=0;j<temp2DA[0].length;j++){
+          print(temp2DA[i][j] + " ");
         }
         println("");
       }
       //-------------------------------------------
+      */
+      //outputArray[0][0], outputArray[0][1]
+      double[] out = {temp2DA[0][0],temp2DA[0][1]};
+      return out;
     }
 
     
@@ -57,7 +61,7 @@ class NeuralNetwork{
     double[][] randomValuesMatrice(double[][] mat){
       for(int i=0;i<mat.length;i++){
         for(int j=0;j<mat[0].length;j++){
-          mat[i][j] = random(-1,1);
+          mat[i][j] = random(-0.5,0.5);
         }
       }
       return mat;

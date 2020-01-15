@@ -1,4 +1,3 @@
-float wallDist = 1000;
 
 class Sensor{
   PVector dir;
@@ -21,7 +20,7 @@ class Sensor{
   //Crtanje senzora.
       stroke(13);
       strokeWeight(0.1);
-      line(0,0,dir.x,dir.y);
+      //line(0,0,dir.x,dir.y);
   }
   
   
@@ -48,8 +47,8 @@ class Sensor{
         
         if(tempUdaljenost < udaljenost){
           udaljenost = tempUdaljenost;
-          sjecisteX = tempX;    //Pronalazenje do koje tocke 
-          sjecisteY = tempY;    //senzor vidi (ne vidi dalje od zida).
+          sjecisteX = tempX;    // Pronalazenje do koje tocke 
+          sjecisteY = tempY;    // senzor vidi (ne vidi dalje od zida).
         }
 
       }else if(uA <= 0 && uA >= 1 && uB <= 0 && uB >= 1){
@@ -59,9 +58,8 @@ class Sensor{
     
     strokeWeight(5);
     stroke(0,0,0,100);
-    line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
-    
-    wallDist = udaljenost;   
+    //line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
+      
     return udaljenost;     // Vraca udaljenost od zida. BITNO!!
     
   }

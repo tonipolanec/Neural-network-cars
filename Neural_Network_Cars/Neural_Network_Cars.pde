@@ -1,6 +1,7 @@
 PImage stockAuto, grayAuto;
 
-Car cars[] = new Car[20];
+Population population = new Population(20);
+
 Obstacle[] obst = new Obstacle[27]; 
 Checkpoint[] cp = new Checkpoint[6];
 
@@ -13,8 +14,8 @@ void setup() {
   grayAuto = loadImage("graycar2.png");         // PNG fileovi za auteke.  
 
 
-  for (int i=0; i<cars.length; i++) {
-    cars[i] = new Car();
+  for (int i=0; i<population.cars.length; i++) {
+    population.cars[i] = new Car();
   }
 
   inicijalizacijaCheckpointi(); // Checkpoint tab.
@@ -34,23 +35,8 @@ void draw() {
     c.show();
   }
 
-  for (Car car : cars) {
+  for (Car car : population.cars) {
     car.move();
     car.show();
   }
 }
-
-//KONTROLE -------------Privremeno (dok jos nema NN)
-/*
-     void keyPressed() {
- if (key == 'i') {
- car.speed +=0.1;
- } else if (key == 'k') {
- car.speed-=0.1;
- }else if(key == 'j'){
- car.steering -= 0.01;
- }else if(key == 'l'){
- car.steering += 0.01;
- }
- } 
- */

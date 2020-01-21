@@ -80,4 +80,40 @@ class NeuralNetwork {
     Matrix outMatrix = new Matrix(outArray);
     return outMatrix;
   }
+  
+  
+  double[] takeGenes(){
+    // iToH1, h1ToH2, h2ToO <-- matrice iz kojih uzimamo gene
+    double[][] ar2D1 = this.iToH1.getArrayCopy();
+    double[][] ar2D2 = this.h1ToH2.getArrayCopy();
+    double[][] ar2D3 = this.h2ToO.getArrayCopy();
+    
+    double[] ar1 = twoDToOneD(ar2D1);
+    double[] ar2 = twoDToOneD(ar2D2);
+    double[] ar3 = twoDToOneD(ar2D3);
+    
+    double[] genes = (double[])concat((double[])concat(ar1,ar2),ar3);
+    return genes;
+  }
+
+  double[] twoDToOneD(double[][] ar2){
+    double[] outArray = new double[ar2.length * ar2[0].length];
+    int index = 0;
+    
+    for (int i=0; i<ar2.length; i++) {
+      for (int j=0; j<ar2[0].length; j++) {
+        outArray[index] = ar2[i][j];
+        index++;
+      }
+    }
+    return outArray;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
 }

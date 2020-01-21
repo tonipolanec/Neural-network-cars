@@ -40,7 +40,8 @@ class Car {
     col = (int)random(255);
     carImage = stockAuto.copy();
     carImage.loadPixels();
-    for (int i=0; i<800; i++) {
+    int dimensionsPic = carImage.height * carImage.width;
+    for (int i=0; i<dimensionsPic; i++) {
       if (carImage.pixels[i] == color(0, 0, 0)) {
         colorMode(HSB);
         carImage.pixels[i] = color(col, 255, 255);
@@ -72,24 +73,25 @@ class Car {
       l = new Sensor(loc, norm.get().rotate(-0.873));   //
 
       float[] wallDists = new float[5];
-      
+
       frontS = f.see();  
       wallDists[0] = frontS;           
       frontRightS = fr.see();    
       wallDists[1] = frontRightS;       
       frontLeftS = fl.see();     
-      wallDists[2] = frontLeftS;              // Omogucavanje senzorima da "vide" te provjeravanje ako je auto udario u zid (isDead() funkcija).
+      wallDists[2] = frontLeftS;  // Omogucavanje senzorima da "vide" te dodavanje distance od svakog senzora u polje
       leftS = l.see();           
       wallDists[3] = leftS;             
       rightS = r.see();          
       wallDists[4] = rightS;  
-      
+
       float minWD = wallDists[4];
-      for(int i=0;i<wallDists.length-1;i++){
-        if(wallDists[i] < minWD)
-          minWD = wallDists[i];
+      for (int i=0; i<wallDists.length-1; i++) {
+        if (wallDists[i] < minWD)
+          minWD = wallDists[i]; // Postavljanje najmanjeg distance-a za provjeravanje je li auto udario u zid.
       }
-      wallDist = minWD; isDead();
+      wallDist = minWD; 
+      isDead();
     }
   }
 
@@ -112,23 +114,24 @@ class Car {
     //Crtanje autića.    
     rotate(theta);
     rectMode(CENTER);
+    imageMode(CENTER);
     if (!isDead) {
 
-      //image(carImage,0,0);
-
+      image(carImage, 0, 0);
+      /*
       colorMode(HSB);
-      fill(col, 255, 255);
-      rect(0, 0, radius, 2*radius); //Tijelo auta
-      colorMode(RGB);
-      fill(0, 0, 255);
-      rect(0, -radius/1.6, radius-radius/5, radius/2); // Vjetrobransko staklo
+       fill(col, 255, 255);
+       rect(0, 0, radius, 2*radius); //Tijelo auta
+       colorMode(RGB);
+       fill(0, 0, 255);
+       rect(0, -radius/1.6, radius-radius/5, radius/2); // Vjetrobransko staklo */
     } else {
-      //image(grayAuto,0,0);
-
+      image(grayAuto, 0, 0);
+      /*
       fill(100);
-      rect(0, 0, radius, 2*radius);
-      fill(55);
-      rect(0, -radius/1.6, radius-radius/5, radius/2);
+       rect(0, 0, radius, 2*radius);
+       fill(55);
+       rect(0, -radius/1.6, radius-radius/5, radius/2);  */
     }
 
     popMatrix();

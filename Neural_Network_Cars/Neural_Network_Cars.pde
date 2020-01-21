@@ -5,56 +5,52 @@ Obstacle[] obst = new Obstacle[27];
 Checkpoint[] cp = new Checkpoint[6];
 
 
-void setup(){
-size(1280,720);
-background(151);
+void setup() {
+  size(1280, 720);
+  background(151);
 
-stockAuto = loadImage("cartemplate.png");    //
-grayAuto = loadImage("graycar.png");         // PNG fileovi za auteke.  
+  stockAuto = loadImage("cartemplate2.png");    //
+  grayAuto = loadImage("graycar2.png");         // PNG fileovi za auteke.  
 
 
-for(int i=0;i<cars.length;i++){
-  cars[i] = new Car();
+  for (int i=0; i<cars.length; i++) {
+    cars[i] = new Car();
+  }
+
+  inicijalizacijaCheckpointi(); // Checkpoint tab.
+  inicijalizacijaObstaclei();   // Obstacle tab.
 }
 
-inicijalizacijaCheckpointi(); // Checkpoint tab.
-inicijalizacijaObstaclei();   // Obstacle tab.
-
-}
 
 
-
-void draw(){
+void draw() {
   background(151);
   //pisiPoEkranu(); // U Car tabu
-  
-  for(Obstacle o : obst){
+
+  for (Obstacle o : obst) {
     o.show();
   }
-  for(Checkpoint c : cp){
+  for (Checkpoint c : cp) {
     c.show();
   }
-  
-  for(Car car : cars){
+
+  for (Car car : cars) {
     car.move();
     car.show();
   }
-  
-
-
 }
 
 //KONTROLE -------------Privremeno (dok jos nema NN)
-     /*
+/*
      void keyPressed() {
-      if (key == 'i') {
-        car.speed +=0.1;
-      } else if (key == 'k') {
-        car.speed-=0.1;
-      }else if(key == 'j'){
-        car.steering -= 0.01;
-      }else if(key == 'l'){
-        car.steering += 0.01;
-      }
-    } 
-    */
+ if (key == 'i') {
+ car.speed +=0.1;
+ } else if (key == 'k') {
+ car.speed-=0.1;
+ }else if(key == 'j'){
+ car.steering -= 0.01;
+ }else if(key == 'l'){
+ car.steering += 0.01;
+ }
+ } 
+ */

@@ -1,10 +1,11 @@
 PImage stockAuto, grayAuto;
 
-Population population = new Population(20);
+Population population = new Population(21);
 
 Obstacle[] obst = new Obstacle[27]; 
 Checkpoint[] cp = new Checkpoint[6];
 
+double mutationRate = 0.01;
 
 void setup() {
   size(1280, 720);
@@ -17,7 +18,8 @@ void setup() {
   for (int i=0; i<population.cars.length; i++) {
     population.cars[i] = new Car();
   }
-
+  
+  
   inicijalizacijaCheckpointi(); // Checkpoint tab.
   inicijalizacijaObstaclei();   // Obstacle tab.
 }
@@ -31,12 +33,14 @@ void draw() {
   for (Obstacle o : obst) {
     o.show();
   }
-  for (Checkpoint c : cp) {
-    c.show();
-  }
+  
 
   for (Car car : population.cars) {
     car.move();
     car.show();
   }
+  
+  population.update();
+  population.populationDetails();
+  
 }

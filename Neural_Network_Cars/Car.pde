@@ -8,6 +8,9 @@ class Car {
 
   float fitness;
   float fitnessMultiplier;
+  double normFitness;
+  
+  //double percFitness; // Percentage ukupnog fitnessa od svih u populaciji.
 
   float distTravelled;
 
@@ -177,13 +180,6 @@ class Car {
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;
 
-    /*
-    textSize(24);
-     fill(0);
-     text("fitness: " + fitness, 10, 30);
-     text("multiplier: " + fitnessMultiplier, 10, 60);
-     text("travelled: " + distTravelled, 10, 90);
-     */
   }
 
 

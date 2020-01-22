@@ -60,7 +60,7 @@ class NeuralNetwork {
   double[][] randomValuesMatrice(double[][] mat) {
     for (int i=0; i<mat.length; i++) {
       for (int j=0; j<mat[0].length; j++) {
-        mat[i][j] = random(-0.5, 0.5);
+        mat[i][j] = random(-1, 1); //------------------------TREBA SE JOS IGRATI (ako se vrti v krug -> BAD)
       }
     }
     return mat;

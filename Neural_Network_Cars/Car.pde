@@ -54,9 +54,8 @@ class Car {
 
     distTravelled = 0;
     fitness = 0;
-    fitnessMultiplier = 0.9;
+    fitnessMultiplier = 1;
   }
-
 
   void move() {
 
@@ -95,6 +94,16 @@ class Car {
       }
       wallDist = minWD; 
       isDead();
+      
+      int sec = millis()/1000;
+      println(sec);
+      if(fitnessMultiplier < 1.25 && sec > 15){
+        isDead = true;
+      }else if(fitnessMultiplier < 1.5 && sec > 30){
+        isDead = true;
+      }else if(fitnessMultiplier < 1.75 && sec > 45){
+        
+      }
     }
   }
 
@@ -113,6 +122,11 @@ class Car {
       r.show();
       l.show();
     }
+     // Ispis podataka svakog autica.
+    textSize(12);
+    fill(0,0,0);
+    text(fitnessMultiplier,15,15); // Ispisivanje fitness multipliera.
+    text(fitness,15,25);
 
     //Crtanje autića.    
     rotate(theta);

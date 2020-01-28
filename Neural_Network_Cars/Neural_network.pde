@@ -29,6 +29,18 @@ class NeuralNetwork {
     tempArray = new double[nHidden2][nOutput];              //
     h2ToO = new Matrix(randomValuesMatrice(tempArray));     //
   }
+  NeuralNetwork(int _nInput, int _nHidden1, int _nHidden2, int _nOutput, Matrix m1, Matrix m2, Matrix m3) {
+    nInput = _nInput;
+    input = new Matrix(nInput, 1);
+    nHidden1 = _nHidden1;
+    nHidden2 = _nHidden2;
+    nOutput = _nOutput;
+    output = new Matrix(nOutput, 1);
+
+    iToH1 = m1;     // 
+    h1ToH2 = m2;    // (veze izmedu perceptrona dobivene mutacijom i crossoverom roditelja)
+    h2ToO = m3;     //
+  }
 
 
 
@@ -109,9 +121,7 @@ class NeuralNetwork {
     return outArray;
   }
   
-  
-  
-  
+
   
   
   

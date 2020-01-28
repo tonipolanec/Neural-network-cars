@@ -1,15 +1,23 @@
 PImage stockAuto, grayAuto;
 
-Population population = new Population(21);
+Population population;
+Population currentPopulation;
 
 Obstacle[] obst = new Obstacle[27]; 
 Checkpoint[] cp = new Checkpoint[5];
 
+PVector startingPoint;
+
 double mutationRate = 0.01;
+int nCarsInPopulation = 21;
 
 void setup() {
   size(1280, 720);
   background(151);
+  
+  startingPoint = new PVector(30, height/2);
+  
+  population = new Population(nCarsInPopulation,1);
   
   stockAuto = loadImage("cartemplate2.png");    //
   grayAuto = loadImage("graycar2.png");         // PNG fileovi za auteke.  
@@ -42,6 +50,5 @@ void draw() {
   }
   
   population.update();
-  population.populationDetails();
   
 }

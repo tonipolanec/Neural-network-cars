@@ -3,6 +3,10 @@ PVector start;
 class Car {
   NeuralNetwork nn;
 
+  int generation;
+  
+  PVector start;
+
   PVector loc, vel, acc;
   float radius;
 
@@ -29,8 +33,40 @@ class Car {
   int col; // color of the car
   Car() {
     nn = new NeuralNetwork(5, 4, 3, 2);
+    
+    generation = 1;
+    start = startingPoint;
+    loc = new PVector(start.x, start.y);
+    acc = new PVector(0.1, 0);
+    vel = new PVector();
+    isDead = false;
+    radius = 20; 
+    steeringSpeed[0] = 0;
+    steeringSpeed[1] = 0;
+    topSpeed = 3;
 
-    start = new PVector(30, height/2); // Moguce izbaciti.
+    col = (int)random(255);
+    carImage = stockAuto.copy();
+    carImage.loadPixels();
+    int dimensionsPic = carImage.height * carImage.width;
+    for (int i=0; i<dimensionsPic; i++) {
+      if (carImage.pixels[i] == color(0, 0, 0)) {
+        colorMode(HSB);
+        carImage.pixels[i] = color(col, 255, 255);
+        colorMode(RGB);
+      }
+    }
+
+    distTravelled = 0;
+    fitness = 0;
+    fitnessMultiplier = 1;
+  }
+  
+  Car(NeuralNetwork _nn, int _gen) {
+    nn = _nn;
+
+    generation = _gen;
+    start = startingPoint;
     loc = new PVector(start.x, start.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
@@ -96,7 +132,7 @@ class Car {
       isDead();
       
       int sec = millis()/1000;
-      println(sec);
+      //println(sec);
       if(fitnessMultiplier < 1.25 && sec > 15){
         isDead = true;
       }else if(fitnessMultiplier < 1.5 && sec > 30){
@@ -122,11 +158,13 @@ class Car {
       r.show();
       l.show();
     }
+    
      // Ispis podataka svakog autica.
     textSize(12);
     fill(0,0,0);
-    text(fitnessMultiplier,15,15); // Ispisivanje fitness multipliera.
-    text(fitness,15,25);
+    text(generation,15,15);
+    //text(fitnessMultiplier,15,15); // Ispisivanje fitness multipliera.
+    //text(fitness,15,25);
 
     //Crtanje autića.    
     rotate(theta);
@@ -213,7 +251,22 @@ class Car {
     }
   }
 
-
+  void restartCar(){
+    
+    start = startingPoint;
+    loc = new PVector(start.x, start.y);
+    acc = new PVector(0.1, 0);
+    vel = new PVector();
+    isDead = false;
+    radius = 20; 
+    steeringSpeed[0] = 0;
+    steeringSpeed[1] = 0;
+    topSpeed = 3;
+    distTravelled = 0;
+    fitness = 0;
+    fitnessMultiplier = 1;
+    
+  }
 
 
 

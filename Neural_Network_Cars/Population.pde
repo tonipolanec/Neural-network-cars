@@ -21,8 +21,8 @@ class Population{
   Car[] babyCars;
   
   
-  Population(int _numCars){
-    populationNumber = 1;
+  Population(int _numCars, int _popNumber){
+    populationNumber = _popNumber;
     stillKeepChecking = true;
     numCars = _numCars; 
     cars = new Car[numCars];
@@ -35,14 +35,27 @@ class Population{
     babyCars = new Car[winnerCars.length/2];
   }
   
+  Population(Car[] newCars, int _popNumber){
+    populationNumber = _popNumber;
+    stillKeepChecking = true;
+    numCars = newCars.length; 
+    cars = newCars;
+    carGenes = new double[numCars][];
+    carFitnesses = new double[numCars];
+    normFitnesses = new double[numCars];
+    
+    winnerCars = new Car[numCars*2/3];
+    parents = new PVector[winnerCars.length/2];
+    babyCars = new Car[winnerCars.length/2];
+  }
+  
   void update(){
-    if(stillKeepChecking){
-      deadPopulation = isPopulationDead();
-      if(deadPopulation){
-        populationIsDeadIRepeatPopulationIsDead();
-        stillKeepChecking = false;
-      }  
-    }
+    populationDetails();
+    deadPopulation = isPopulationDead();
+    if(deadPopulation){
+      deadPopulation = false;
+      populationIsDeadIRepeatPopulationIsDead();
+    }  
   }  
 
 
@@ -101,9 +114,6 @@ class Population{
   }
   
   void makingBabies(){
-    for(Car c : babyCars){
-      c = new Car();
-    }
     
     for(int i=0;i<babyCars.length;i++){
       // Prenosenje gena iz roditelja na dijete.
@@ -125,11 +135,68 @@ class Population{
           babyGenes[i] = random(-1,1);
         }
       }
+      
+      // Stvaranje matrica za NN dijeteta.
+      double[] g1 = new double[20];
+      double[] g2 = new double[12];
+      double[] g3 = new double[6];
+      
+      for(int j=0;j<babyGenes.length;j++){
+        int g2Br = 0;
+        int g3Br = 0;
+        if(j < 20){
+          g1[j] = babyGenes[j];
+        }else if(j < 32){
+          g2[g2Br] = babyGenes[j];
+          g2Br++;
+        }else{
+          g3[g3Br] = babyGenes[j];
+          g3Br++;
+        }
+      } 
+      double[][] twoD1 = oneDTo2D(g1,5,4);
+      double[][] twoD2 = oneDTo2D(g2,4,3);
+      double[][] twoD3 = oneDTo2D(g3,3,2);
+      
+      Matrix m1 = new Matrix(twoD1);
+      Matrix m2 = new Matrix(twoD2);
+      Matrix m3 = new Matrix(twoD3);
+      
+      NeuralNetwork nnBaby = new NeuralNetwork(5, 4, 3, 2, m1, m2, m3);
+      babyCars[i] = new Car(nnBaby, populationNumber);
     }
     
   }
 
+  double[][] oneDTo2D(double[] array, int rows, int cols){
+    if(rows * cols == array.length){
+      double[][] arrayToReturn = new double[rows][cols];
+      int r = 0;
+      int c = 0;
+      for(int i=0;i<array.length;i++){
+        if(c-cols == 0){
+          c = 0;
+          r++;
+        }
+        arrayToReturn[r][c] = array[i];
+        c++;    
+      }
+      return arrayToReturn;
+    }else{return null;}
+    
+  } 
+  
+  void goingToNextGeneration(){
+   // Resetiranje autića (oni koju su umrli u prijasnjoj generaciji sada su opet zivi)
+    Car[] parentCars = new Car[winnerCars.length];
+    for(int i=0;i<winnerCars.length;i++){
+      parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation);
+    }
+    
+    Car[] newGenCars = (Car[])concat(parentCars,babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke. //<>//
 
+    population = new Population(newGenCars, populationNumber+1);
+  }
 
   
   void populationIsDeadIRepeatPopulationIsDead(){
@@ -137,14 +204,15 @@ class Population{
     choosingWinnerCars();
     parentSelection();
     makingBabies();
-    println("preslo je :D");
+    goingToNextGeneration();
+    println("Generacija " + populationNumber + " je gotova.");
   }  
   
   
   void populationDetails(){
     textSize(72);
     fill(0, 102, 153);
-    text(""+populationNumber, 20, 80); 
+    text(populationNumber, 20, 80); 
   }
 
 

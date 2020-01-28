@@ -3,9 +3,8 @@ import java.util.Arrays;
 
 class Population{
   
+  Stopwatch sw = new Stopwatch();
   int populationNumber;
-  
-  boolean stillKeepChecking;
   
   int numCars;
   Car[] cars;
@@ -20,10 +19,10 @@ class Population{
   Car[] winnerCars;
   Car[] babyCars;
   
+  Car[] newGenCars;
   
   Population(int _numCars, int _popNumber){
     populationNumber = _popNumber;
-    stillKeepChecking = true;
     numCars = _numCars; 
     cars = new Car[numCars];
     carGenes = new double[numCars][];
@@ -33,11 +32,12 @@ class Population{
     winnerCars = new Car[numCars*2/3];
     parents = new PVector[winnerCars.length/2];
     babyCars = new Car[winnerCars.length/2];
+    
+    sw.start();
   }
   
   Population(Car[] newCars, int _popNumber){
     populationNumber = _popNumber;
-    stillKeepChecking = true;
     numCars = newCars.length; 
     cars = newCars;
     carGenes = new double[numCars][];
@@ -47,6 +47,8 @@ class Population{
     winnerCars = new Car[numCars*2/3];
     parents = new PVector[winnerCars.length/2];
     babyCars = new Car[winnerCars.length/2];
+    
+    sw.start();
   }
   
   void update(){
@@ -55,7 +57,8 @@ class Population{
     if(deadPopulation){
       deadPopulation = false;
       populationIsDeadIRepeatPopulationIsDead();
-    }  
+    } 
+    
   }  
 
 
@@ -141,9 +144,9 @@ class Population{
       double[] g2 = new double[12];
       double[] g3 = new double[6];
       
+      int g2Br = 0;
+      int g3Br = 0;
       for(int j=0;j<babyGenes.length;j++){
-        int g2Br = 0;
-        int g3Br = 0;
         if(j < 20){
           g1[j] = babyGenes[j];
         }else if(j < 32){
@@ -193,9 +196,10 @@ class Population{
       parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation);
     }
     
-    Car[] newGenCars = (Car[])concat(parentCars,babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke. //<>//
+    newGenCars = (Car[])concat(parentCars, babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke.
 
-    population = new Population(newGenCars, populationNumber+1);
+    tempPopulation = new Population(newGenCars, populationNumber+1); //<>//
+    population = tempPopulation;
   }
 
   

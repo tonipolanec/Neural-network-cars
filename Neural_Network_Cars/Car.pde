@@ -131,15 +131,16 @@ class Car {
       wallDist = minWD; 
       isDead();
       
-      int sec = millis()/1000;
+      int sec = population.sw.second();
       //println(sec);
       if(fitnessMultiplier < 1.25 && sec > 15){
         isDead = true;
       }else if(fitnessMultiplier < 1.5 && sec > 30){
         isDead = true;
       }else if(fitnessMultiplier < 1.75 && sec > 45){
-        
+        isDead = true;
       }
+      
     }
   }
 
@@ -220,7 +221,7 @@ class Car {
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speedLimit = map((float)steeringSpeed[1], -1, 1, 0, 3);
+    float speedLimit = map((float)steeringSpeed[1], -1, 1, 1.5, 3);
     if ((float)steeringSpeed[1] > 1) {
       vel.limit(topSpeed);
     } else if ((float)steeringSpeed[1] < -1) {

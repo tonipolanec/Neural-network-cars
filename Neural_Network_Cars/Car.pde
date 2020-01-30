@@ -133,13 +133,15 @@ class Car {
       
       int sec = population.sw.second();
       //println(sec);
-      if(fitnessMultiplier < 1.25 && sec > 15){
+      if(fitnessMultiplier < 1.25 && sec > 15)
         isDead = true;
-      }else if(fitnessMultiplier < 1.5 && sec > 30){
+      else if(fitnessMultiplier < 1.5 && sec > 30)
         isDead = true;
-      }else if(fitnessMultiplier < 1.75 && sec > 45){
+      else if(fitnessMultiplier < 1.75 && sec > 45)
         isDead = true;
-      }
+      else if(fitnessMultiplier < 2 && sec > 60)
+        isDead = true;
+      
       
     }
   }
@@ -159,39 +161,27 @@ class Car {
       r.show();
       l.show();
     }
-    
-     // Ispis podataka svakog autica.
-    textSize(12);
-    fill(0,0,0);
-    text(generation,15,15);
-    //text(fitnessMultiplier,15,15); // Ispisivanje fitness multipliera.
-    //text(fitness,15,25);
 
-    //Crtanje autića.    
+    // Crtanje autića.    
     rotate(theta);
-    rectMode(CENTER);
+
     imageMode(CENTER);
     if (!isDead) {
-
+      //tint(255, 255, 255, 156); 
       image(carImage, 0, 0);
-      /*
-      colorMode(HSB);
-       fill(col, 255, 255);
-       rect(0, 0, radius, 2*radius); //Tijelo auta
-       colorMode(RGB);
-       fill(0, 0, 255);
-       rect(0, -radius/1.6, radius-radius/5, radius/2); // Vjetrobransko staklo */
     } else {
       image(grayAuto, 0, 0);
-      /*
-      fill(100);
-       rect(0, 0, radius, 2*radius);
-       fill(55);
-       rect(0, -radius/1.6, radius-radius/5, radius/2);  */
     }
 
+    // Ispis podataka svakog autica.
+    textSize(12);
+    fill(0,0,0);
+    //text((int)fitness,15,15);
+    //text(generation,15,15);
+
+    
     popMatrix();
-    //pisiPoEkranu();
+
   }
 
 
@@ -221,7 +211,7 @@ class Car {
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speedLimit = map((float)steeringSpeed[1], -1, 1, 1.5, 3);
+    float speedLimit = map((float)steeringSpeed[1], -1, 1, 0.5, 3);
     if ((float)steeringSpeed[1] > 1) {
       vel.limit(topSpeed);
     } else if ((float)steeringSpeed[1] < -1) {

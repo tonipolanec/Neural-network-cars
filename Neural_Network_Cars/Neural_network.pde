@@ -29,6 +29,7 @@ class NeuralNetwork {
     tempArray = new double[nHidden2][nOutput];              //
     h2ToO = new Matrix(randomValuesMatrice(tempArray));     //
   }
+  
   NeuralNetwork(int _nInput, int _nHidden1, int _nHidden2, int _nOutput, Matrix m1, Matrix m2, Matrix m3) {
     nInput = _nInput;
     input = new Matrix(nInput, 1);
@@ -107,7 +108,48 @@ class NeuralNetwork {
     double[] genes = (double[])concat((double[])concat(ar1,ar2),ar3);
     return genes;
   }
-
+  
+  NeuralNetwork mutation(double[] genes){
+    
+     // Mutacija
+      for(int i=0;i<genes.length;i++){
+        double tempMR = random(1);
+        if(tempMR < mutationRate){
+          genes[i] = random(-1,1);
+        }
+      }
+    
+    // Stvaranje matrica za novi NN.
+      double[] g1 = new double[20];
+      double[] g2 = new double[12];
+      double[] g3 = new double[6];
+      
+      int g2Br = 0;
+      int g3Br = 0;
+      for(int i=0;i<genes.length;i++){
+        if(i < 20){
+          g1[i] = genes[i];
+        }else if(i < 32){
+          g2[g2Br] = genes[i];
+          g2Br++;
+        }else{
+          g3[g3Br] = genes[i];
+          g3Br++;
+        }
+      } 
+      double[][] twoD1 = oneDTo2D(g1,5,4);
+      double[][] twoD2 = oneDTo2D(g2,4,3);
+      double[][] twoD3 = oneDTo2D(g3,3,2);
+      
+      Matrix m1 = new Matrix(twoD1);
+      Matrix m2 = new Matrix(twoD2);
+      Matrix m3 = new Matrix(twoD3);
+      
+    
+    NeuralNetwork nn = new NeuralNetwork(5, 4, 3, 2, m1, m2, m3);
+    return nn;
+  }
+  
   double[] twoDToOneD(double[][] ar2){
     double[] outArray = new double[ar2.length * ar2[0].length];
     int index = 0;
@@ -121,7 +163,22 @@ class NeuralNetwork {
     return outArray;
   }
   
-
+  double[][] oneDTo2D(double[] array, int rows, int cols){
+    if(rows * cols == array.length){
+      double[][] arrayToReturn = new double[rows][cols];
+      int r = 0;
+      int c = 0;
+      for(int i=0;i<array.length;i++){
+        if(c-cols == 0){
+          c = 0;
+          r++;
+        }
+        arrayToReturn[r][c] = array[i];
+        c++;    
+      }
+      return arrayToReturn;
+    }else{return null;}  
+  } 
   
   
   

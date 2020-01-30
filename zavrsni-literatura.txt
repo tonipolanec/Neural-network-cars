@@ -20,3 +20,4 @@ https://towardsdatascience.com/artificial-neural-networks-optimization-using-gen
 https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html - 15.01.2020.
 
 https://www.geeksforgeeks.org/tournament-selection-ga/ - 22.01.2020.
+https://forum.processing.org/one/topic/timer-in-processing.html - 28.01.2020.

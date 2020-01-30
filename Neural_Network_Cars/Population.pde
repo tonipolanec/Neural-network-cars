@@ -1,4 +1,4 @@
-import java.util.Collections;
+import java.util.Collections; //<>//
 import java.util.Arrays;
 
 class Population{
@@ -11,8 +11,12 @@ class Population{
   double[][] carGenes;
   double[] carFitnesses;
   double totalFitness = 0;
-  boolean deadPopulation = false;
+  double maxFitness = 0;
   double[] normFitnesses;
+    
+  double winnerConst = 0.4;
+  
+  boolean deadPopulation = false;
   
   PVector[] parents;
   
@@ -53,9 +57,8 @@ class Population{
   
   void update(){
     populationDetails();
-    deadPopulation = isPopulationDead();
-    if(deadPopulation){
-      deadPopulation = false;
+    if(isPopulationDead()){
+      deadPopulation = true;
       populationIsDeadIRepeatPopulationIsDead();
     } 
     
@@ -82,6 +85,8 @@ class Population{
     totalFitness = 0;
     for(int i=0;i<numCars;i++){
       totalFitness += cars[i].fitness;
+      if(cars[i].fitness > maxFitness)
+        maxFitness = cars[i].fitness;
     }
     for(int i=0;i<numCars;i++){
       cars[i].normFitness = cars[i].fitness / totalFitness;
@@ -89,9 +94,22 @@ class Population{
   }
   
   void choosingWinnerCars(){  // Tournament selection metoda.
-    for(int i=0;i<numCars*2/3;i++){
-      int carA = (int)random(numCars);
-      int carB = (int)random(numCars);
+    for(int i=0;i<numCars*2/3;i++){      
+      int carA = -1;
+      int carB = -1;
+      
+      // Auti mogu se mogu kvalificirati za roditelja samo ako su u top (1-winnerConst)% populacije.
+      // npr. winnerConst = 0.4 -> kvalificirati se moze samo top 60% populacije (po fitnessu)
+      while(carA == -1){
+        int temp = (int)random(numCars); 
+        if(cars[temp].fitness / maxFitness > winnerConst)
+          carA = temp;
+      }
+      while(carB == -1){
+        int temp = (int)random(winnerCars.length); 
+        if(cars[temp].fitness / maxFitness > winnerConst)
+          carB = temp;
+      }
       
       if(cars[carA].normFitness < cars[carB].normFitness) // mogunost mijenjanja v fitness obicni
         winnerCars[i] = cars[carB];                            // onda nam ne treba takeFitnesses()
@@ -132,73 +150,33 @@ class Population{
       }
       
       // Mutacija
-      for(int j=0;j<babyGenes.length;j++){
+    /*  for(int j=0;j<babyGenes.length;j++){
         double tempMR = random(1);
         if(tempMR < mutationRate){
           babyGenes[i] = random(-1,1);
         }
       }
+      */
       
-      // Stvaranje matrica za NN dijeteta.
-      double[] g1 = new double[20];
-      double[] g2 = new double[12];
-      double[] g3 = new double[6];
-      
-      int g2Br = 0;
-      int g3Br = 0;
-      for(int j=0;j<babyGenes.length;j++){
-        if(j < 20){
-          g1[j] = babyGenes[j];
-        }else if(j < 32){
-          g2[g2Br] = babyGenes[j];
-          g2Br++;
-        }else{
-          g3[g3Br] = babyGenes[j];
-          g3Br++;
-        }
-      } 
-      double[][] twoD1 = oneDTo2D(g1,5,4);
-      double[][] twoD2 = oneDTo2D(g2,4,3);
-      double[][] twoD3 = oneDTo2D(g3,3,2);
-      
-      Matrix m1 = new Matrix(twoD1);
-      Matrix m2 = new Matrix(twoD2);
-      Matrix m3 = new Matrix(twoD3);
-      
-      NeuralNetwork nnBaby = new NeuralNetwork(5, 4, 3, 2, m1, m2, m3);
+      NeuralNetwork nnBaby = cars[i].nn.mutation(babyGenes);
       babyCars[i] = new Car(nnBaby, populationNumber);
     }
     
   }
 
-  double[][] oneDTo2D(double[] array, int rows, int cols){
-    if(rows * cols == array.length){
-      double[][] arrayToReturn = new double[rows][cols];
-      int r = 0;
-      int c = 0;
-      for(int i=0;i<array.length;i++){
-        if(c-cols == 0){
-          c = 0;
-          r++;
-        }
-        arrayToReturn[r][c] = array[i];
-        c++;    
-      }
-      return arrayToReturn;
-    }else{return null;}
-    
-  } 
+
   
   void goingToNextGeneration(){
    // Resetiranje autića (oni koju su umrli u prijasnjoj generaciji sada su opet zivi)
     Car[] parentCars = new Car[winnerCars.length];
     for(int i=0;i<winnerCars.length;i++){
-      parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation);
+      double[] genes = winnerCars[i].nn.takeGenes();
+      parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation);
     }
     
     newGenCars = (Car[])concat(parentCars, babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke.
 
-    tempPopulation = new Population(newGenCars, populationNumber+1); //<>//
+    tempPopulation = new Population(newGenCars, populationNumber+1);
     population = tempPopulation;
   }
 

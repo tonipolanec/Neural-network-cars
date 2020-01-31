@@ -4,7 +4,7 @@ class Car {
   NeuralNetwork nn;
 
   int generation;
-  
+
   PVector start;
 
   PVector loc, vel, acc;
@@ -13,7 +13,7 @@ class Car {
   float fitness;
   float fitnessMultiplier;
   double normFitness;
-  
+
   //double percFitness; // Percentage ukupnog fitnessa od svih u populaciji.
 
   float distTravelled;
@@ -29,23 +29,26 @@ class Car {
 
   double wallDist;
   boolean isDead;
+  boolean finished;
 
   int col; // color of the car
   Car() {
     nn = new NeuralNetwork(5, 4, 3, 2);
-    
+
     generation = 1;
     start = startingPoint;
     loc = new PVector(start.x, start.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
     isDead = false;
+    finished = false;
     radius = 20; 
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
     topSpeed = 3;
 
     col = (int)random(255);
+    //carImage = stockAuto.copy();
     carImage = stockAuto.copy();
     carImage.loadPixels();
     int dimensionsPic = carImage.height * carImage.width;
@@ -61,8 +64,8 @@ class Car {
     fitness = 0;
     fitnessMultiplier = 1;
   }
-  
-  Car(NeuralNetwork _nn, int _gen) {
+
+  Car(NeuralNetwork _nn, int _gen, int _col) {
     nn = _nn;
 
     generation = _gen;
@@ -71,12 +74,13 @@ class Car {
     acc = new PVector(0.1, 0);
     vel = new PVector();
     isDead = false;
+    finished = false;
     radius = 20; 
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
     topSpeed = 3;
 
-    col = (int)random(255);
+    col = _col;
     carImage = stockAuto.copy();
     carImage.loadPixels();
     int dimensionsPic = carImage.height * carImage.width;
@@ -100,17 +104,22 @@ class Car {
 
       vel.add(acc);
       loc.add(vel);
-      distTravelled+= vel.get().mag();
+      distTravelled+= vel.copy().mag();
 
       //Inicijalizacija senzora. (Kutevi:  0.349rad = 20deg, 0.873 = 50deg)   
-      PVector norm = vel.get().normalize();
+      PVector norm = vel.copy().normalize();
       f = new Sensor(loc, norm);                        //
-      fr = new Sensor(loc, norm.get().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
-      fl = new Sensor(loc, norm.get().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
-      r = new Sensor(loc, norm.get().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
-      l = new Sensor(loc, norm.get().rotate(-0.873));   //
+      fr = new Sensor(loc, norm.copy().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
+      fl = new Sensor(loc, norm.copy().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
+      r = new Sensor(loc, norm.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
+      l = new Sensor(loc, norm.copy().rotate(-0.873));   //
 
       float[] wallDists = new float[5];
+      
+      if(f.seeFinish(finish) < 30){
+        finished = true;   
+        isDead = true;
+      }
 
       frontS = f.see();  
       wallDists[0] = frontS;           
@@ -130,58 +139,53 @@ class Car {
       }
       wallDist = minWD; 
       isDead();
-      
+
       int sec = population.sw.second();
       //println(sec);
-      if(fitnessMultiplier < 1.25 && sec > 15)
+      if (fitnessMultiplier < 1.25 && sec > 15)
         isDead = true;
-      else if(fitnessMultiplier < 1.5 && sec > 30)
+      else if (fitnessMultiplier < 1.5 && sec > 30)
         isDead = true;
-      else if(fitnessMultiplier < 1.75 && sec > 45)
+      else if (fitnessMultiplier < 1.75 && sec > 45)
         isDead = true;
-      else if(fitnessMultiplier < 2 && sec > 60)
+      else if (fitnessMultiplier < 2 && sec > 60)
         isDead = true;
-      
-      
     }
   }
 
   void show() {
-    float theta = vel.heading2D() + PI/2;   //Kut okretanja crteža auta.
+    float theta = vel.heading() + PI/2;   //Kut okretanja crteža auta.
     fill(210);
     noStroke();
 
     pushMatrix();
     translate(loc.x, loc.y);    
+    
     //Crtanje senzornih zraka.
-    if (!isDead) {
-      f.show();
-      fr.show();
-      fl.show();
-      r.show();
-      l.show();
-    }
-
+    //showSensors();
+    
     // Crtanje autića.    
     rotate(theta);
 
     imageMode(CENTER);
-    if (!isDead) {
+    if (finished) {
+      image(glowingAuto, 0, 0);
+    }else if(isDead){
+      image(grayAuto, 0, 0);
+    }else{
       //tint(255, 255, 255, 156); 
       image(carImage, 0, 0);
-    } else {
-      image(grayAuto, 0, 0);
     }
+
 
     // Ispis podataka svakog autica.
     textSize(12);
-    fill(0,0,0);
+    fill(0, 0, 0);
     //text((int)fitness,15,15);
     //text(generation,15,15);
 
-    
-    popMatrix();
 
+    popMatrix();
   }
 
 
@@ -211,7 +215,7 @@ class Car {
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speedLimit = map((float)steeringSpeed[1], -1, 1, 0.5, 3);
+    float speedLimit = map((float)steeringSpeed[1], -1, 1, 1.5, 3);
     if ((float)steeringSpeed[1] > 1) {
       vel.limit(topSpeed);
     } else if ((float)steeringSpeed[1] < -1) {
@@ -222,7 +226,6 @@ class Car {
 
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;
-
   }
 
 
@@ -241,25 +244,37 @@ class Car {
       i++;
     }
   }
-
-  void restartCar(){
-    
-    start = startingPoint;
-    loc = new PVector(start.x, start.y);
-    acc = new PVector(0.1, 0);
-    vel = new PVector();
-    isDead = false;
-    radius = 20; 
-    steeringSpeed[0] = 0;
-    steeringSpeed[1] = 0;
-    topSpeed = 3;
-    distTravelled = 0;
-    fitness = 0;
-    fitnessMultiplier = 1;
-    
+  
+  // Crtanje senzornih zraka
+  void showSensors(){
+    if (!isDead) {
+      f.show();
+      fr.show();
+      fl.show();
+      r.show();
+      l.show();
+    }
   }
-
-
+  
+  /*
+  void restartCar(){
+   
+   start = startingPoint;
+   loc = new PVector(start.x, start.y);
+   acc = new PVector(0.1, 0);
+   vel = new PVector();
+   isDead = false;
+   radius = 20; 
+   steeringSpeed[0] = 0;
+   steeringSpeed[1] = 0;
+   topSpeed = 3;
+   distTravelled = 0;
+   fitness = 0;
+   fitnessMultiplier = 1;
+   
+   }
+   
+   */
 
 
 

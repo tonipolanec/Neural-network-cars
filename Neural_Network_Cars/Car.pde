@@ -117,7 +117,7 @@ class Car {
       float[] wallDists = new float[5];
       
       if(f.seeFinish(finish) < 30){
-        finished = true;   
+        finished = true;
         isDead = true;
       }
 
@@ -215,7 +215,7 @@ class Car {
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speedLimit = map((float)steeringSpeed[1], -1, 1, 1.5, 3);
+    float speedLimit = map((float)steeringSpeed[1], -1, 1, 0.5, 3);
     if ((float)steeringSpeed[1] > 1) {
       vel.limit(topSpeed);
     } else if ((float)steeringSpeed[1] < -1) {

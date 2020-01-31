@@ -9,7 +9,7 @@ Checkpoint[] cp = new Checkpoint[5];
 
 PVector startingPoint;
 
-double mutationRate = 0.1;
+double mutationRate = 0.08;
 int nCarsInPopulation = 60;
 
 int pop = 0;

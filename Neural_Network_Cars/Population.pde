@@ -20,7 +20,7 @@ class Population {
 
   PVector[] parents;
 
-  //int[] ----------------integer polje indeksima koji su zagarantirani winneri tj. oni koji su presli stazu
+  IntList guaranteedWinnerCars;
   Car[] winnerCars;
   Car[] babyCars;
 
@@ -35,6 +35,7 @@ class Population {
     normFitnesses = new double[numCars];
 
     winnerCars = new Car[numCars*2/3];
+    guaranteedWinnerCars = new IntList();
     parents = new PVector[winnerCars.length/2];
     babyCars = new Car[winnerCars.length/2];
 
@@ -50,6 +51,7 @@ class Population {
     normFitnesses = new double[numCars];
 
     winnerCars = new Car[numCars*2/3];
+    guaranteedWinnerCars = new IntList();
     parents = new PVector[winnerCars.length/2];
     babyCars = new Car[winnerCars.length/2];
 
@@ -58,6 +60,11 @@ class Population {
 
   void update() {
     populationDetails();
+    for(int i=0;i<cars.length;i++){
+      if(guaranteedWinnerCars.size() < winnerCars.length)
+        if(cars[i].finished)
+          guaranteedWinnerCars.append(i);
+        }
     if (isPopulationDead()) {
       deadPopulation = true;
       populationIsDeadIRepeatPopulationIsDead();
@@ -94,7 +101,11 @@ class Population {
   }
 
   void choosingWinnerCars() {  // Tournament selection metoda.
-    for (int i=0; i<numCars*2/3; i++) {      
+    for(int i=0;i<guaranteedWinnerCars.size(); i++){
+      winnerCars[i] = cars[guaranteedWinnerCars.get(i)];
+    }
+  
+    for (int i=guaranteedWinnerCars.size(); i<numCars*2/3; i++) {      
       int carA = -1;
       int carB = -1;
 

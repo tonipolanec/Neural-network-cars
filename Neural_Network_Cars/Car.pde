@@ -22,10 +22,13 @@ class Car {
   float frontS, frontRightS, frontLeftS, rightS, leftS;
 
   PImage carImage;
+  PImage finishedCarImage;
 
   //int step = 0;
   double[] steeringSpeed = new double[2]; //prvi element je steering, drugi brzina
   float topSpeed;
+  FloatList speedsForAvg;
+  float avgSpeed;
 
   double wallDist;
   boolean isDead;
@@ -46,20 +49,12 @@ class Car {
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
     topSpeed = 3;
+    speedsForAvg = new FloatList();
 
     col = (int)random(255);
-    //carImage = stockAuto.copy();
-    carImage = stockAuto.copy();
-    carImage.loadPixels();
-    int dimensionsPic = carImage.height * carImage.width;
-    for (int i=0; i<dimensionsPic; i++) {
-      if (carImage.pixels[i] == color(0, 0, 0)) {
-        colorMode(HSB);
-        carImage.pixels[i] = color(col, 255, 255);
-        colorMode(RGB);
-      }
-    }
-
+    carImage = coloringCar(stockAuto.copy(), col);
+    finishedCarImage = coloringCar(glowingAuto.copy(), col);
+    
     distTravelled = 0;
     fitness = 0;
     fitnessMultiplier = 1;
@@ -79,18 +74,11 @@ class Car {
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
     topSpeed = 3;
+    speedsForAvg = new FloatList();
 
     col = _col;
-    carImage = stockAuto.copy();
-    carImage.loadPixels();
-    int dimensionsPic = carImage.height * carImage.width;
-    for (int i=0; i<dimensionsPic; i++) {
-      if (carImage.pixels[i] == color(0, 0, 0)) {
-        colorMode(HSB);
-        carImage.pixels[i] = color(col, 255, 255);
-        colorMode(RGB);
-      }
-    }
+    carImage = coloringCar(stockAuto.copy(), col);
+    finishedCarImage = coloringCar(glowingAuto.copy(), col);
 
     distTravelled = 0;
     fitness = 0;
@@ -142,14 +130,19 @@ class Car {
 
       int sec = population.sw.second();
       //println(sec);
-      if (fitnessMultiplier < 1.25 && sec > 15)
+      if (fitnessMultiplier < 1.25 && sec > 15){
         isDead = true;
-      else if (fitnessMultiplier < 1.5 && sec > 30)
+        fitness = 1;
+      }else if (fitnessMultiplier < 1.5 && sec > 30){
         isDead = true;
-      else if (fitnessMultiplier < 1.75 && sec > 45)
+        fitness = 1;
+      }else if (fitnessMultiplier < 1.75 && sec > 45){
         isDead = true;
-      else if (fitnessMultiplier < 2 && sec > 60)
+        fitness = 1;
+      }else if (fitnessMultiplier < 2 && sec > 60){
         isDead = true;
+        fitness = 1;
+      }
     }
   }
 
@@ -169,7 +162,7 @@ class Car {
 
     imageMode(CENTER);
     if (finished) {
-      image(glowingAuto, 0, 0);
+      image(finishedCarImage, 0, 0);
     }else if(isDead){
       image(grayAuto, 0, 0);
     }else{
@@ -223,7 +216,9 @@ class Car {
     } else {
       vel.limit(speedLimit);
     } 
-
+  
+    speedsForAvg.append((float)steeringSpeed[1]);
+    
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;
   }
@@ -254,6 +249,19 @@ class Car {
       r.show();
       l.show();
     }
+  }
+  
+  PImage coloringCar(PImage carImage, int col){
+    carImage.loadPixels();
+    int dimensionsPic = carImage.height * carImage.width;
+    for (int i=0; i<dimensionsPic; i++) {
+      if (carImage.pixels[i] == color(0, 0, 0)) {
+        colorMode(HSB);
+        carImage.pixels[i] = color(col, 255, 255);
+        colorMode(RGB);
+      }
+    }
+    return carImage;
   }
   
   /*

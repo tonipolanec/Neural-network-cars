@@ -1,5 +1,5 @@
 PImage stockAuto, grayAuto, glowingAuto, finishLine; //<>//
-
+PGraphics stats;
 Population population;
 Population tempPopulation;
 
@@ -35,6 +35,8 @@ void setup() {
   grayAuto = loadImage("graycar.png");         //   
   glowingAuto = loadImage("glowingcar.png");         //
   finishLine = loadImage("finishline.png");    // PNG za finish line.
+  
+  stats = createGraphics(600,235);
 
   for (int i=0; i<population.cars.length; i++) {
     population.cars[i] = new Car();
@@ -51,7 +53,7 @@ void draw() {
 
   imageMode(CORNER);
   image(finishLine, 1050, 0);
-  finish.show();
+  //finish.show();
 
 
   for (Obstacle o : obst) {
@@ -61,7 +63,6 @@ void draw() {
   //  c.show();
   //}
 
-
   population.update();
   for (Car car : population.cars) { 
     if (!car.isDead)  // Ako je auto udario u zid više mu se ne 
@@ -69,6 +70,10 @@ void draw() {
     car.show();
   }
   
+  
+  imageMode(CORNER);  
+  showStats(stats);
+
   textSize(22);
   fill((255-backgroundColorGray));
   text((int)frameRate, width-40, height-15);  // Ispis fps-a.

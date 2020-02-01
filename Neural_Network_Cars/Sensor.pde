@@ -55,7 +55,7 @@ class Sensor {
     }
 
     strokeWeight(2);
-    stroke(255, 230, 0, 35);
+    stroke(255, 230, 0, 55);
     //line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
 
     return udaljenost;     // Vraca udaljenost od zida. BITNO!!
@@ -91,7 +91,7 @@ class Sensor {
 
     strokeWeight(3);
     stroke(0, 255, 0);
-    line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
+    //line(x3,y3,sjecisteX,sjecisteY);   // Podebljavanje dio senzora koji oznacuje vidno polje. 
 
     return udaljenost;     // Vraca udaljenost od zida. BITNO!!
   }

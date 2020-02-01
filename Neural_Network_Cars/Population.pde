@@ -14,7 +14,7 @@ class Population {
   double maxFitness = 0;
   double[] normFitnesses;
 
-  double winnerConst = 0.4;
+  double winnerConst = 0.2;
 
   boolean deadPopulation = false;
 
@@ -61,7 +61,7 @@ class Population {
   void update() {
     populationDetails();
     for(int i=0;i<cars.length;i++){
-      if(guaranteedWinnerCars.size() < winnerCars.length)
+      if(guaranteedWinnerCars.size() < numCars/3)
         if(cars[i].finished)
           guaranteedWinnerCars.append(i);
         }
@@ -85,6 +85,19 @@ class Population {
       }
     }
     return true;
+  }
+  
+  void setAvgs(){
+    for(Car c : cars){
+      float tempAvg = 0;
+      int br = 0;
+      for(float avg : c.speedsForAvg){
+        tempAvg+=avg;
+        br++;
+      }
+      c.avgSpeed = tempAvg / br;
+    }
+
   }
 
 
@@ -186,6 +199,7 @@ class Population {
 
   void populationIsDeadIRepeatPopulationIsDead() {
     println("Generacija " + populationNumber);
+    setAvgs();
     takeFitnesses();
     choosingWinnerCars();
     parentSelection();

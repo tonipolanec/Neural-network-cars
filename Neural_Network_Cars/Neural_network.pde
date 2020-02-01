@@ -115,7 +115,7 @@ class NeuralNetwork {
     for (int i=0; i<genes.length; i++) {
       double tempMR = random(1);
       if (tempMR < mutationRate) {
-        genes[i] = random(-1, 1);
+        genes[i] = random(-0.5, 0.5);
       }
     }
 

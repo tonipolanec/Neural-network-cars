@@ -1,11 +1,14 @@
 PImage stockAuto, grayAuto, glowingAuto, finishLine; //<>//
-PGraphics stats;
+
 Population population;
 Population tempPopulation;
 
 Obstacle[] obst = new Obstacle[28]; 
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
+
+FloatList sviUkupniFitnessi = new FloatList();
+FloatList sviBrojeviGeneracija = new FloatList();
 
 PVector startingPoint;
 
@@ -36,7 +39,7 @@ void setup() {
   glowingAuto = loadImage("glowingcar.png");         //
   finishLine = loadImage("finishline.png");    // PNG za finish line.
   
-  stats = createGraphics(600,235);
+  //stats = createGraphics(600,235);
 
   for (int i=0; i<population.cars.length; i++) {
     population.cars[i] = new Car();
@@ -62,6 +65,12 @@ void draw() {
   //for(Checkpoint c : cp){
   //  c.show();
   //}
+  
+  if(population.populationNumber > 4){
+    imageMode(CORNER);  
+    updateStats(sviBrojeviGeneracija.array(),sviUkupniFitnessi.array());
+    showStats();
+  }
 
   population.update();
   for (Car car : population.cars) { 
@@ -70,9 +79,7 @@ void draw() {
     car.show();
   }
   
-  
-  imageMode(CORNER);  
-  showStats(stats);
+
 
   textSize(22);
   fill((255-backgroundColorGray));

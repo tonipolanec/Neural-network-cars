@@ -111,6 +111,8 @@ class Population {
     for (int i=0; i<numCars; i++) {
       cars[i].normFitness = cars[i].fitness / totalFitness;
     }
+    sviUkupniFitnessi.append((float)population.totalFitness);
+    sviBrojeviGeneracija.append((float)population.populationNumber);
   }
 
   void choosingWinnerCars() {  // Tournament selection metoda.
@@ -215,5 +217,8 @@ class Population {
     textSize(72);
     fill(0, 102, 153);
     text(populationNumber, 20, 80);
+    textSize(24);
+    fill(0, 102, 153);
+    text(sw.second(), width/2, 25);
   }
 }

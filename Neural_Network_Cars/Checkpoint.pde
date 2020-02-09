@@ -1,4 +1,4 @@
-
+/*
 
 class Checkpoint {
 
@@ -30,3 +30,5 @@ void inicijalizacijaCheckpointi() {
   cp[3] = new Checkpoint(1100, 550, 150);
   cp[4] = new Checkpoint(1150, 50, 150);
 }
+
+*/

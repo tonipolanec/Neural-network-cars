@@ -20,4 +20,7 @@ void draw(){
   m.showObstacles();
   m.showCheckpoints();
   m.showFinishLine();
+  
+  //drawLines();
+  
 }

@@ -40,7 +40,7 @@ class Car {
 
     generation = 1;
     start = startingPoint;
-    loc = new PVector(start.x, start.y);
+    loc = new PVector(m.startingPoint.x, m.startingPoint.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
     isDead = false;
@@ -65,7 +65,7 @@ class Car {
 
     generation = _gen;
     start = startingPoint;
-    loc = new PVector(start.x, start.y);
+    loc = new PVector(m.startingPoint.x, m.startingPoint.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
     isDead = false;
@@ -104,7 +104,7 @@ class Car {
 
       float[] wallDists = new float[5];
       
-      if(f.seeFinish(finish) < 30){
+      if(f.seeFinish(m.finishLine) < 30){
         finished = true;
         isDead = true;
       }
@@ -182,7 +182,7 @@ class Car {
     // Ispis podataka svakog autica.
     textSize(12);
     fill(0, 0, 0);
-    //text(avgSpeed,15,15);
+    //text(fitnessMultiplier,15,15);
     //text(generation,15,15);
 
 
@@ -239,9 +239,9 @@ class Car {
     fill(0);
     stroke(255, 0, 0);
     int i = 0;
-    for (Checkpoint c : cp) {
+    for (Checkpoint c : m.checkpoints) {
       if (dist(loc.x, loc.y, c.location.x, c.location.y) < c.radius/2) { 
-        fitnessMultiplier = (i+1)*0.25 +1;   // Ako auto dođe do checkpointa tada se postavlja određeni multiplier.
+        fitnessMultiplier = c.multiplier;   // Ako auto dođe do checkpointa tada se postavlja određeni multiplier.
         c.passed = true;
       } 
       i++;

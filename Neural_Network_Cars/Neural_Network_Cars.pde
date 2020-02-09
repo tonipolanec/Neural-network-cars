@@ -1,4 +1,4 @@
-boolean novaMapa = true; //<>//
+boolean novaMapa = false; //<>//
 
 PImage stockAuto, grayAuto, glowingAuto, finishLine;
 
@@ -8,6 +8,9 @@ Population tempPopulation;
 Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
+
+Map[] maps = new Map[2];
+Map m; // Trenutna mapa
 
 FloatList sviUkupniFitnessi = new FloatList();
 FloatList sviBrojeviGeneracija = new FloatList();
@@ -31,14 +34,15 @@ void setup() {
   output = createWriter("fitness.txt");
   output.println("Generacija" + "\t" + "Najbolji_fitness" + "\t" + "Ukupni_fitness");
   
-  if(!novaMapa){
-    startingPoint = new PVector(30, 360/*height/2*/);
-    obst = new Obstacle[28]; 
-  }else{
-    startingPoint = new PVector(30, 270);
-    obst = new Obstacle[18]; 
-  }  
-  finish = new FinishLine(1050, 0, 1250, 0);
+  for(int i=0; i<maps.length;i++){
+    maps[i] = new Map(i);  
+  }
+  m = maps[0];
+  
+  //startingPoint = new PVector(30, 360/*height/2*/);
+  //obst = new Obstacle[28]; 
+    
+  //finish = new FinishLine(1050, 0, 1250, 0);
 
   population = new Population(nCarsInPopulation, 1);
 
@@ -53,26 +57,28 @@ void setup() {
     population.cars[i] = new Car();
   }   
 
-  inicijalizacijaCheckpointi(); // Checkpoint tab.
-  inicijalizacijaObstaclei();   // Obstacle tab.
+  //inicijalizacijaCheckpointi(); // Checkpoint tab.
+  //inicijalizacijaObstaclei();   // Obstacle tab.
 }
 
 
 
 void draw() {
   background(backgroundColorGray);
-
+  
+  if(population.populationNumber == 10)
+    m = maps[1];
+  else if(population.populationNumber == 15)
+    m = maps[0];
+  //else if(population.populationNumber == 20)  
+    //m = maps[1];
+    
   imageMode(CORNER);
-  image(finishLine, 1050, 0);
-  //finish.show();
+  image(finishLine, m.finishLine.x1, m.finishLine.y1);
 
-
-  for (Obstacle o : obst) {
-    o.show();
-  }
-  //for(Checkpoint c : cp){
-  //  c.show();
-  //}
+  m.showObstacles();
+  //m.showCheckpoints();
+  
   
   if(population.populationNumber > 4){
     imageMode(CORNER);  
@@ -87,7 +93,6 @@ void draw() {
     car.show();
   }
   
-
 
   textSize(22);
   fill((255-backgroundColorGray));

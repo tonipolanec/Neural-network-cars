@@ -3,7 +3,7 @@ class Sensor {
   PVector dir;
   PVector loc;
   float x3, y3, x4, y4;
-  float sensorStrength = 270;
+  float sensorStrength = 300;
 
   Sensor(PVector location_, PVector dir_) {
     dir = dir_.copy();
@@ -19,7 +19,7 @@ class Sensor {
   void show() {
     //Crtanje senzora.
     stroke(255-backgroundColorGray);
-    strokeWeight(0.1);
+    strokeWeight(1);
     line(0,0,dir.x,dir.y);
   }
 
@@ -29,7 +29,7 @@ class Sensor {
     float udaljenost = sensorStrength;
     float sjecisteX = loc.x, sjecisteY = loc.y;
 
-    for (Obstacle o : obst) {
+    for (Obstacle o : m.obstacles) {
 
       float x1 = o.x1;
       float y1 = o.y1;

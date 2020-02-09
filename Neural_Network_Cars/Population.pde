@@ -12,6 +12,7 @@ class Population {
   double[] carFitnesses;
   double totalFitness = 0;
   double maxFitness = 0;
+  double avgSpeed = 0;
   double[] normFitnesses;
 
   double winnerConst = 0.2;
@@ -87,17 +88,12 @@ class Population {
     return true;
   }
   
-  void setAvgs(){
+  void takeAvgSpeed(){
+    float allSpeeds = 0;
     for(Car c : cars){
-      float tempAvg = 0;
-      int br = 0;
-      for(float avg : c.speedsForAvg){
-        tempAvg+=avg;
-        br++;
-      }
-      c.avgSpeed = tempAvg / br;
+      allSpeeds += c.avgSpeed;
     }
-
+    avgSpeed = allSpeeds / numCars;
   }
 
 
@@ -109,7 +105,7 @@ class Population {
         maxFitness = cars[i].fitness;
     }
     for (int i=0; i<numCars; i++) {
-      cars[i].normFitness = cars[i].fitness / totalFitness;
+      cars[i].normFitness = cars[i].fitness / totalFitness; /// moguce zameniti z maxFitnesom
     }
     sviUkupniFitnessi.append((float)population.totalFitness);
     sviBrojeviGeneracija.append((float)population.populationNumber);
@@ -124,12 +120,12 @@ class Population {
       int carA = -1;
       int carB = -1;
 
-      // Auti mogu se mogu kvalificirati za roditelja samo ako su u top (1-winnerConst)% populacije.
+      // Auti se mogu kvalificirati za roditelja samo ako su u top (1-winnerConst)% populacije.
       // npr. winnerConst = 0.4 -> kvalificirati se moze samo top 60% populacije (po fitnessu)
       while (carA == -1) {
         int temp = (int)random(numCars); 
         if (cars[temp].fitness / maxFitness > winnerConst)
-          carA = temp;
+          carA = temp;                                                                            //  PROBLEM : moe biti duplića u winnerCarsima
       }
       while (carB == -1) {
         int temp = (int)random(winnerCars.length); 
@@ -201,15 +197,20 @@ class Population {
 
   void populationIsDeadIRepeatPopulationIsDead() {
     println("Generacija " + populationNumber);
-    setAvgs();
+    takeAvgSpeed();
     takeFitnesses();
     choosingWinnerCars();
     parentSelection();
     makingBabies();
     goingToNextGeneration();
-    println("Najbolji fitness: " + (int)maxFitness);
+    
+    if(populationNumber == 10)
+      novaMapa = true;
+    
+    //println("Najbolji fitness: " + (int)maxFitness);
     println("Ukupni fitness: " + (int)totalFitness); 
-      output.println(populationNumber + "\t" + (int)maxFitness + "\t" + (int)totalFitness);
+    println("Average speed: " + avgSpeed); 
+    output.println(populationNumber + "\t" + (int)maxFitness + "\t" + (int)totalFitness);
   }  
 
 

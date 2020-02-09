@@ -28,7 +28,7 @@ class Car {
   double[] steeringSpeed = new double[2]; //prvi element je steering, drugi brzina
   float topSpeed;
   FloatList speedsForAvg;
-  float avgSpeed;
+  float avgSpeed = 0;
 
   double wallDist;
   boolean isDead;
@@ -48,7 +48,7 @@ class Car {
     radius = 20; 
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
-    topSpeed = 3;
+    topSpeed = 4;
     speedsForAvg = new FloatList();
 
     col = (int)random(255);
@@ -73,7 +73,7 @@ class Car {
     radius = 20; 
     steeringSpeed[0] = 0;
     steeringSpeed[1] = 0;
-    topSpeed = 3;
+    topSpeed = 4;
     speedsForAvg = new FloatList();
 
     col = _col;
@@ -169,12 +169,20 @@ class Car {
       //tint(255, 255, 255, 156); 
       image(carImage, 0, 0);
     }
+    
+    if(isDead && avgSpeed == 0){
+      float allSpeeds = 0;
+      for(int i=0; i< speedsForAvg.size(); i++){
+        allSpeeds += speedsForAvg.get(i);
+      }
+      avgSpeed = allSpeeds/(speedsForAvg.size());
+    }
 
 
     // Ispis podataka svakog autica.
     textSize(12);
     fill(0, 0, 0);
-    //text((int)fitness,15,15);
+    //text(avgSpeed,15,15);
     //text(generation,15,15);
 
 
@@ -208,16 +216,16 @@ class Car {
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speedLimit = map((float)steeringSpeed[1], -1, 1, 0.5, 3);
+    float speed = map((float)steeringSpeed[1], -1, 1, 1, 4);
     if ((float)steeringSpeed[1] > 1) {
       vel.limit(topSpeed);
     } else if ((float)steeringSpeed[1] < -1) {
       vel.limit(0);
     } else {
-      vel.limit(speedLimit);
+      vel.limit(speed);
     } 
   
-    speedsForAvg.append((float)steeringSpeed[1]);
+    speedsForAvg.append((float)speed);
     
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;

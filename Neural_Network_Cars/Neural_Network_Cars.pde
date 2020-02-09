@@ -1,9 +1,11 @@
-PImage stockAuto, grayAuto, glowingAuto, finishLine; //<>//
+boolean novaMapa = true; //<>//
+
+PImage stockAuto, grayAuto, glowingAuto, finishLine;
 
 Population population;
 Population tempPopulation;
 
-Obstacle[] obst = new Obstacle[28]; 
+Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
 
@@ -22,22 +24,28 @@ int backgroundColorGray = 151;
 PrintWriter output;
 
 void setup() {
-  size(1280, 720);
+  size(1280, 720, P2D); // Za bolje performanse dodati ", P2D"
   //fullScreen();
   background(backgroundColorGray);
 
   output = createWriter("fitness.txt");
   output.println("Generacija" + "\t" + "Najbolji_fitness" + "\t" + "Ukupni_fitness");
   
-  startingPoint = new PVector(30, 360/*height/2*/);
+  if(!novaMapa){
+    startingPoint = new PVector(30, 360/*height/2*/);
+    obst = new Obstacle[28]; 
+  }else{
+    startingPoint = new PVector(30, 270);
+    obst = new Obstacle[18]; 
+  }  
   finish = new FinishLine(1050, 0, 1250, 0);
 
   population = new Population(nCarsInPopulation, 1);
 
-  stockAuto = loadImage("cartemplate.png");    //  PNG fileovi za auteke.
-  grayAuto = loadImage("graycar.png");         //   
-  glowingAuto = loadImage("glowingcar.png");         //
-  finishLine = loadImage("finishline.png");    // PNG za finish line.
+  stockAuto = loadImage("img/cartemplate.png");    //  PNG fileovi za auteke.
+  grayAuto = loadImage("img/graycar.png");         //   
+  glowingAuto = loadImage("img/glowingcar.png");         //
+  finishLine = loadImage("img/finishline.png");    // PNG za finish line.
   
   //stats = createGraphics(600,235);
 

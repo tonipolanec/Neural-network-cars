@@ -29,7 +29,7 @@ void showStats()
   lineChart.setAxisLabelColour(0);
   lineChart.setAxisValuesColour(0);
   textSize(12);
-  lineChart.draw(-20,480,560,215);
+  lineChart.draw(-10,480,560,215);
 }
 
 

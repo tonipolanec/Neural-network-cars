@@ -13,6 +13,7 @@ class Population {
   double totalFitness = 0;
   double maxFitness = 0;
   double avgSpeed = 0;
+  double maxAvgSpeed, minAvgSpeed;
   double[] normFitnesses;
 
   double winnerConst = 0.2;
@@ -61,11 +62,11 @@ class Population {
 
   void update() {
     populationDetails();
-    for(int i=0;i<cars.length;i++){
-      if(guaranteedWinnerCars.size() < numCars/3)
-        if(cars[i].finished)
+    for (int i=0; i<cars.length; i++) {
+      if (guaranteedWinnerCars.size() < numCars/3)
+        if (cars[i].finished)
           guaranteedWinnerCars.append(i);
-        }
+    }
     if (isPopulationDead()) {
       deadPopulation = true;
       populationIsDeadIRepeatPopulationIsDead();
@@ -87,23 +88,49 @@ class Population {
     }
     return true;
   }
-  
-  void takeAvgSpeed(){
+
+  void takeAvgSpeed() {
     float allSpeeds = 0;
-    for(Car c : cars){
+    maxAvgSpeed = 0;
+    minAvgSpeed = 10;
+    for (Car c : cars) {
       allSpeeds += c.avgSpeed;
+
+      if(c.finished){
+        if (c.avgSpeed > maxAvgSpeed)
+          maxAvgSpeed = c.avgSpeed;
+        else if (c.avgSpeed < minAvgSpeed)
+          minAvgSpeed = c.avgSpeed;
+      }
     }
     avgSpeed = allSpeeds / numCars;
   }
 
 
   void takeFitnesses() {
+    int bestCarIndex = 0;
+    // Dodatno povecanje fitnesa ovisno o brzini (1x - 1.3x)
+    for (int i=0; i<numCars; i++) {
+      if(cars[i].finished){
+        try{
+          cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);
+        }catch(Exception e){
+          cars[i].fitness *= 1;
+        }
+        
+      }
+    }
+    
     totalFitness = 0;
     for (int i=0; i<numCars; i++) {
       totalFitness += cars[i].fitness;
-      if (cars[i].fitness > maxFitness)
+      if (cars[i].fitness > maxFitness){
         maxFitness = cars[i].fitness;
+        bestCarIndex = i;
+      }
     }
+    cars[bestCarIndex].bestCar = true;
+    guaranteedWinnerCars.append(bestCarIndex);
     for (int i=0; i<numCars; i++) {
       cars[i].normFitness = cars[i].fitness / totalFitness; /// moguce zameniti z maxFitnesom
     }
@@ -112,10 +139,10 @@ class Population {
   }
 
   void choosingWinnerCars() {  // Tournament selection metoda.
-    for(int i=0;i<guaranteedWinnerCars.size(); i++){
+    for (int i=0; i<guaranteedWinnerCars.size(); i++) {
       winnerCars[i] = cars[guaranteedWinnerCars.get(i)];
     }
-  
+
     for (int i=guaranteedWinnerCars.size(); i<numCars*2/3; i++) {      
       int carA = -1;
       int carB = -1;
@@ -161,7 +188,7 @@ class Population {
       // Prenosenje gena iz roditelja na dijete.
       double[] parent1Genes = cars[int(parents[i].x)].nn.takeGenes();
       double[] parent2Genes = cars[int(parents[i].y)].nn.takeGenes();
-      
+
       int babyColor = ( (cars[int(parents[i].x)].col + cars[int(parents[i].y)].col) /2 )  + (int)random(10)-5; 
 
       double[] babyGenes = new double[parent1Genes.length];  // Baby auto dobiva pol gena od jednog, a pola od drugog roditelja.
@@ -181,34 +208,42 @@ class Population {
 
 
   void goingToNextGeneration() {
+    // Mijenjanje staze
+      m = changeMap;
+    
     // Resetiranje autića (oni koju su umrli u prijasnjoj generaciji sada su opet zivi)
     Car[] parentCars = new Car[winnerCars.length];
     for (int i=0; i<winnerCars.length; i++) {
-      double[] genes = winnerCars[i].nn.takeGenes();
-      parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(30)-15);
+      if(!winnerCars[i].bestCar){
+        double[] genes = winnerCars[i].nn.takeGenes();
+        parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(30)-15);
+      }else{
+        parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation, winnerCars[i].col);
+      }
     }
 
     newGenCars = (Car[])concat(parentCars, babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke.
 
     tempPopulation = new Population(newGenCars, populationNumber+1);
-    population = tempPopulation;
+    population = tempPopulation; 
+    
   }
 
 
   void populationIsDeadIRepeatPopulationIsDead() {
-    println("Generacija " + populationNumber);
+    //println("Generacija " + populationNumber);
     takeAvgSpeed();
     takeFitnesses();
     choosingWinnerCars();
     parentSelection();
     makingBabies();
     goingToNextGeneration();
-    
-    if(populationNumber == 10)
+
+    if (populationNumber == 10)
       novaMapa = true;
-    
+
     //println("Najbolji fitness: " + (int)maxFitness);
-    println("Ukupni fitness: " + (int)totalFitness); 
+    //println("Ukupni fitness: " + (int)totalFitness); 
     println("Average speed: " + avgSpeed); 
     output.println(populationNumber + "\t" + (int)maxFitness + "\t" + (int)totalFitness);
   }  

@@ -8,17 +8,17 @@ void setup(){
   size(1280,720);
   background(151);
   
-  m = new Map(1);
+  m = new Map(2);
   
   //inicijalizacijaCheckpointi();
-  m.inicijalizacijaObstaclei(1); 
+  m.inicijalizacijaObstaclei(2); 
  
 }
 
 void draw(){
 
   m.showObstacles();
-  m.showCheckpoints();
+ //m.showCheckpoints();
   m.showFinishLine();
   
   //drawLines();

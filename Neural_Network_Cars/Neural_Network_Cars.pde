@@ -9,8 +9,9 @@ Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
 
-Map[] maps = new Map[2];
-Map m; // Trenutna mapa
+Map[] maps = new Map[4];
+Map changeMap;
+Map m;         // Trenutna mapa
 
 FloatList sviUkupniFitnessi = new FloatList();
 FloatList sviBrojeviGeneracija = new FloatList();
@@ -38,11 +39,8 @@ void setup() {
     maps[i] = new Map(i);  
   }
   m = maps[0];
+  changeMap = m;
   
-  //startingPoint = new PVector(30, 360/*height/2*/);
-  //obst = new Obstacle[28]; 
-    
-  //finish = new FinishLine(1050, 0, 1250, 0);
 
   population = new Population(nCarsInPopulation, 1);
 
@@ -66,13 +64,6 @@ void setup() {
 void draw() {
   background(backgroundColorGray);
   
-  if(population.populationNumber == 10)
-    m = maps[1];
-  else if(population.populationNumber == 15)
-    m = maps[0];
-  //else if(population.populationNumber == 20)  
-    //m = maps[1];
-    
   imageMode(CORNER);
   image(finishLine, m.finishLine.x1, m.finishLine.y1);
 
@@ -102,7 +93,18 @@ void draw() {
 
 
 void keyPressed() {
-  output.flush(); // Writes the remaining data to the file
-  output.close(); // Finishes the file
-  exit(); // Stops the program
+  if(key == 'i'){
+    output.flush(); // Writes the remaining data to the file
+    output.close(); // Finishes the file
+    exit(); // Stops the program
+  }else if(key == '0'){ 
+    changeMap = maps[0];
+  }else if(key == '1'){ 
+    changeMap = maps[1];
+  }else if(key == '2'){ 
+    changeMap = maps[2];
+  }else if(key == '3'){ 
+    changeMap = maps[3];
+  }
+  
 }

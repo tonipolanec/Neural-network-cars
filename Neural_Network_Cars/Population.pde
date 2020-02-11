@@ -1,4 +1,4 @@
-import java.util.Collections; //<>//
+import java.util.Collections;
 import java.util.Arrays;
 
 class Population {
@@ -13,12 +13,14 @@ class Population {
   double totalFitness = 0;
   double maxFitness = 0;
   double avgSpeed = 0;
-  double maxAvgSpeed, minAvgSpeed;
+  double maxAvgSpeed = 0;
+  double minAvgSpeed = 10;
   double[] normFitnesses;
 
   double winnerConst = 0.2;
 
   boolean deadPopulation = false;
+  int alive;
 
   PVector[] parents;
 
@@ -27,10 +29,13 @@ class Population {
   Car[] babyCars;
 
   Car[] newGenCars;
+  
+  int plenkiNumber = -1;
 
   Population(int _numCars, int _popNumber) {
     populationNumber = _popNumber;
     numCars = _numCars; 
+    alive = numCars;
     cars = new Car[numCars];
     carGenes = new double[numCars][];
     carFitnesses = new double[numCars];
@@ -47,6 +52,7 @@ class Population {
   Population(Car[] newCars, int _popNumber) {
     populationNumber = _popNumber;
     numCars = newCars.length; 
+    alive = numCars;
     cars = newCars;
     carGenes = new double[numCars][];
     carFitnesses = new double[numCars];
@@ -62,10 +68,13 @@ class Population {
 
   void update() {
     populationDetails();
+    alive = numCars;
     for (int i=0; i<cars.length; i++) {
       if (guaranteedWinnerCars.size() < numCars/3)
         if (cars[i].finished)
           guaranteedWinnerCars.append(i);
+      if(cars[i].isDead && !cars[i].finished)
+        alive--;
     }
     if (isPopulationDead()) {
       deadPopulation = true;
@@ -99,7 +108,7 @@ class Population {
       if(c.finished){
         if (c.avgSpeed > maxAvgSpeed)
           maxAvgSpeed = c.avgSpeed;
-        else if (c.avgSpeed < minAvgSpeed)
+        if (c.avgSpeed < minAvgSpeed)
           minAvgSpeed = c.avgSpeed;
       }
     }
@@ -109,18 +118,19 @@ class Population {
 
   void takeFitnesses() {
     int bestCarIndex = 0;
+    /*
     // Dodatno povecanje fitnesa ovisno o brzini (1x - 1.3x)
     for (int i=0; i<numCars; i++) {
       if(cars[i].finished){
-        try{
-          cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);
-        }catch(Exception e){
+        if(cars[i].fitness == minAvgSpeed)
           cars[i].fitness *= 1;
-        }
-        
+        else if(cars[i].fitness == maxAvgSpeed)
+          cars[i].fitness *= 1.3;
+        else
+          cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);             
       }
     }
-    
+    */
     totalFitness = 0;
     for (int i=0; i<numCars; i++) {
       totalFitness += cars[i].fitness;
@@ -227,11 +237,13 @@ class Population {
     tempPopulation = new Population(newGenCars, populationNumber+1);
     population = tempPopulation; 
     
+    resetCuzPlenki(); // Resetira na plenkuNumber-ti generaciji.
+    
   }
 
 
   void populationIsDeadIRepeatPopulationIsDead() {
-    //println("Generacija " + populationNumber);
+    println("Generacija " + populationNumber);
     takeAvgSpeed();
     takeFitnesses();
     choosingWinnerCars();
@@ -239,22 +251,46 @@ class Population {
     makingBabies();
     goingToNextGeneration();
 
-    if (populationNumber == 10)
-      novaMapa = true;
-
     //println("Najbolji fitness: " + (int)maxFitness);
     //println("Ukupni fitness: " + (int)totalFitness); 
-    println("Average speed: " + avgSpeed); 
+    //println("Average speed: " + avgSpeed); 
     output.println(populationNumber + "\t" + (int)maxFitness + "\t" + (int)totalFitness);
-  }  
+  }
+  
+  
+  
+  void plenkiFunction(int a){
+    plenkiNumber = a;
+  }
+  
+  
+  void resetCuzPlenki(){
+    if(populationNumber == plenkiNumber){
+      // Resetira se cijela populacija. Kreće se od nule s potpuo novim autićima.
+      Population tempPopulation = new Population(nCarsInPopulation, 1);
+      population = tempPopulation;
+    
+      for (int i=0; i<population.cars.length; i++) {
+        population.cars[i] = new Car();
+      } 
+    }
+  
+  }
 
 
   void populationDetails() {
     textSize(72);
-    fill(0, 102, 153);
+    fill(c);
     text(populationNumber, 20, 80);
+    
+    textSize(22);
+    //fill(0, 102, 153);
+    if(populationNumber < 9)
+      text("remaining: " + alive, 75, 68);
+    else  
+      text("remaining: " + alive, 115, 68);
     textSize(24);
-    fill(0, 102, 153);
-    text(sw.second(), width/2, 25);
+    //fill(0, 102, 153);
+    text(sw.second(), width/2, 30);
   }
 }

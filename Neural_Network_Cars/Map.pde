@@ -1,21 +1,33 @@
 
 class Map{
   
+  int index;
+  
   Obstacle[] obstacles;
   Checkpoint[] checkpoints;
   FinishLine finishLine;
   PVector startingPoint;
+  
+  PImage background;
+  
+  boolean showGraph;
 
   Map(int indexOfAMap){
-    obstacles = inicijalizacijaObstaclei(indexOfAMap);
-    checkpoints = inicijalizacijaCheckpointi(indexOfAMap);
-    finishLine = inicijalizacijaFinishLinea(indexOfAMap);
-    startingPoint = inicijalizacijaStartingPointa(indexOfAMap);
+    index = indexOfAMap;
+    
+    obstacles = inicijalizacijaObstaclei();
+    checkpoints = inicijalizacijaCheckpointi();
+    finishLine = inicijalizacijaFinishLinea();
+    startingPoint = inicijalizacijaStartingPointa();
+    background = inicijalizacijaBackgroundSlike();
+        
+    showGraph = prikazivanjeGrafa(index);
+
   }
 
 
-  Obstacle[] inicijalizacijaObstaclei(int indexOfAMap){
-    String[] lines = loadStrings("maps/" + indexOfAMap + "/obstacles.txt");
+  Obstacle[] inicijalizacijaObstaclei(){
+    String[] lines = loadStrings("maps/" + index + "/obstacles.txt");
     Obstacle[] obst = new Obstacle[lines.length];
     for (int i = 0 ; i < lines.length; i++) {
       String[] nums = lines[i].split(",",4);
@@ -25,8 +37,8 @@ class Map{
     return obst;
   }
 
-  Checkpoint[] inicijalizacijaCheckpointi(int indexOfAMap){
-    String[] lines = loadStrings("maps/" + indexOfAMap + "/checkpoints.txt");
+  Checkpoint[] inicijalizacijaCheckpointi(){
+    String[] lines = loadStrings("maps/" + index + "/checkpoints.txt");
     Checkpoint[] cp = new Checkpoint[lines.length];
     for (int i = 0 ; i < lines.length; i++) {
       String[] nums = lines[i].split(",",4);
@@ -36,24 +48,40 @@ class Map{
     return cp;
   }
 
-  FinishLine inicijalizacijaFinishLinea(int indexOfAMap){
-    String[] lines = loadStrings("maps/" + indexOfAMap + "/finishline.txt");
+  FinishLine inicijalizacijaFinishLinea(){
+    String[] lines = loadStrings("maps/" + index + "/finishline.txt");
     FinishLine fl;
     String[] nums = lines[0].split(",",4);
+    String[] slika = lines[1].split(",",2);
    
-    fl = new FinishLine(Float.parseFloat(nums[0]), Float.parseFloat(nums[1]), Float.parseFloat(nums[2]), Float.parseFloat(nums[3]));
+    fl = new FinishLine(Float.parseFloat(nums[0]), Float.parseFloat(nums[1]), Float.parseFloat(nums[2]), Float.parseFloat(nums[3]), Float.parseFloat(slika[0]), Float.parseFloat(slika[1]));
     
     return fl;
   }
   
-  PVector inicijalizacijaStartingPointa(int indexOfAMap){
-    String[] lines = loadStrings("maps/" + indexOfAMap + "/startingpoint.txt");
+  PVector inicijalizacijaStartingPointa(){
+    String[] lines = loadStrings("maps/" + index + "/startingpoint.txt");
     PVector sp;
     String[] nums = lines[0].split(",",2);
    
     sp = new PVector(Float.parseFloat(nums[0]), Float.parseFloat(nums[1]));
     
     return sp;
+  }
+  
+  PImage inicijalizacijaBackgroundSlike(){
+    PImage bg = loadImage("maps/" + index + "/background.png");  
+    return bg;
+  }
+  
+  boolean prikazivanjeGrafa(int index){
+    String[] lines = loadStrings("maps/" + index + "/graph.txt");
+   
+    if(lines[0] == "1")
+      return true;
+    else
+      return false;
+    
   }
   
 
@@ -79,11 +107,12 @@ class Map{
 class Obstacle{
   float x1,y1,x2,y2;
   
-  Obstacle(PVector start, PVector end){
+  /*Obstacle(PVector start, PVector end){
     x1 = start.x;
     y1 = start.y;
     //vector = end.get();
   }
+  */
   Obstacle(float x1_, float y1_, float x2_, float y2_){
     x1 = x1_;
     y1 = y1_;
@@ -92,8 +121,8 @@ class Obstacle{
   }
   
   void show(){
-    stroke(0,0,255);
-    strokeWeight(3);
+    stroke(c);
+    strokeWeight(5);
     //line(x1,y1,vector.x,vector.y);
     line(x1,y1,x2,y2);
   }
@@ -122,12 +151,19 @@ class Checkpoint{
 
 class FinishLine {
   float x1, y1, x2, y2;
+  
+  //Za sliku finish line-a.
+  float sx1, sy1;
 
-  FinishLine(float x1_, float y1_, float x2_, float y2_) {
-    x1 = x1_;
-    y1 = y1_;
-    x2 = x2_;
-    y2 = y2_;
+  FinishLine(float _x1, float _y1, float _x2, float _y2, float _sx1, float _sy1) {
+    x1 = _x1;
+    y1 = _y1;
+    x2 = _x2;
+    y2 = _y2;
+    
+    sx1 = x1 + _sx1;
+    sy1 = y1 + _sy1;
+
   }
 
   void show() {

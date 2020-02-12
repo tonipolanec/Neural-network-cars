@@ -152,26 +152,29 @@ class Population {
     for (int i=0; i<guaranteedWinnerCars.size(); i++) {
       winnerCars[i] = cars[guaranteedWinnerCars.get(i)];
     }
-
+    
+    // Uzima 2 slucajna auta te odabire bolji. (Tournament metoda odabiranja roditelja) 
     for (int i=guaranteedWinnerCars.size(); i<numCars*2/3; i++) {      
       int carA = -1;
       int carB = -1;
-
+      
       // Auti se mogu kvalificirati za roditelja samo ako su u top (1-winnerConst)% populacije.
       // npr. winnerConst = 0.4 -> kvalificirati se moze samo top 60% populacije (po fitnessu)
       while (carA == -1) {
         int temp = (int)random(numCars); 
         if (cars[temp].fitness / maxFitness > winnerConst)
-          carA = temp;                                                                            //  PROBLEM : moe biti duplića u winnerCarsima
-      }
+          carA = temp;                                          
+      }   
+      
       while (carB == -1) {
-        int temp = (int)random(winnerCars.length); 
+        int temp = (int)random(numCars); 
         if (cars[temp].fitness / maxFitness > winnerConst)
           carB = temp;
       }
 
-      if (cars[carA].normFitness < cars[carB].normFitness) // mogunost mijenjanja v fitness obicni
-        winnerCars[i] = cars[carB];                            // onda nam ne treba takeFitnesses()
+      // Odabirenje boljega od 2 odabrana auta.
+      if (cars[carA].fitness < cars[carB].fitness)
+        winnerCars[i] = cars[carB];                                                        
       else
         winnerCars[i] = cars[carA];
     }
@@ -193,6 +196,8 @@ class Population {
   }
 
   void makingBabies() {
+    // Mijenjanje staze
+    m = changeMap;
 
     for (int i=0; i<babyCars.length; i++) {
       // Prenosenje gena iz roditelja na dijete.
@@ -218,9 +223,7 @@ class Population {
 
 
   void goingToNextGeneration() {
-    // Mijenjanje staze
-      m = changeMap;
-    
+
     // Resetiranje autića (oni koju su umrli u prijasnjoj generaciji sada su opet zivi)
     Car[] parentCars = new Car[winnerCars.length];
     for (int i=0; i<winnerCars.length; i++) {
@@ -262,21 +265,23 @@ class Population {
   void plenkiFunction(int a){
     plenkiNumber = a;
   }
-  
-  
+    
   void resetCuzPlenki(){
     if(populationNumber == plenkiNumber){
       // Resetira se cijela populacija. Kreće se od nule s potpuo novim autićima.
-      Population tempPopulation = new Population(nCarsInPopulation, 1);
-      population = tempPopulation;
-    
-      for (int i=0; i<population.cars.length; i++) {
-        population.cars[i] = new Car();
-      } 
+      
     }
   
   }
 
+  void resetAll(){
+    Population tempPopulation = new Population(nCarsInPopulation, 1);
+    population = tempPopulation;
+   
+    for (int i=0; i<population.cars.length; i++) {
+      population.cars[i] = new Car();
+    }
+  }
 
   void populationDetails() {
     textSize(72);

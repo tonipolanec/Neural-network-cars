@@ -22,4 +22,6 @@ https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html - 15.01.2
 https://www.geeksforgeeks.org/tournament-selection-ga/ - 22.01.2020.
 https://forum.processing.org/one/topic/timer-in-processing.html - 28.01.2020.
 
-https://www.gicentre.net/utils -------Library za grafove -4.2.2020. 
+https://www.gicentre.net/utils -------Library za grafove - 4.2.2020. 
+
+https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html - 12.2.2020.

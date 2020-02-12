@@ -9,7 +9,7 @@ Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
 
-Map[] maps = new Map[4];
+Map[] maps = new Map[5];
 Map changeMap;
 Map m;         // Trenutna mapa
 
@@ -33,7 +33,7 @@ PrintWriter output;
 color c;
 
 int programFlow;
-//                                                                               BUG KOD MIJENJANJA MAPE
+
 void setup() {
   size(1280, 720, P2D); // Za bolje performanse dodati ", P2D"
   //fullScreen();
@@ -51,7 +51,7 @@ void setup() {
   for (int i=0; i<maps.length; i++) {
     maps[i] = new Map(i);
   }
-  m = maps[2];
+  m = maps[4];
   changeMap = m;
 
   radioButtons[0] = new RadioButton[4];
@@ -59,8 +59,6 @@ void setup() {
   radioButtons[0][1] = new RadioButton(333, 0, 60, 40, "2", 0, 1);
   radioButtons[0][2] = new RadioButton(396, 0, 60, 40, "3", 0, 2);
   radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
-
-  radioButtons[0][m.index].chosen = true;
 
 
   stockAuto = loadImage("img/cartemplate.png");    //  PNG fileovi za auteke.
@@ -74,9 +72,10 @@ void setup() {
   }  
   //stats = createGraphics(600,235);
 
-  for (int i=0; i<population.cars.length; i++) {
-    population.cars[i] = new Car();
-  }
+  /* for (int i=0; i<population.cars.length; i++) {
+   population.cars[i] = new Car();
+   }
+   */
 }
 
 
@@ -115,11 +114,16 @@ void draw() {
     rect(701, 425, 446, 260);
     image(tracks[3], 711, 435);
 
+    if (m != maps[4]) {
+      for (int i=0; i<population.cars.length; i++) {
+        population.cars[i] = new Car();
+      }
+      radioButtons[0][m.index].chosen = true;
+      population.sw.start();
+      programFlow++;
+    }
 
-
-    population.sw.start();
-
-  break;
+    break;
 
   case 1: 
 
@@ -132,6 +136,7 @@ void draw() {
 
     //population.plenkiFunction(2);  // Resetiranje populacije na n-ti generaciji 
 
+/*
     if (m.showGraph) {
       if (population.populationNumber > 4 && population.plenkiNumber == -1) {
         imageMode(CORNER);  
@@ -139,7 +144,7 @@ void draw() {
         //showGraph();
       }
     }
-
+*/
 
     population.update();
     for (Car car : population.cars) { 
@@ -157,7 +162,7 @@ void draw() {
     fill((255-backgroundColorGray));
     text((int)frameRate, width-40, height-15);  // Ispis fps-a.
 
-  break;
+    break;
 
 
 
@@ -175,33 +180,43 @@ void keyPressed() {
     output.flush(); // Writes the remaining data to the file
     output.close(); // Finishes the file
     exit(); // Stops the program
-  } else if (key == '0') { 
-    changeMap = maps[0];
   } else if (key == '1') { 
-    changeMap = maps[1];
+    changeMap = maps[0];
+    radioButtons[0][0].setActive();
   } else if (key == '2') { 
-    changeMap = maps[2];
+    changeMap = maps[1];
+    radioButtons[0][1].setActive();
   } else if (key == '3') { 
+    changeMap = maps[2];
+    radioButtons[0][2].setActive();
+  } else if (key == '4') { 
     changeMap = maps[3];
+    radioButtons[0][3].setActive();
+    
   } else if (key == ENTER) {
-    if (programFlow > 1)
+    if (programFlow > 1){
       programFlow = 0;
-    else
+      population.resetAll();
+      for (RadioButton b : radioButtons[0]) {
+        b.reset();
+      }
+      m = maps[4];
+    }else{
       programFlow++;
+    }
   }
 }
 
 void mousePressed() {
   //println(mouseX+ "," + mouseY);
 
-  for (Button b : radioButtons[0]) {
+  for (RadioButton b : radioButtons[0]) {
     b.clicked();
     b.action();
   }
 
   for (Button b : buttonsForTrackSelection) {
-    //b.chosen = true;
-    //b.action();
+    b.clicked();
   }
 
   //println(changeMap.index);

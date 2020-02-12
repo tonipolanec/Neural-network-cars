@@ -284,16 +284,27 @@ class Population {
   }
 
   void populationDetails() {
+    fill(backgroundColorGray);
+    stroke(backgroundColorGray);
+    if(populationNumber < 10){
+      rect(20,8,50,60);
+      rect(70,43,100,25);
+    }else{
+      rect(20,8,95,60);
+      rect(70,43,140,25);
+    }
+    
     textSize(72);
     fill(c);
     text(populationNumber, 20, 80);
     
+    
     textSize(22);
     //fill(0, 102, 153);
-    if(populationNumber < 9)
-      text("remaining: " + alive, 75, 68);
+    if(populationNumber < 10)
+      text("alive: " + alive, 75, 68);
     else  
-      text("remaining: " + alive, 115, 68);
+      text("alive: " + alive, 115, 68);
     textSize(24);
     //fill(0, 102, 153);
     text(sw.second(), width/2, 30);

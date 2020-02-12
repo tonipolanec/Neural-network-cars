@@ -5,17 +5,9 @@ FloatList lines = new FloatList();
 
 PrintWriter output;
 
-Button[] radioButtons = new Button[4];
-
 void setup(){
   size(1280,720);
   background(151);
-  
-  radioButtons[0] = new Button(40,0,50,40,"0",0);
-  radioButtons[1] = new Button(93,0,50,40,"1",1);
-  radioButtons[2] = new Button(156,0,50,40,"2",2);
-  radioButtons[3] = new Button(219,0,50,40,"3",3);
-
   
   output = createWriter("obstacli.txt");
 }
@@ -25,10 +17,6 @@ void draw(){
   background(151);
   drawLines();
   
-  for(Button b : radioButtons){
-    b.show();
-  }
-
   
   for(int i=0; i< lines.size(); i+=4){
     stroke(0);
@@ -43,8 +31,8 @@ void draw(){
 
 void mousePressed(){
   
-  // ZA CRTANJE STAZE 
-  /*
+  //ZA CRTANJE STAZE 
+  
   if(x == 0 && y == 0){
     x = mouseX;
     y = mouseY;
@@ -63,13 +51,8 @@ void mousePressed(){
     x = mouseX;
     y = mouseY;
   }
-  */
   
-  for(Button b : radioButtons){
-    b.clicked();
-    b.action();
-  }
-  
+ 
   
   
   

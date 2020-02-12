@@ -9,7 +9,7 @@ Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
 
-Map[] maps = new Map[5];
+Map[] maps = new Map[4];
 Map changeMap;
 Map m;         // Trenutna mapa
 
@@ -51,8 +51,8 @@ void setup() {
   for (int i=0; i<maps.length; i++) {
     maps[i] = new Map(i);
   }
-  m = maps[4];
-  changeMap = m;
+  m = null;
+  changeMap = null;
 
   radioButtons[0] = new RadioButton[4];
   radioButtons[0][0] = new RadioButton(270, 0, 60, 40, "1", 0, 0);
@@ -85,9 +85,16 @@ void draw() {
 
   switch(programFlow) {
   case 0: 
+    textAlign(CENTER, TOP);
+    
+    fill(0, 20, 150);                             //
+    textSize(50);                                 //
+    text("Neural Network Cars", width/2+2, 2);    //  Shadow of a text
+    textSize(28);                                 //
+    text("Choose starting track", width/2+2, 59); //
+    
     fill(c);
     textSize(50);
-    textAlign(CENTER, TOP);
     text("Neural Network Cars", width/2, 0);
     textSize(28);
     text("Choose starting track", width/2, 58);
@@ -113,8 +120,13 @@ void draw() {
     image(tracks[2], 143, 435);
     rect(701, 425, 446, 260);
     image(tracks[3], 711, 435);
+    
+    showDifficulty(133,130, "Easy");
+    showDifficulty(701,130, "Normal");
+    showDifficulty(133,420, "Hard");
+    showDifficulty(701,425, "Random");
 
-    if (m != maps[4]) {
+    if (m != null) {
       for (int i=0; i<population.cars.length; i++) {
         population.cars[i] = new Car();
       }
@@ -200,7 +212,7 @@ void keyPressed() {
       for (RadioButton b : radioButtons[0]) {
         b.reset();
       }
-      m = maps[4];
+      m = null;
     }else{
       programFlow++;
     }
@@ -208,7 +220,7 @@ void keyPressed() {
 }
 
 void mousePressed() {
-  //println(mouseX+ "," + mouseY);
+  println(mouseX+ "," + mouseY);
 
   for (RadioButton b : radioButtons[0]) {
     b.clicked();

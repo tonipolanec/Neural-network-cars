@@ -166,4 +166,21 @@ class FinishLine {
     strokeWeight(3);
     line(x1, y1, x2, y2);
   }
+  
+}
+
+void showDifficulty(int x, int y, String text){
+  pushMatrix();
+    translate(x+20,y+20);
+    rotate(-PI/5);
+    textAlign(CENTER,CENTER);
+    textSize(46);
+    
+    fill(205,25,25);
+    text(text,2,2); // shadow
+    fill(255,25,25);
+    text(text,0,0);
+  
+  popMatrix();  
+  
 }

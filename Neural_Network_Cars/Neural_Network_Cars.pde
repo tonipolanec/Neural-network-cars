@@ -13,7 +13,7 @@ Map[] maps = new Map[4];
 Map changeMap;
 Map m;         // Trenutna mapa
 
-Button[] radioButtons = new Button[4]; // Buttons za biranje tijekom simulacije.
+RadioButton[][] radioButtons = new RadioButton[2][]; // Buttons za biranje tijekom simulacije.
 Button[] buttonsForTrackSelection = new Button[4]; // Button za biranje prije pocetka.
 
 FloatList sviUkupniFitnessi = new FloatList();
@@ -54,13 +54,13 @@ void setup() {
   m = maps[2];
   changeMap = m;
 
+  radioButtons[0] = new RadioButton[4];
+  radioButtons[0][0] = new RadioButton(270, 0, 60, 40, "1", 0, 0);
+  radioButtons[0][1] = new RadioButton(333, 0, 60, 40, "2", 0, 1);
+  radioButtons[0][2] = new RadioButton(396, 0, 60, 40, "3", 0, 2);
+  radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
 
-  radioButtons[0] = new Button(270, 0, 60, 40, "1", 0);
-  radioButtons[1] = new Button(333, 0, 60, 40, "2", 1);
-  radioButtons[2] = new Button(396, 0, 60, 40, "3", 2);
-  radioButtons[3] = new Button(459, 0, 60, 40, "4", 3);
-
-  radioButtons[m.index].chosen = true;
+  radioButtons[0][m.index].chosen = true;
 
 
   stockAuto = loadImage("img/cartemplate.png");    //  PNG fileovi za auteke.
@@ -70,7 +70,7 @@ void setup() {
 
   tracks = new PImage[4];
   for (int i=0; i< tracks.length; i++) {  // PNG slike za odabir staze
-    tracks[i] = loadImage("maps/staza"+ i +".png");
+    tracks[i] = loadImage("maps/"+ i +"/staza.png");
   }  
   //stats = createGraphics(600,235);
 
@@ -97,12 +97,14 @@ void draw() {
     stroke(100);
     strokeWeight(10);
 
-    
-    buttonsForTrackSelection[0] = new Button(133,130,446,260,"",0);
-    buttonsForTrackSelection[1] = new Button(701,130,446,260,"",1);
-    buttonsForTrackSelection[2] = new Button(133,425,446,260,"",2);
-    buttonsForTrackSelection[3] = new Button(701,425,446,260,"",3);
-    
+
+    buttonsForTrackSelection[0] = new Button(133, 130, 446, 260, "", 0);
+    buttonsForTrackSelection[1] = new Button(701, 130, 446, 260, "", 1);
+    buttonsForTrackSelection[2] = new Button(133, 425, 446, 260, "", 2);
+    buttonsForTrackSelection[3] = new Button(701, 425, 446, 260, "", 3);
+
+    imageMode(CORNER);
+
     rect(133, 130, 446, 260);          
     image(tracks[0], 143, 140);
     rect(701, 130, 446, 260);
@@ -112,18 +114,14 @@ void draw() {
     image(tracks[2], 143, 435);
     rect(701, 425, 446, 260);
     image(tracks[3], 711, 435);
-    
-    
+
+
 
     population.sw.start();
 
-    break;
+  break;
 
   case 1: 
-
-    break;
-
-  case 2: 
 
     m.showObstacles();
     //m.showCheckpoints();
@@ -132,7 +130,8 @@ void draw() {
     image(finishLine, m.finishLine.sx1, m.finishLine.sy1);
     //m.showFinishLine();
 
-    //population.plenkiFunction(6);  
+    //population.plenkiFunction(2);  // Resetiranje populacije na n-ti generaciji 
+
     if (m.showGraph) {
       if (population.populationNumber > 4 && population.plenkiNumber == -1) {
         imageMode(CORNER);  
@@ -149,7 +148,7 @@ void draw() {
       car.show();
     }
 
-    for (Button b : radioButtons) {
+    for (Button b : radioButtons[0]) {
       b.show();
     }
 
@@ -158,9 +157,13 @@ void draw() {
     fill((255-backgroundColorGray));
     text((int)frameRate, width-40, height-15);  // Ispis fps-a.
 
-    break;
+  break;
+
+
 
   default:
+    textAlign(CENTER, CENTER);
+    text("Please press ENTER to restart simulation.", width/2, height/2);
     break;
   }
 }
@@ -181,22 +184,25 @@ void keyPressed() {
   } else if (key == '3') { 
     changeMap = maps[3];
   } else if (key == ENTER) {
-    programFlow +=2;
+    if (programFlow > 1)
+      programFlow = 0;
+    else
+      programFlow++;
   }
 }
 
 void mousePressed() {
   //println(mouseX+ "," + mouseY);
 
-  for (Button b : radioButtons) {
-    b.choosing();
+  for (Button b : radioButtons[0]) {
+    b.clicked();
     b.action();
   }
-  
+
   for (Button b : buttonsForTrackSelection) {
     //b.chosen = true;
     //b.action();
   }
-  
+
   //println(changeMap.index);
 }

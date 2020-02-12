@@ -19,7 +19,6 @@ class Map{
     checkpoints = inicijalizacijaCheckpointi();
     finishLine = inicijalizacijaFinishLinea();
     startingPoint = inicijalizacijaStartingPointa();
-    background = inicijalizacijaBackgroundSlike();
         
     showGraph = prikazivanjeGrafa(index);
 
@@ -68,11 +67,7 @@ class Map{
     
     return sp;
   }
-  
-  PImage inicijalizacijaBackgroundSlike(){
-    PImage bg = loadImage("maps/" + index + "/background.png");  
-    return bg;
-  }
+
   
   boolean prikazivanjeGrafa(int index){
     String[] lines = loadStrings("maps/" + index + "/graph.txt");

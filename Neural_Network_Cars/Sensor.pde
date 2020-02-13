@@ -96,17 +96,3 @@ class Sensor {
     return udaljenost;     // Vraca udaljenost od zida. BITNO!!
   }
 }
-
-
-/*
-void pisiPoEkranu(){
- textSize(24);
- fill(0);
- text("l: " + leftS, 10, 590); 
- text("fl: " + frontLeftS, 10, 620); 
- text("f: " + frontS, 10, 650); 
- text("fr: " + frontRightS, 10, 680); 
- text("r: " + rightS, 10, 710); 
- 
- }
- */

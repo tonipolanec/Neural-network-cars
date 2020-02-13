@@ -28,8 +28,6 @@ int pop = 0;
 
 int backgroundColorGray = 151;
 
-PrintWriter output;
-
 color c;
 
 int programFlow;
@@ -40,9 +38,6 @@ void setup() {
   background(backgroundColorGray);
 
   programFlow = 0;
-
-  output = createWriter("fitness.txt");
-  output.println("Generacija" + "\t" + "Najbolji_fitness" + "\t" + "Ukupni_fitness");
 
   c = color(0, 35, 250);
 
@@ -70,12 +65,6 @@ void setup() {
   for (int i=0; i< tracks.length; i++) {  // PNG slike za odabir staze
     tracks[i] = loadImage("maps/"+ i +"/staza.png");
   }  
-  //stats = createGraphics(600,235);
-
-  /* for (int i=0; i<population.cars.length; i++) {
-   population.cars[i] = new Car();
-   }
-   */
 }
 
 
@@ -127,6 +116,11 @@ void draw() {
     showDifficulty(701,425, "Random");
 
     if (m != null) {
+      // Velike buttone disable-amo jer kreće simulacija
+      for(Button b : buttonsForTrackSelection){ 
+        b.enabled = false;
+      }
+      
       for (int i=0; i<population.cars.length; i++) {
         population.cars[i] = new Car();
       }
@@ -142,21 +136,12 @@ void draw() {
     m.showObstacles();
     //m.showCheckpoints();
 
-    imageMode(CORNER);
-    image(finishLine, m.finishLine.sx1, m.finishLine.sy1);
-    //m.showFinishLine();
+    m.showFinishLine();
 
-    //population.plenkiFunction(2);  // Resetiranje populacije na n-ti generaciji 
+    
 
-/*
-    if (m.showGraph) {
-      if (population.populationNumber > 4 && population.plenkiNumber == -1) {
-        imageMode(CORNER);  
-        updateStats(sviBrojeviGeneracija.array(), sviUkupniFitnessi.array());
-        //showGraph();
-      }
-    }
-*/
+    population.plenkiNumber(10);  // Resetiranje populacije na n-ti generaciji 
+
 
     population.update();
     for (Car car : population.cars) { 
@@ -188,11 +173,7 @@ void draw() {
 
 
 void keyPressed() {
-  if (key == 'i') {
-    output.flush(); // Writes the remaining data to the file
-    output.close(); // Finishes the file
-    exit(); // Stops the program
-  } else if (key == '1') { 
+  if (key == '1') { 
     changeMap = maps[0];
     radioButtons[0][0].setActive();
   } else if (key == '2') { 

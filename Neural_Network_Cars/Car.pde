@@ -88,7 +88,7 @@ class Car {
 
   void move() {
 
-    if (!isDead) {
+    if (!isDead && !finished) {
       update(); //Brzina i skretanje se postavljaju.
 
       vel.add(acc);
@@ -107,7 +107,7 @@ class Car {
 
       if (f.seeFinish(m.finishLine) < 30) {
         finished = true;
-        isDead = true;
+        isDead = false;
       }
 
       frontS = f.see();  
@@ -239,13 +239,11 @@ class Car {
     textSize(24);
     fill(0);
     stroke(255, 0, 0);
-    int i = 0;
     for (Checkpoint c : m.checkpoints) {
       if (dist(loc.x, loc.y, c.location.x, c.location.y) < c.radius/2) { 
         fitnessMultiplier = c.multiplier;   // Ako auto dođe do checkpointa tada se postavlja određeni multiplier.
         c.passed = true;
       } 
-      i++;
     }
   }
 

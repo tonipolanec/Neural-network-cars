@@ -22,6 +22,7 @@ class Stopwatch {
     return elapsed;
   }
   int second() {
-    return (getElapsedTime() / 1000) % 60;
+    float timeSlower = map(frameRate, 0, 60, 0, 1); // if framerate drops then time moves slower also
+    return int(((getElapsedTime()*timeSlower) / 1000) % 60);
   }
 }

@@ -34,7 +34,6 @@ int programFlow;
 
 void setup() {
   size(1280, 720, P2D); // Za bolje performanse dodati ", P2D"
-  //fullScreen();
   background(backgroundColorGray);
 
   programFlow = 0;
@@ -64,7 +63,7 @@ void setup() {
   tracks = new PImage[4];
   for (int i=0; i< tracks.length; i++) {  // PNG slike za odabir staze
     tracks[i] = loadImage("data/maps/"+ i +"/staza.png");
-  }  
+  }
 }
 
 
@@ -75,13 +74,13 @@ void draw() {
   switch(programFlow) {
   case 0: 
     textAlign(CENTER, TOP);
-    
+
     fill(0, 20, 150);                             //
     textSize(50);                                 //
     text("Neural Network Cars", width/2+2, 2);    //  Shadow of a text
     textSize(28);                                 //
     text("Choose starting track", width/2+2, 59); //
-    
+
     fill(c);
     textSize(50);
     text("Neural Network Cars", width/2, 0);
@@ -109,18 +108,18 @@ void draw() {
     image(tracks[2], 143, 435);
     rect(701, 425, 446, 260);
     image(tracks[3], 711, 435);
-    
-    showDifficulty(133,130, "Easy");
-    showDifficulty(701,130, "Normal");
-    showDifficulty(133,420, "Hard");
-    showDifficulty(701,425, "Random");
+
+    showDifficulty(133, 130, "Easy");
+    showDifficulty(701, 130, "Normal");
+    showDifficulty(133, 420, "Hard");
+    showDifficulty(701, 425, "Random");
 
     if (m != null) {
       // Velike buttone disable-amo jer kreće simulacija
-      for(Button b : buttonsForTrackSelection){ 
+      for (Button b : buttonsForTrackSelection) { 
         b.enabled = false;
       }
-      
+
       for (int i=0; i<population.cars.length; i++) {
         population.cars[i] = new Car();
       }
@@ -138,7 +137,7 @@ void draw() {
 
     m.showFinishLine();
 
-    
+
 
     population.plenkiNumber(10);  // Resetiranje populacije na n-ti generaciji 
 
@@ -185,16 +184,15 @@ void keyPressed() {
   } else if (key == '4') { 
     changeMap = maps[3];
     radioButtons[0][3].setActive();
-    
   } else if (key == ENTER) {
-    if (programFlow > 1){
+    if (programFlow > 1) {
       programFlow = 0;
       population.resetAll();
       for (RadioButton b : radioButtons[0]) {
         b.reset();
       }
       m = null;
-    }else{
+    } else {
       programFlow++;
     }
   }

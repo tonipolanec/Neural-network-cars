@@ -56,14 +56,14 @@ void setup() {
   radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
 
 
-  stockAuto = loadImage("img/cartemplate.png");    //  PNG fileovi za auteke.
-  grayAuto = loadImage("img/graycar.png");         //   
-  glowingAuto = loadImage("img/glowingcar.png");         //
-  finishLine = loadImage("img/finishline.png");    // PNG za finish line.
+  stockAuto = loadImage("data/img/cartemplate.png");    //  PNG fileovi za auteke.
+  grayAuto = loadImage("data/img/graycar.png");         //   
+  glowingAuto = loadImage("data/img/glowingcar.png");         //
+  finishLine = loadImage("data/img/finishline.png");    // PNG za finish line.
 
   tracks = new PImage[4];
   for (int i=0; i< tracks.length; i++) {  // PNG slike za odabir staze
-    tracks[i] = loadImage("maps/"+ i +"/staza.png");
+    tracks[i] = loadImage("data/maps/"+ i +"/staza.png");
   }  
 }
 

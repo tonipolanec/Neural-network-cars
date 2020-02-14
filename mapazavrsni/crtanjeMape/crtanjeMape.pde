@@ -1,3 +1,4 @@
+PImage carImage = new PImage(); 
 
 int flag = 0;
 
@@ -19,6 +20,8 @@ String trenutno = "Starting point";
 void setup() {
   size(1280, 720);
   background(151);
+  
+  carImage = loadImage("data/cartemplate.png");
 
   obst = createWriter("obstacles.txt");
   start = createWriter("startingpoint.txt");
@@ -29,62 +32,106 @@ void setup() {
 
 void draw() {
   background(151);
-  drawLines();
+  
+  //--------------------------Instructions for building map------------------
+  textAlign(LEFT, CENTER);
+  
+  fill(95);
+  textSize(21);
+  
+  if(trenutno == "Starting point"){
+    text("Cars need to start from left pointing right.", 270, 45);
+    text("Please place the starting point somewhere in the gray rectangle.", 270, 68);
+      
+    rectMode(CORNER);
+    fill(130);
+    noStroke();    
+    rect(10, 90, 250, 620, 10);
+ 
+  }else if(trenutno == "Walls"){
+    text("Press 'space' if you want to 'lift' the pencil", 270, 45);
+    
+  }else if(trenutno == "Checkpoints"){
+    text("Order of placing is important. Place them along the track (from start to finish).", 270, 45);
+    text("It's recommended to put them after sharper corners.", 270, 68);
+    text("No need for more than 3-4.", 270, 91);
+    
+  }else if(trenutno == "Finish line"){
+    text("They must be able to access it.", 270, 45);
+    text("Presumably at the end of the track.", 270, 68);
+  }
 
+  fill(100);
+  textSize(20);
+  text("q - starting point", 10, 15);
+  text("w - walls/obstacles", 10, 35);
+  text("e - checkpoints", 10, 55);
+  text("r - finish line", 10, 75);
+
+  fill(70);
+  textSize(30);
+  text(trenutno, 270, 15);
+  
+  textAlign(RIGHT, CENTER);
+  fill(70);
+  textSize(21);
+  text("ENTER - finish map", 1270, 675);
+  text("backspace - reset map", 1270, 700);
+
+  //--------------------------Drawing of the created map---------------------
 
   for (int i=0; i< obstacles.size(); i+=4) {
     stroke(0);
     strokeWeight(2);
     line(obstacles.get(i), obstacles.get(i+1), obstacles.get(i+2), obstacles.get(i+3));
   }
-  
-  if(startKoor[0] != null){
-    fill(255,25,25);
-    textAlign(CENTER,CENTER);
-    textSize(20);
-    text("start", startKoor[0], startKoor[1]);
+
+  if (startKoor[0] != null) {
+    pushMatrix();
+    translate(startKoor[0], startKoor[1]);
+    rotate(PI/2);
+    imageMode(CENTER);
+    image(carImage, 0, 0);
+    popMatrix();
   }
-  
-  for(int i = 0; i< checkpoints.size(); i+=2){
+
+  for (int i = 0; i< checkpoints.size(); i+=2) {
     ellipseMode(RADIUS);
-    stroke(0,200,0,100);
-    fill(0,200,0,100);
-    ellipse(checkpoints.get(i),checkpoints.get(i+1), 80, 80);
+    stroke(0, 200, 0, 100);
+    fill(0, 200, 0, 100);
+    ellipse(checkpoints.get(i), checkpoints.get(i+1), 85, 85);
   }
-  
-  if(finishLine[3] != null){
-    stroke(200,200,0);
+
+  if (finishLine[3] != null) {
+    stroke(200, 200, 0);
     strokeWeight(4);
-    line(finishLine[0],finishLine[1],finishLine[2],finishLine[3]);
+    line(finishLine[0], finishLine[1], finishLine[2], finishLine[3]);
   }
-  
-  fill(100);
-  textSize(30);
-  textAlign(CENTER,CENTER);
-  text(trenutno, width/3*2, 15);
+
 }
 
 
 
 void mousePressed() {
 
-  //ZA CRTANJE STAZE 
+  // Actual functions for creating map
 
-  if (x == 0 && y == 0) {
-    x = mouseX;
-    y = mouseY;
-  } else {
+  switch(flag) {
 
-    switch(flag) {
+  case 0:
+    start = createWriter("startingpoint.txt");
+  
+    startKoor[0] = (float)mouseX;
+    startKoor[1] = (float)mouseY;
 
-    case 0:
-      startKoor[0] = (float)mouseX;
-      startKoor[1] = (float)mouseY;
-      
-      start.println(mouseX + "," + mouseY);
-      break;
+    start.println(mouseX + "," + mouseY);
+    break;
 
-    case 1:   
+  case 1:   
+    if (x == 0 && y == 0) {
+      x = mouseX;
+      y = mouseY;
+    } else {
       obstacles.append(x);
       obstacles.append(y);
       obstacles.append(mouseX);
@@ -94,27 +141,32 @@ void mousePressed() {
 
       x = mouseX;
       y = mouseY;
-      break;
+    }
+    break;
 
-    case 2:
-      checkMultiplier += 0.25;
-      checkpoints.append(mouseX);
-      checkpoints.append(mouseY);
-      
-      check.println(mouseX + "," + mouseY + ", 160," + checkMultiplier);
+  case 2:
+    checkMultiplier += 0.25;
+    checkpoints.append(mouseX);
+    checkpoints.append(mouseY);
 
-      break;
-    case 3:
+    check.println(mouseX + "," + mouseY + ", 170," + checkMultiplier);
+
+    break;
+  case 3:
+    finish = createWriter("finishline.txt");
+
+    if (x == 0 && y == 0) {
+      x = mouseX;
+      y = mouseY;
+    } else {
       finishLine[0] = x;
       finishLine[1] = y;
       finishLine[2] = (float)mouseX;
-      finishLine[3] = (float)mouseY;
-    
-      
-      finish.println(x + "," + y + "," + mouseX + "," + mouseY);
+      finishLine[3] = (float)mouseY;   
 
-      break;
+      finish.println(x + "," + y + "," + mouseX + "," + mouseY);
     }
+    break;
   }
 }
 
@@ -123,7 +175,7 @@ void keyPressed() {
     x = 0;
     y = 0;
   }
-  if (key == 'i') {
+  if (key == ENTER) {
     obst.flush();
     obst.close();
 
@@ -163,50 +215,24 @@ void keyPressed() {
     x = 0;
     y = 0;
     trenutno = "Finish line";
+  }else if(key == BACKSPACE){
+    resetMapCreator();
   }
 }
 
-
-
-
-void drawLines() {
-
-  stroke(0, 0, 255);
-  strokeWeight(3);
-
-  /*
-  line( 0,280,180,280 );
-   line( 0,440,300,440 );
-   line( 180,280,350,200 );
-   line( 300,440,390,320 );
-   line( 350,200,500,200 );
-   line( 390,320,600,320 );
-   line( 500,200,600,100 );
-   line( 600,320,700,230 );
-   line( 600,100,900,100 );
-   line( 700,230,800,230 );
-   line( 900,100,930,130 );
-   line( 800,230,800,330 );
-   line( 930,130,930,440 );
-   line( 930,440,850,480 );
-   line( 800,330,640,450 );
-   line( 640,450,640,550 );
-   line( 640,550,760,680 );
-   line( 850,480,850,530 );
-   line( 760,680,1150,680 );
-   line( 850,530,1000,530 );
-   line( 1000,530,1100,450 );
-   line( 1150,680,1200,600 );
-   line( 1200,600,1200,100 );
-   line( 1100,450,1100,100 );
-   line( 1100,100,1050,40 );
-   line( 1200,100,1250,40 );
-   line( 1050,0,1050,40 );
-   line( 1250,0,1250,40 );
-   line( 0,280,0,440 );
-   */
-
-  // ZA GRAF
-  //line(0,465,570,465);
-  //line(570,465,570,720);
+// Sve ponovno inicijalizirati (resetirati)
+void resetMapCreator() { 
+  flag = 0;
+  x = 0;
+  y = 0;
+  obstacles = new FloatList();
+  startKoor = new Float[2];
+  checkpoints = new FloatList();
+  checkMultiplier = 1;
+  finishLine = new Float[4];
+  obst = createWriter("obstacles.txt");
+  start = createWriter("startingpoint.txt");
+  check = createWriter("checkpoints.txt");
+  finish = createWriter("finishline.txt");
+  trenutno = "Starting point";
 }

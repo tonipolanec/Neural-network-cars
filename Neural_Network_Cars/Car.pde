@@ -105,7 +105,7 @@ class Car {
 
       float[] wallDists = new float[5];
 
-      if (f.seeFinish(m.finishLine) < 30) {
+      if (f.seeFinish(m.finishLine) < 20) {
         finished = true;
         isDead = false;
       }

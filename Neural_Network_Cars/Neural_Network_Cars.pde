@@ -1,6 +1,6 @@
 
 PImage stockAuto, grayAuto, glowingAuto, finishLine;
-PImage[] tracks;
+PImage[] tracksImages;
 
 Population population;
 Population tempPopulation;
@@ -8,6 +8,8 @@ Population tempPopulation;
 Obstacle[] obst;
 FinishLine finish;
 Checkpoint[] cp = new Checkpoint[5];
+
+MapCreator mapCreator = new MapCreator();
 
 Map[] maps = new Map[4];
 Map changeMap;
@@ -42,7 +44,8 @@ void setup() {
 
   population = new Population(nCarsInPopulation, 1);
 
-  for (int i=0; i<maps.length; i++) {
+  mapCreator.createWriters();
+  for (int i=0; i<maps.length-1; i++) {
     maps[i] = new Map(i);
   }
   m = null;
@@ -60,9 +63,9 @@ void setup() {
   glowingAuto = loadImage("data/img/glowingcar.png");         //
   finishLine = loadImage("data/img/finishline.png");    // PNG za finish line.
 
-  tracks = new PImage[4];
-  for (int i=0; i< tracks.length; i++) {  // PNG slike za odabir staze
-    tracks[i] = loadImage("data/maps/"+ i +"/staza.png");
+  tracksImages = new PImage[4];
+  for (int i=0; i< tracksImages.length; i++) {  // PNG slike za odabir staze
+    tracksImages[i] = loadImage("data/maps/"+ i +"/staza.png");
   }
 }
 
@@ -100,46 +103,57 @@ void draw() {
     imageMode(CORNER);
 
     rect(133, 130, 446, 260);          
-    image(tracks[0], 143, 140);
+    image(tracksImages[0], 143, 140);
     rect(701, 130, 446, 260);
-    image(tracks[1], 711, 140);
+    image(tracksImages[1], 711, 140);
 
     rect(133, 425, 446, 260);
-    image(tracks[2], 143, 435);
+    image(tracksImages[2], 143, 435);
     rect(701, 425, 446, 260);
-    image(tracks[3], 711, 435);
+    image(tracksImages[3], 711, 435);
 
     showDifficulty(133, 130, "Easy");
     showDifficulty(701, 130, "Normal");
     showDifficulty(133, 420, "Hard");
-    showDifficulty(701, 425, "Random");
+    showDifficulty(701, 425, "Make your own");
 
     if (m != null) {
-      // Velike buttone disable-amo jer kreće simulacija
-      for (Button b : buttonsForTrackSelection) { 
-        b.enabled = false;
-      }
 
-      for (int i=0; i<population.cars.length; i++) {
-        population.cars[i] = new Car();
+      if (m.index != 3) {      
+        // Velike buttone disable-amo jer kreće simulacija
+        for (Button b : buttonsForTrackSelection) { 
+          b.enabled = false;
+        }
+
+        for (int i=0; i<population.cars.length; i++) {
+          population.cars[i] = new Car();
+        }
+        radioButtons[0][m.index].chosen = true;
+        population.sw.start();
+
+        programFlow = 2;
       }
-      radioButtons[0][m.index].chosen = true;
-      population.sw.start();
-      programFlow++;
     }
+
 
     break;
 
+
+
   case 1: 
+
+    mapCreator.drawCreator();
+
+    break;
+
+  case 2: 
 
     m.showObstacles();
     //m.showCheckpoints();
 
     m.showFinishLine();
 
-
-
-    population.plenkiNumber(10);  // Resetiranje populacije na n-ti generaciji 
+    //population.plenkiNumber(10);  // Resetiranje populacije na n-ti generaciji 
 
 
     population.update();
@@ -172,43 +186,51 @@ void draw() {
 
 
 void keyPressed() {
-  if (key == '1') { 
-    changeMap = maps[0];
-    radioButtons[0][0].setActive();
-  } else if (key == '2') { 
-    changeMap = maps[1];
-    radioButtons[0][1].setActive();
-  } else if (key == '3') { 
-    changeMap = maps[2];
-    radioButtons[0][2].setActive();
-  } else if (key == '4') { 
-    changeMap = maps[3];
-    radioButtons[0][3].setActive();
-  } else if (key == ENTER) {
-    if (programFlow > 1) {
-      programFlow = 0;
-      population.resetAll();
-      for (RadioButton b : radioButtons[0]) {
-        b.reset();
+
+  if (programFlow == 1) {  // Ako je u map creatoru.
+    mapCreator.keyPresse();
+  } else if (programFlow > 1) {  // Ako je u simulaciji.
+    if (key == '1') { 
+      changeMap = maps[0];
+      radioButtons[0][0].setActive();
+    } else if (key == '2') { 
+      changeMap = maps[1];
+      radioButtons[0][1].setActive();
+    } else if (key == '3') { 
+      changeMap = maps[2];
+      radioButtons[0][2].setActive();
+    } else if (key == '4') { 
+      changeMap = maps[3];
+      radioButtons[0][3].setActive();
+    } else if (key == ENTER) {
+      if (programFlow > 2) {
+        programFlow = 0;
+        population.resetAll();
+        for (RadioButton b : radioButtons[0]) {
+          b.reset();
+        }
+        m = null;
+      } else {
+        programFlow++;
       }
-      m = null;
-    } else {
-      programFlow++;
     }
   }
 }
 
 void mousePressed() {
-  println(mouseX+ "," + mouseY);
+  //println(mouseX+ "," + mouseY);
 
-  for (RadioButton b : radioButtons[0]) {
-    b.clicked();
-    b.action();
+  if (programFlow == 1) {  // Ako je u map creatoru.
+    mapCreator.mousePresse();
+  } else {
+
+    for (RadioButton b : radioButtons[0]) {
+      b.clicked();
+      b.action();
+    }
+
+    for (Button b : buttonsForTrackSelection) {
+      b.clicked();
+    }
   }
-
-  for (Button b : buttonsForTrackSelection) {
-    b.clicked();
-  }
-
-  //println(changeMap.index);
 }

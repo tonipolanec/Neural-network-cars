@@ -59,22 +59,17 @@ class Button {
     case 0: 
       m = maps[0];
       changeMap = m;
-      //programFlow++;
       break;
     case 1: 
       m = maps[1];
       changeMap = m;
-      //programFlow++;
       break;
     case 2: 
       m = maps[2];
       changeMap = m;
-      //programFlow++;
       break;
     case 3: 
-      m = maps[3];
-      changeMap = m;
-      //programFlow++;
+      programFlow = 1; // Program ulazi u stanje kreiranja mape.
       break;
     default:
       break;

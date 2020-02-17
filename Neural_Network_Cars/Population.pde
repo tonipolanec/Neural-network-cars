@@ -21,6 +21,7 @@ class Population {
 
   boolean deadPopulation = false;
   int alive;
+  boolean infiniteLoop = false;
 
   PVector[] parents;
 
@@ -243,6 +244,13 @@ class Population {
     resetCuzPlenki(); // Resetira na plenkuNumber-ti generaciji.
     
   }
+  
+  void makeThemDead(){
+    for (int i=0; i<numCars; i++) {
+      if(!cars[i].finished)
+        cars[i].isDead = true;
+    }
+  }
 
 
   void populationIsDeadIRepeatPopulationIsDead() {
@@ -292,7 +300,7 @@ class Population {
       rect(20,8,95,60);
       rect(70,43,140,25);
     }
-    
+    textAlign(LEFT, BOTTOM);
     textSize(72);
     fill(c);
     text(populationNumber, 20, 80);
@@ -307,5 +315,15 @@ class Population {
     textSize(24);
     //fill(0, 102, 153);
     text(sw.second(), width/2, 30);
+    
+    if(sw.second() > 29) // Postavlja flag da autici voze vec 30 sekundi
+      infiniteLoop = true; // te da su mozda u infinite loop-u.
+    if(infiniteLoop){
+      textAlign(LEFT, CENTER);
+      fill(90);
+      textSize(20);
+      text("Press 'd' if they are in infinite loop.", 700, 12);
+    }
+      
   }
 }

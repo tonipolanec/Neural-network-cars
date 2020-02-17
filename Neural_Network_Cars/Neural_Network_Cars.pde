@@ -139,7 +139,6 @@ void draw() {
     break;
 
 
-
   case 1: 
 
     mapCreator.drawCreator();
@@ -149,7 +148,7 @@ void draw() {
   case 2: 
 
     m.showObstacles();
-    //m.showCheckpoints();
+    m.showCheckpoints();
 
     m.showFinishLine();
 
@@ -167,11 +166,16 @@ void draw() {
       b.show();
     }
 
-
+    textAlign(CENTER,CENTER);
     textSize(22);
     fill((255-backgroundColorGray));
-    text((int)frameRate, width-40, height-15);  // Ispis fps-a.
-
+    text((int)frameRate, width-20, height-20);  // Ispis fps-a.
+    
+    textAlign(RIGHT,CENTER);
+    textSize(22);
+    fill(60);
+    text("Tracks: ", 270, 20);
+    
     break;
 
 
@@ -188,20 +192,10 @@ void draw() {
 void keyPressed() {
 
   if (programFlow == 1) {  // Ako je u map creatoru.
-    mapCreator.keyPresse();
+    mapCreator.keyPress();
   } else if (programFlow > 1) {  // Ako je u simulaciji.
-    if (key == '1') { 
-      changeMap = maps[0];
-      radioButtons[0][0].setActive();
-    } else if (key == '2') { 
-      changeMap = maps[1];
-      radioButtons[0][1].setActive();
-    } else if (key == '3') { 
-      changeMap = maps[2];
-      radioButtons[0][2].setActive();
-    } else if (key == '4') { 
-      changeMap = maps[3];
-      radioButtons[0][3].setActive();
+    if(key == 'd'){
+      population.makeThemDead();
     } else if (key == ENTER) {
       if (programFlow > 2) {
         programFlow = 0;
@@ -210,6 +204,7 @@ void keyPressed() {
           b.reset();
         }
         m = null;
+        mapCreator.resetMapCreator();
       } else {
         programFlow++;
       }
@@ -221,7 +216,7 @@ void mousePressed() {
   //println(mouseX+ "," + mouseY);
 
   if (programFlow == 1) {  // Ako je u map creatoru.
-    mapCreator.mousePresse();
+    mapCreator.mousePress();
   } else {
 
     for (RadioButton b : radioButtons[0]) {
@@ -233,4 +228,15 @@ void mousePressed() {
       b.clicked();
     }
   }
+}
+
+void mouseWheel(MouseEvent event) {
+  if(programFlow == 1){
+    if(mapCreator.trenutno == "Checkpoints"){
+        float scroll = -event.getCount() * 5;
+        mapCreator.checkRadius += scroll;
+    }
+  
+  }
+
 }

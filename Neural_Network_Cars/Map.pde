@@ -122,6 +122,7 @@ class Checkpoint{
     }
 
   void show(){
+    ellipseMode(CENTER);
     noStroke();
     fill(0,200,0,105);
     ellipse(location.x,location.y,radius,radius);

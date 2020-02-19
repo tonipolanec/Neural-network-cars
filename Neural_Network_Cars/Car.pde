@@ -243,7 +243,7 @@ class Car {
       if (dist(loc.x, loc.y, c.location.x, c.location.y) < c.radius/2) { 
         fitnessMultiplier = c.multiplier;   // Ako auto dođe do checkpointa tada se postavlja određeni multiplier.
         c.passed = true;
-      } 
+      }
     }
   }
 

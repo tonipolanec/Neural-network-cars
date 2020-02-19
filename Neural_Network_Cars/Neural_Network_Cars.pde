@@ -58,9 +58,9 @@ void setup() {
   radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
 
 
-  stockAuto = loadImage("data/img/cartemplate.png");    //  PNG fileovi za auteke.
-  grayAuto = loadImage("data/img/graycar.png");         //   
-  glowingAuto = loadImage("data/img/glowingcar.png");         //
+  stockAuto = loadImage("data/img/cartemplate2.png");    //  PNG fileovi za auteke.
+  grayAuto = loadImage("data/img/graycar2.png");         //   
+  glowingAuto = loadImage("data/img/glowingcar2.png");         //
   finishLine = loadImage("data/img/finishline.png");    // PNG za finish line.
 
   tracksImages = new PImage[4];
@@ -148,7 +148,7 @@ void draw() {
   case 2: 
 
     m.showObstacles();
-    m.showCheckpoints();
+    //m.showCheckpoints();
 
     m.showFinishLine();
 

@@ -25,3 +25,6 @@ https://forum.processing.org/one/topic/timer-in-processing.html - 28.01.2020.
 https://www.gicentre.net/utils -------Library za grafove - 4.2.2020. 
 
 https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html - 12.2.2020.
+
+https://opengameart.org/content/red-car-top-down - 19.2.2020. Autek sprite(myb)
+https://opengameart.org/content/vary-car-pack-1   <<-------------this one author: Lowder2

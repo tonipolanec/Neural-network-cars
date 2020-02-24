@@ -15,7 +15,7 @@ class Stopwatch {
   }
   
   int second() {
-    float timeSlower =  1; // Needed only for slow PCs.  map(frameRate, 0, 60, 0, 1); // if framerate drops then time moves slower also
+    float timeSlower =  1; // Za sporija računala.  map(frameRate, 0, 60, 0, 1); // Ako padne framerate tada se i vrijeme ospori
     return int(((getElapsedTime()*timeSlower) / 1000) % 60);
   }
 }

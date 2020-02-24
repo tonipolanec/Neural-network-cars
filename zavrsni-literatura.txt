@@ -28,3 +28,5 @@ https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html - 12.2.2020.
 
 https://opengameart.org/content/red-car-top-down - 19.2.2020. Autek sprite(myb)
 https://opengameart.org/content/vary-car-pack-1   <<-------------this one author: Lowder2
+
+http://www.planetb.ca/syntax-highlight-word - 24.2.2020. sintaksa koda za Word

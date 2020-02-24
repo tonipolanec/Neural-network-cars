@@ -20,7 +20,7 @@ class Sensor {
     //Crtanje senzora.
     stroke(255-backgroundColorGray);
     strokeWeight(1);
-    line(0,0,dir.x,dir.y);
+    line(0, 0, dir.x, dir.y);
   }
 
 
@@ -52,7 +52,10 @@ class Sensor {
       } else if (uA <= 0 && uA >= 1 && uB <= 0 && uB >= 1) {
         udaljenost = sensorStrength;
       }
-    }
+    }        
+    stroke(c);
+    strokeWeight(5);
+    //point(sjecisteX, sjecisteY);
 
     strokeWeight(2);
     stroke(255, 230, 0, 55);
@@ -60,7 +63,7 @@ class Sensor {
 
     return udaljenost;     // Vraca udaljenost od zida. BITNO!!
   }
-  
+
   float seeFinish(FinishLine fl) {
     float tempUdaljenost = 0;
     float udaljenost = sensorStrength;
@@ -87,7 +90,7 @@ class Sensor {
     } else if (uA <= 0 && uA >= 1 && uB <= 0 && uB >= 1) {
       udaljenost = sensorStrength;
     }
-   
+
 
     strokeWeight(3);
     stroke(0, 255, 0);

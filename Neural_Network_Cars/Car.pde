@@ -8,34 +8,35 @@ class Car {
   PVector start;
 
   PVector loc, vel, acc;
-  float radius;
+  float radius = 20;
 
-  float fitness;
-  float fitnessMultiplier;
+  float fitness = 0;
+  float fitnessMultiplier = 1;
   double normFitness;
 
-  //double percFitness; // Percentage ukupnog fitnessa od svih u populaciji.
-
-  float distTravelled;
+  float distTravelled = 0;
 
   Sensor f, fr, fl, r, l;
+  Sensor sensors[] = new Sensor[5];
   float frontS, frontRightS, frontLeftS, rightS, leftS;
 
   PImage carImage;
   PImage finishedCarImage;
 
-  //int step = 0;
-  double[] steeringSpeed = new double[2]; //prvi element je steering, drugi brzina
-  float topSpeed;
-  FloatList speedsForAvg;
-  float avgSpeed = 0;
+  double[] steeringSpeed = {0, 0}; //prvi element je steering, drugi brzina
+  float topSpeed = 3;
+  //FloatList speedsForAvg = new FloatList();
+  //float avgSpeed = 0;
 
   double wallDist;
-  boolean isDead;
-  boolean finished;
+  float[] wallDists = new float[5];
+  
+  boolean isDead = false;
+  boolean finished = false;
   boolean bestCar = false;
 
   int col; // color of the car
+
   Car() {
     nn = new NeuralNetwork(5, 4, 3, 2);
 
@@ -44,21 +45,10 @@ class Car {
     loc = new PVector(m.startingPoint.x, m.startingPoint.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
-    isDead = false;
-    finished = false;
-    radius = 20; 
-    steeringSpeed[0] = 0;
-    steeringSpeed[1] = 0;
-    topSpeed = 4;
-    speedsForAvg = new FloatList();
 
     col = (int)random(255);
     carImage = coloringCar(stockAuto.copy(), col);
     finishedCarImage = coloringCar(glowingAuto.copy(), col);
-
-    distTravelled = 0;
-    fitness = 0;
-    fitnessMultiplier = 1;
   }
 
   Car(NeuralNetwork _nn, int _gen, int _col) {
@@ -69,21 +59,10 @@ class Car {
     loc = new PVector(m.startingPoint.x, m.startingPoint.y);
     acc = new PVector(0.1, 0);
     vel = new PVector();
-    isDead = false;
-    finished = false;
-    radius = 20; 
-    steeringSpeed[0] = 0;
-    steeringSpeed[1] = 0;
-    topSpeed = 4;
-    speedsForAvg = new FloatList();
 
     col = _col;
     carImage = coloringCar(stockAuto.copy(), col);
     finishedCarImage = coloringCar(glowingAuto.copy(), col);
-
-    distTravelled = 0;
-    fitness = 0;
-    fitnessMultiplier = 1;
   }
 
   void move() {
@@ -93,33 +72,49 @@ class Car {
 
       vel.add(acc);
       loc.add(vel);
+      
+      
       distTravelled+= vel.copy().mag();
 
       //Inicijalizacija senzora. (Kutevi:  0.349rad = 20deg, 0.873 = 50deg)   
-      PVector norm = vel.copy().normalize();
-      f = new Sensor(loc, norm);                        //
-      fr = new Sensor(loc, norm.copy().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
-      fl = new Sensor(loc, norm.copy().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
-      r = new Sensor(loc, norm.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
-      l = new Sensor(loc, norm.copy().rotate(-0.873));   //
-
-      float[] wallDists = new float[5];
-
-      if (f.seeFinish(m.finishLine) < 20) {
-        finished = true;
+      PVector front = vel.copy().normalize();
+      
+      sensors[0] = new Sensor(loc, front);                        //
+      sensors[1] = new Sensor(loc, front.copy().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
+      sensors[2] = new Sensor(loc, front.copy().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
+      sensors[3] = new Sensor(loc, front.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
+      sensors[4] = new Sensor(loc, front.copy().rotate(-0.873));   //
+      
+     /* 
+      f = new Sensor(loc, front);                        //
+      fr = new Sensor(loc, front.copy().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
+      fl = new Sensor(loc, front.copy().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
+      r = new Sensor(loc, front.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
+      l = new Sensor(loc, front.copy().rotate(-0.873));   //
+      */
+      
+      if (sensors[0].seeFinish(m.finishLine) < 20) {
+        finished = true; // Za finish gleda samo senzor koji gleda ravno.
         isDead = false;
       }
+      
+      
+      for(int i=0; i< sensors.length; i++){
+        wallDists[i] = sensors[i].see();    
+      }
 
+      /*
       frontS = f.see();  
-      wallDists[0] = frontS;           
+      wallDists[0] = f.see();;           
       frontRightS = fr.see();    
-      wallDists[1] = frontRightS;       
+      wallDists[1] = fr.see();       
       frontLeftS = fl.see();     
-      wallDists[2] = frontLeftS;  // Omogucavanje senzorima da "vide" te dodavanje distance od svakog senzora u polje
+      wallDists[2] = fl.see();  // Omogucavanje senzorima da "vide" te dodavanje distance od svakog senzora u polje
       leftS = l.see();           
-      wallDists[3] = leftS;             
+      wallDists[3] = l.see();             
       rightS = r.see();          
-      wallDists[4] = rightS;  
+      wallDists[4] = r.see();  
+      */
 
       float minWD = wallDists[4];
       for (int i=0; i<wallDists.length-1; i++) {
@@ -131,10 +126,10 @@ class Car {
 
       int sec = population.sw.second();
       //println(sec);
-      if (fitnessMultiplier < 1.25 && sec > 15) {
+      if (fitnessMultiplier < 1.25 && sec > 25) {
         isDead = true;
         fitness = 1;
-      } else if (fitnessMultiplier < 1.5 && sec > 30) {
+      } else if (fitnessMultiplier < 1.5 && sec > 35) {
         isDead = true;
         fitness = 1;
       } else if (fitnessMultiplier < 1.75 && sec > 45) {
@@ -160,7 +155,6 @@ class Car {
 
     // Crtanje autića.    
     rotate(theta);
-
     imageMode(CENTER);
     if (finished) {
       image(finishedCarImage, 0, 0);
@@ -171,6 +165,7 @@ class Car {
       image(carImage, 0, 0);
     }
 
+    /*
     if (isDead && avgSpeed == 0) {
       float allSpeeds = 0;
       for (int i=0; i< speedsForAvg.size(); i++) {
@@ -178,7 +173,7 @@ class Car {
       }
       avgSpeed = allSpeeds/(speedsForAvg.size());
     }
-
+    */
 
     // Ispis podataka svakog autica.
     textSize(12);
@@ -209,24 +204,20 @@ class Car {
 
   void update() {
 
-    double[] inputsForNN = {rightS, frontRightS, frontS, frontLeftS, leftS}; // Postavljanje value-i od senzori u input polje za NN.
+    //double[] inputsForNN = {rightS, frontRightS, frontS, frontLeftS, leftS}; // Postavljanje value-i od senzori u input polje za NN.
+    double[] inputsForNN = {wallDists[0], wallDists[1], wallDists[2], wallDists[3], wallDists[4]},
     steeringSpeed = nn.feedForward(inputsForNN);  // Uzimanje outputa NN-a u polje steering-a i speed-a.
 
+    // steeringSpeed[0] -> iznos skretanja, steeringSpeed[1] -> iznos brzine
     //Utjecanje na skretanje auta. (-1 -> lijevo; 1 -> desno)
     float steeringAngle = map((float)steeringSpeed[0], -1, 1, -0.05, 0.05);
     acc.rotate(steeringAngle); 
 
     //Postavljanje limita na brzinu, tj. izravno utjecanje na brzinu auta.
-    float speed = map((float)steeringSpeed[1], -1, 1, 1, 3);
-    if ((float)steeringSpeed[1] > 1) {
-      vel.limit(topSpeed);
-    } else if ((float)steeringSpeed[1] < -1) {
-      vel.limit(0);
-    } else {
-      vel.limit(speed);
-    } 
+    float speed = map((float)steeringSpeed[1], -1, 1, 1, topSpeed);
+    vel.limit(speed);
 
-    speedsForAvg.append((float)speed);
+    //speedsForAvg.append((float)speed);
 
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;
@@ -271,14 +262,4 @@ class Car {
     return carImage;
   }
 
-
-  void pisiPoEkranu() {
-    textSize(24);
-    fill(0);
-    text("l: " + leftS, 10, 590); 
-    text("fl: " + frontLeftS, 10, 620); 
-    text("f: " + frontS, 10, 650); 
-    text("fr: " + frontRightS, 10, 680); 
-    text("r: " + rightS, 10, 710);
-  }
 }

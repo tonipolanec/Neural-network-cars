@@ -100,6 +100,7 @@ class Population {
   }
 
   void takeAvgSpeed() {
+    /*
     float allSpeeds = 0;
     maxAvgSpeed = 0;
     minAvgSpeed = 10;
@@ -114,6 +115,7 @@ class Population {
       }
     }
     avgSpeed = allSpeeds / numCars;
+  */
   }
 
 
@@ -230,7 +232,7 @@ class Population {
     for (int i=0; i<winnerCars.length; i++) {
       if(!winnerCars[i].bestCar){
         double[] genes = winnerCars[i].nn.takeGenes();
-        parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(30)-15);
+        parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(-15,15));
       }else{
         parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation, winnerCars[i].col);
       }
@@ -241,7 +243,6 @@ class Population {
     tempPopulation = new Population(newGenCars, populationNumber+1);
     population = tempPopulation; 
     
-    resetCuzPlenki(); // Resetira na plenkuNumber-ti generaciji.
     
   }
   
@@ -255,7 +256,7 @@ class Population {
 
   void populationIsDeadIRepeatPopulationIsDead() {
     println("Generacija " + populationNumber + " je gotova.");
-    takeAvgSpeed();
+    //takeAvgSpeed();
     takeFitnesses();
     choosingWinnerCars();
     parentSelection();
@@ -267,19 +268,6 @@ class Population {
     //println("Average speed: " + avgSpeed); 
   }
   
-  
-  
-  void plenkiNumber(int a){
-    plenkiNumber = a;
-  }
-    
-  void resetCuzPlenki(){
-    if(populationNumber == plenkiNumber){
-      // Resetira se cijela populacija. Kreće se od nule s potpuo novim autićima.
-      resetAll();
-    }
-  
-  }
 
   void resetAll(){
     Population tempPopulation = new Population(nCarsInPopulation, 1);

@@ -1,7 +1,7 @@
 
 
 class MapCreator {
-  
+
   boolean goInSim;
 
   int flag = 0;
@@ -41,7 +41,7 @@ class MapCreator {
 
     fill(95);
     textSize(21);
-    
+
     text("Press 'z' to undo", 700, 12);
 
     if (trenutno == "Starting point") {
@@ -210,7 +210,7 @@ class MapCreator {
 
         finishWriter.println(x + "," + y + "," + mouseX + "," + mouseY);
         finishWriter.println("0,0");
-        
+
         x = 0;
         y = 0;
 
@@ -227,39 +227,39 @@ class MapCreator {
     }
     if (key == ENTER) {
       String msg = checkAllElements();
-      
-      if(goInSim){
+
+      if (goInSim) {
         printInData();
-  
+
         startWriter.flush();
         startWriter.close();
-  
+
         obstacleWriter.flush();
         obstacleWriter.close();
-  
+
         checkpointWriter.flush();
         checkpointWriter.close();
-  
+
         finishWriter.flush();
         finishWriter.close();
-  
+
         maps[3] = new Map(3);
         m = maps[3];
         changeMap = m;
-  
+
         // Velike buttone disable-amo jer kreće simulacija
         for (Button b : buttonsForTrackSelection) { 
           b.enabled = false;
         }
-  
+
         for (int i=0; i<population.cars.length; i++) {
           population.cars[i] = new Car();
         }
         radioButtons[0][m.index].chosen = true;
         population.sw.start();
-  
+
         programFlow++;
-      }else{
+      } else {
         println(msg);
       }
     }
@@ -291,8 +291,8 @@ class MapCreator {
     } else if (key == BACKSPACE) {
       resetMapCreator();
     }
-    
-    if(key == 'z'){
+
+    if (key == 'z') {
       controlZ(trenutno);
     }
   }
@@ -300,91 +300,89 @@ class MapCreator {
 
   void controlZ(String t) { // U t se upisuje trenutni element mape.
     switch(trenutno) {
-      
+
     case "Walls":
-      if(obstaclesKoor.size() > 3){
+      if (obstaclesKoor.size() > 3) {
         int lastI = obstaclesKoor.size()-1;
         x = obstaclesKoor.get(lastI-3);
         y = obstaclesKoor.get(lastI-2);
-        
-        for(int i=0;i<4;i++){
+
+        for (int i=0; i<4; i++) {
           obstaclesKoor.remove(obstaclesKoor.size()-1);
         }
-      }else{
+      } else {
         println("No more walls to delete!");
       }
-      
-     
+
+
       break;
 
     case "Checkpoints":
-      if(checkpointsKoor.size() > 2){
+      if (checkpointsKoor.size() > 2) {
         int lastI = checkpointsKoor.size()-1;
         x = checkpointsKoor.get(lastI-2);
         y = checkpointsKoor.get(lastI-1);
-        
-        for(int i=0;i<3;i++){
+
+        for (int i=0; i<3; i++) {
           checkpointsKoor.remove(checkpointsKoor.size()-1);
         }
-      }else{
+      } else {
         println("No more checkpoints to delete!");
       }
 
       break;
-      
     }
   }
-  
-  
-  void printInData(){
-  
-    for(int i=0;i<obstaclesKoor.size();i+=4){
+
+
+  void printInData() {
+
+    for (int i=0; i<obstaclesKoor.size(); i+=4) {
       obstacleWriter.println(obstaclesKoor.get(i) +", "+ obstaclesKoor.get(i+1) +", "+ obstaclesKoor.get(i+2) +", "+ obstaclesKoor.get(i+3));
     }
-    
+
     checkMultiplier = 1;
-    for(int i=0;i<checkpointsKoor.size();i+=3){
+    for (int i=0; i<checkpointsKoor.size(); i+=3) {
       checkMultiplier += 0.25;
-      checkpointWriter.println(checkpointsKoor.get(i) + "," + checkpointsKoor.get(i+1) + ", " + checkpointsKoor.get(i+2) + ", "+ checkMultiplier);    
+      checkpointWriter.println(checkpointsKoor.get(i) + "," + checkpointsKoor.get(i+1) + ", " + checkpointsKoor.get(i+2) + ", "+ checkMultiplier);
     }
   }
-  
-  
-  String checkAllElements(){ // Ako neki element nije postavljen ova funkcija preventira
-                           // odlazak u simulaciju
-    if(startKoor[1] == null){
+
+
+  String checkAllElements() { // Ako neki element nije postavljen ova funkcija preventira
+    // odlazak u simulaciju
+    if (startKoor[1] == null) {
       goInSim = false;
       flag = 0;
       trenutno = "Starting point";
       x = 0;
       y = 0;
       return "Starting point not set.";
-    }else if(obstaclesKoor.size() < 3){
+    } else if (obstaclesKoor.size() < 3) {
       goInSim = false;
       flag = 1;
       trenutno = "Walls";
       x = 0;
       y = 0;
       return "Walls not set.";
-    }else if(checkpointsKoor.size() < 2){
+    } else if (checkpointsKoor.size() < 2) {
       goInSim = false;
       flag = 2;
       trenutno = "Checkpoints";
       x = 0;
       y = 0;
       return "Checkpoint coordinates not set.";
-    }else if(finishLineKoor[1] == null){
+    } else if (finishLineKoor[1] == null) {
       goInSim = false;
       flag = 3;
       trenutno = "Finish line";
       x = 0;
       y = 0;
       return "Finish line not set.";
-    }else{
+    } else {
       goInSim = true;
       return "";
     }
-      
   }
 
   // Sve ponovno inicijalizirati (resetirati)

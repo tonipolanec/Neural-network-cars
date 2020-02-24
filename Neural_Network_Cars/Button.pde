@@ -152,7 +152,7 @@ class RadioButton extends Button {
         changeMap = maps[2];
         break;
       case 3: 
-        if(maps[3] != null)
+        if (maps[3] != null)
           changeMap = maps[3];
         else
           programFlow = 1;

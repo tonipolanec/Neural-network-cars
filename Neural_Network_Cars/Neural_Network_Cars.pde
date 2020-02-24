@@ -152,9 +152,6 @@ void draw() {
 
     m.showFinishLine();
 
-    //population.plenkiNumber(10);  // Resetiranje populacije na n-ti generaciji 
-
-
     population.update();
     for (Car car : population.cars) { 
       if (!car.isDead)  // Ako je auto udario u zid više mu se ne 
@@ -166,16 +163,16 @@ void draw() {
       b.show();
     }
 
-    textAlign(CENTER,CENTER);
+    textAlign(CENTER, CENTER);
     textSize(22);
     fill((255-backgroundColorGray));
     text((int)frameRate, width-20, height-20);  // Ispis fps-a.
-    
-    textAlign(RIGHT,CENTER);
+
+    textAlign(RIGHT, CENTER);
     textSize(22);
     fill(60);
     text("Tracks: ", 270, 20);
-    
+
     break;
 
 
@@ -194,7 +191,7 @@ void keyPressed() {
   if (programFlow == 1) {  // Ako je u map creatoru.
     mapCreator.keyPress();
   } else if (programFlow > 1) {  // Ako je u simulaciji.
-    if(key == 'd'){
+    if (key == 'd') {
       population.makeThemDead();
     } else if (key == ENTER) {
       if (programFlow > 2) {
@@ -231,12 +228,10 @@ void mousePressed() {
 }
 
 void mouseWheel(MouseEvent event) {
-  if(programFlow == 1){
-    if(mapCreator.trenutno == "Checkpoints"){
-        float scroll = -event.getCount() * 5;
-        mapCreator.checkRadius += scroll;
+  if (programFlow == 1) {
+    if (mapCreator.trenutno == "Checkpoints") {
+      float scroll = -event.getCount() * 5;
+      mapCreator.checkRadius += scroll;
     }
-  
   }
-
 }

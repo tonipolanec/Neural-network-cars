@@ -168,3 +168,14 @@ class RadioButton extends Button {
     }
   }
 }
+
+void showButtons() {
+  textAlign(RIGHT, CENTER);
+  textSize(22);
+  fill(60);
+  text("Tracks: ", 270, 20);
+
+  for (Button b : radioButtons[0]) {
+    b.show();
+  }
+}

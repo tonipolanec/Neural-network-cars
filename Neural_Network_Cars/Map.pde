@@ -61,6 +61,14 @@ class Map {
     return sp;
   }
 
+  void showStartingPoint() {
+    pushMatrix();
+    translate(startingPoint.x, startingPoint.y);
+    rotate(PI/2);
+    imageMode(CENTER);
+    image(startingCar, 0, 0); 
+    popMatrix();
+  }
 
   void showObstacles() {   
     for (Obstacle o : obstacles) {
@@ -136,7 +144,7 @@ class FinishLine {
 
   void show() {
     stroke(255, 242, 0);
-    strokeWeight(3);
+    strokeWeight(6);
     line(x1, y1, x2, y2);
 
     if (m.index != 3) {

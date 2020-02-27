@@ -1,5 +1,5 @@
 
-PImage stockAuto, grayAuto, glowingAuto, finishLine;
+PImage stockAuto, grayAuto, glowingAuto, finishLine, startingCar;
 PImage[] tracksImages;
 
 Population population;
@@ -25,6 +25,8 @@ PVector startingPoint;
 
 double mutationRate = 0.08;
 int nCarsInPopulation = 60;
+
+String carType = "2"; // "1" for classic, "2" for modern
 
 int pop = 0;
 
@@ -58,9 +60,11 @@ void setup() {
   radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
 
 
-  stockAuto = loadImage("data/img/cartemplate2.png");    //  PNG fileovi za auteke.
-  grayAuto = loadImage("data/img/graycar2.png");         //   
-  glowingAuto = loadImage("data/img/glowingcar2.png");         //
+  stockAuto = loadImage("data/img/cartype/"+carType+"/cartemplate.png");    //  PNG fileovi za auteke.
+  grayAuto = loadImage("data/img/cartype/"+carType+"/graycar.png");         //   
+  glowingAuto = loadImage("data/img/cartype/"+carType+"/glowingcar.png");   //
+  startingCar = loadImage("data/img/cartype/"+carType+"/startingcar.png");  //
+  
   finishLine = loadImage("data/img/finishline.png");    // PNG za finish line.
 
   tracksImages = new PImage[4];
@@ -146,10 +150,12 @@ void draw() {
     break;
 
   case 2: 
+  
+    population.populationDetails();
 
-    m.showObstacles();
+    m.showStartingPoint();
+    //m.showObstacles();
     //m.showCheckpoints();
-
     m.showFinishLine();
 
     population.update();
@@ -159,19 +165,7 @@ void draw() {
       car.show();
     }
 
-    for (Button b : radioButtons[0]) {
-      b.show();
-    }
-
-    textAlign(CENTER, CENTER);
-    textSize(22);
-    fill((255-backgroundColorGray));
-    text((int)frameRate, width-20, height-20);  // Ispis fps-a.
-
-    textAlign(RIGHT, CENTER);
-    textSize(22);
-    fill(60);
-    text("Tracks: ", 270, 20);
+    showButtons();
 
     break;
 

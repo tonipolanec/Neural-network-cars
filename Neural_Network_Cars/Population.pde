@@ -30,7 +30,7 @@ class Population {
   Car[] babyCars;
 
   Car[] newGenCars;
-  
+
   int plenkiNumber = -1;
 
   Population(int _numCars, int _popNumber) {
@@ -68,13 +68,12 @@ class Population {
   }
 
   void update() {
-    populationDetails();
     alive = numCars;
     for (int i=0; i<cars.length; i++) {
       if (guaranteedWinnerCars.size() < numCars/3)
         if (cars[i].finished)
           guaranteedWinnerCars.append(i);
-      if(cars[i].isDead && !cars[i].finished)
+      if (cars[i].isDead && !cars[i].finished)
         alive--;
     }
     if (isPopulationDead()) {
@@ -102,20 +101,20 @@ class Population {
   void takeAvgSpeed() {
     /*
     float allSpeeds = 0;
-    maxAvgSpeed = 0;
-    minAvgSpeed = 10;
-    for (Car c : cars) {
-      allSpeeds += c.avgSpeed;
-
-      if(c.finished){
-        if (c.avgSpeed > maxAvgSpeed)
-          maxAvgSpeed = c.avgSpeed;
-        if (c.avgSpeed < minAvgSpeed)
-          minAvgSpeed = c.avgSpeed;
-      }
-    }
-    avgSpeed = allSpeeds / numCars;
-  */
+     maxAvgSpeed = 0;
+     minAvgSpeed = 10;
+     for (Car c : cars) {
+     allSpeeds += c.avgSpeed;
+     
+     if(c.finished){
+     if (c.avgSpeed > maxAvgSpeed)
+     maxAvgSpeed = c.avgSpeed;
+     if (c.avgSpeed < minAvgSpeed)
+     minAvgSpeed = c.avgSpeed;
+     }
+     }
+     avgSpeed = allSpeeds / numCars;
+     */
   }
 
 
@@ -123,21 +122,21 @@ class Population {
     int bestCarIndex = 0;
     /*
     // Dodatno povecanje fitnesa ovisno o brzini (1x - 1.3x)
-    for (int i=0; i<numCars; i++) {
-      if(cars[i].finished){
-        if(cars[i].fitness == minAvgSpeed)
-          cars[i].fitness *= 1;
-        else if(cars[i].fitness == maxAvgSpeed)
-          cars[i].fitness *= 1.3;
-        else
-          cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);             
-      }
-    }
-    */
+     for (int i=0; i<numCars; i++) {
+     if(cars[i].finished){
+     if(cars[i].fitness == minAvgSpeed)
+     cars[i].fitness *= 1;
+     else if(cars[i].fitness == maxAvgSpeed)
+     cars[i].fitness *= 1.3;
+     else
+     cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);             
+     }
+     }
+     */
     totalFitness = 0;
     for (int i=0; i<numCars; i++) {
       totalFitness += cars[i].fitness;
-      if (cars[i].fitness > maxFitness){
+      if (cars[i].fitness > maxFitness) {
         maxFitness = cars[i].fitness;
         bestCarIndex = i;
       }
@@ -155,20 +154,20 @@ class Population {
     for (int i=0; i<guaranteedWinnerCars.size(); i++) {
       winnerCars[i] = cars[guaranteedWinnerCars.get(i)];
     }
-    
+
     // Uzima 2 slucajna auta te odabire bolji. (Tournament metoda odabiranja roditelja) 
     for (int i=guaranteedWinnerCars.size(); i<numCars*2/3; i++) {      
       int carA = -1;
       int carB = -1;
-      
+
       // Auti se mogu kvalificirati za roditelja samo ako su u top (1-winnerConst)% populacije.
       // npr. winnerConst = 0.4 -> kvalificirati se moze samo top 60% populacije (po fitnessu)
       while (carA == -1) {
         int temp = (int)random(numCars); 
         if (cars[temp].fitness / maxFitness > winnerConst)
-          carA = temp;                                          
+          carA = temp;
       }   
-      
+
       while (carB == -1) {
         int temp = (int)random(numCars); 
         if (cars[temp].fitness / maxFitness > winnerConst)
@@ -230,10 +229,10 @@ class Population {
     // Resetiranje autića (oni koju su umrli u prijasnjoj generaciji sada su opet zivi)
     Car[] parentCars = new Car[winnerCars.length];
     for (int i=0; i<winnerCars.length; i++) {
-      if(!winnerCars[i].bestCar){
+      if (!winnerCars[i].bestCar) {
         double[] genes = winnerCars[i].nn.takeGenes();
-        parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(-15,15));
-      }else{
+        parentCars[i] = new Car(winnerCars[i].nn.mutation(genes), winnerCars[i].generation, winnerCars[i].col + (int)random(-15, 15));
+      } else {
         parentCars[i] = new Car(winnerCars[i].nn, winnerCars[i].generation, winnerCars[i].col);
       }
     }
@@ -241,14 +240,12 @@ class Population {
     newGenCars = (Car[])concat(parentCars, babyCars); // U novu populaciju saljemo najbolje aute i njihove potomke.
 
     tempPopulation = new Population(newGenCars, populationNumber+1);
-    population = tempPopulation; 
-    
-    
+    population = tempPopulation;
   }
-  
-  void makeThemDead(){
+
+  void makeThemDead() {
     for (int i=0; i<numCars; i++) {
-      if(!cars[i].finished)
+      if (!cars[i].finished)
         cars[i].isDead = true;
     }
   }
@@ -265,14 +262,14 @@ class Population {
 
     //println("Najbolji fitness: " + (int)maxFitness);
     //println("Ukupni fitness: " + (int)totalFitness); 
-    //println("Average speed: " + avgSpeed); 
+    //println("Average speed: " + avgSpeed);
   }
-  
 
-  void resetAll(){
+
+  void resetAll() {
     Population tempPopulation = new Population(nCarsInPopulation, 1);
     population = tempPopulation;
-   
+
     for (int i=0; i<population.cars.length; i++) {
       population.cars[i] = new Car();
     }
@@ -281,37 +278,41 @@ class Population {
   void populationDetails() {
     fill(backgroundColorGray);
     stroke(backgroundColorGray);
-    if(populationNumber < 10){
-      rect(20,8,50,60);
-      rect(70,43,100,25);
-    }else{
-      rect(20,8,95,60);
-      rect(70,43,140,25);
+    if (populationNumber < 10) {
+      rect(20, 8, 50, 60);
+      rect(70, 43, 100, 25);
+    } else {
+      rect(20, 8, 95, 60);
+      rect(70, 43, 140, 25);
     }
     textAlign(LEFT, BOTTOM);
     textSize(72);
     fill(c);
     text(populationNumber, 20, 80);
-    
-    
+
+
     textSize(22);
     //fill(0, 102, 153);
-    if(populationNumber < 10)
+    if (populationNumber < 10)
       text("alive: " + alive, 75, 68);
     else  
-      text("alive: " + alive, 115, 68);
+    text("alive: " + alive, 115, 68);
     textSize(24);
     //fill(0, 102, 153);
     text(sw.second(), width/2, 30);
-    
-    if(sw.second() > 29) // Postavlja flag da autici voze vec 30 sekundi
+
+    if (sw.second() > 29) // Postavlja flag da autici voze vec 30 sekundi
       infiniteLoop = true; // te da su mozda u infinite loop-u.
-    if(infiniteLoop){
+    if (infiniteLoop) {
       textAlign(LEFT, CENTER);
       fill(90);
       textSize(20);
       text("Press 'd' if they are in infinite loop.", 700, 12);
     }
-      
+
+    textAlign(CENTER, CENTER);
+    textSize(22);
+    fill((255-backgroundColorGray));
+    text((int)frameRate, width-20, height-20);  // Ispis fps-a.
   }
 }

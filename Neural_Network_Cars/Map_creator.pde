@@ -93,7 +93,7 @@ class MapCreator {
       translate(startKoor[0], startKoor[1]);
       rotate(PI/2);
       imageMode(CENTER);
-      image(stockAuto, 0, 0);
+      image(startingCar, 0, 0);
       popMatrix();
     }
 
@@ -122,7 +122,7 @@ class MapCreator {
       translate(mouseX, mouseY);
       rotate(PI/2);
       imageMode(CENTER);
-      image(stockAuto, 0, 0);
+      image(startingCar, 0, 0);
       popMatrix();
 
       break;
@@ -299,7 +299,7 @@ class MapCreator {
 
 
   void controlZ(String t) { // U t se upisuje trenutni element mape.
-    switch(trenutno) {
+    switch(t) {
 
     case "Walls":
       if (obstaclesKoor.size() > 3) {

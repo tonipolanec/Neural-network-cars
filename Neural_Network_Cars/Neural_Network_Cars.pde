@@ -28,7 +28,7 @@ int nCarsInPopulation = 60;
 
 String carType = "2"; // "1" for classic, "2" for modern
 
-int pop = 0;
+//int pop = 0;
 
 int backgroundColorGray = 151;
 
@@ -41,8 +41,6 @@ void setup() {
   background(backgroundColorGray);
 
   programFlow = 0;
-
-  c = color(0, 35, 250);
 
   population = new Population(nCarsInPopulation, 1);
 
@@ -64,9 +62,10 @@ void setup() {
   grayAuto = loadImage("data/img/cartype/"+carType+"/graycar.png");         //   
   glowingAuto = loadImage("data/img/cartype/"+carType+"/glowingcar.png");   //
   startingCar = loadImage("data/img/cartype/"+carType+"/startingcar.png");  //
-  
+
   finishLine = loadImage("data/img/finishline.png");    // PNG za finish line.
 
+  c = color(0, 35, 250);
   tracksImages = new PImage[4];
   for (int i=0; i< tracksImages.length; i++) {  // PNG slike za odabir staze
     tracksImages[i] = loadImage("data/maps/"+ i +"/staza.png");
@@ -78,57 +77,19 @@ void setup() {
 void draw() {
   background(151);
 
-  switch(programFlow) {
-  case 0: 
-    textAlign(CENTER, TOP);
-
-    fill(0, 20, 150);                             //
-    textSize(50);                                 //
-    text("Neural Network Cars", width/2+2, 2);    //  Shadow of a text
-    textSize(28);                                 //
-    text("Choose starting track", width/2+2, 59); //
-
-    fill(c);
-    textSize(50);
-    text("Neural Network Cars", width/2, 0);
-    textSize(28);
-    text("Choose starting track", width/2, 58);
-
-    fill(120);
-    stroke(100);
-    strokeWeight(10);
+  switch(programFlow) {              // programFlow : 0 - početni zaslon (odabiranje prve staze)
+  case 0:                            //               1 - kreator staza
+                                     //               2 - glavna simulacija
+    showTitle();                     //         default - zaslon za resetiranje programa (povratak na 0)
+    showButtonsForTrackSelection();
 
 
-    buttonsForTrackSelection[0] = new Button(133, 130, 446, 260, "", 0);
-    buttonsForTrackSelection[1] = new Button(701, 130, 446, 260, "", 1);
-    buttonsForTrackSelection[2] = new Button(133, 425, 446, 260, "", 2);
-    buttonsForTrackSelection[3] = new Button(701, 425, 446, 260, "", 3);
-
-    imageMode(CORNER);
-
-    rect(133, 130, 446, 260);          
-    image(tracksImages[0], 143, 140);
-    rect(701, 130, 446, 260);
-    image(tracksImages[1], 711, 140);
-
-    rect(133, 425, 446, 260);
-    image(tracksImages[2], 143, 435);
-    rect(701, 425, 446, 260);
-    image(tracksImages[3], 711, 435);
-
-    showDifficulty(133, 130, "Easy");
-    showDifficulty(701, 130, "Normal");
-    showDifficulty(133, 420, "Hard");
-    showDifficulty(701, 425, "Make your own");
-
-    if (m != null) {
-
+    if (m != null) { // Ako je odabrana neka staza.
+      // Velike buttone disable-amo jer kreće simulacija
+      for (Button b : buttonsForTrackSelection) { 
+        b.enabled = false;
+      }
       if (m.index != 3) {      
-        // Velike buttone disable-amo jer kreće simulacija
-        for (Button b : buttonsForTrackSelection) { 
-          b.enabled = false;
-        }
-
         for (int i=0; i<population.cars.length; i++) {
           population.cars[i] = new Car();
         }
@@ -139,9 +100,7 @@ void draw() {
       }
     }
 
-
     break;
-
 
   case 1: 
 
@@ -150,8 +109,8 @@ void draw() {
     break;
 
   case 2: 
-  
-    population.populationDetails();
+
+    population.printPopulationDetails();
 
     m.showStartingPoint();
     //m.showObstacles();
@@ -173,6 +132,8 @@ void draw() {
 
   default:
     textAlign(CENTER, CENTER);
+    textSize(22);
+    fill(60);
     text("Please press ENTER to restart simulation.", width/2, height/2);
     break;
   }

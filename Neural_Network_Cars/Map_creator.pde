@@ -21,6 +21,7 @@ class MapCreator {
   PrintWriter obstacleWriter, startWriter, checkpointWriter, finishWriter;
 
   String trenutno = "Starting point";
+  String forgotten = "";
 
   MapCreator() {
   }
@@ -36,7 +37,7 @@ class MapCreator {
   void drawCreator() {
     background(151);
 
-    //--------------------------Instructions for building map------------------
+    //--------------------------Ispisivanje instrukcija na zaslon------------------
     textAlign(LEFT, CENTER);
 
     fill(95);
@@ -80,7 +81,7 @@ class MapCreator {
     text("ENTER - finish map", 1270, 675);
     text("backspace - reset map", 1270, 700);
 
-    //--------------------------Drawing of the created map---------------------
+    //--------------------------Crtanje trenutno kreirane staze---------------------
 
     for (int i=0; i< obstaclesKoor.size(); i+=4) {
       stroke(0);
@@ -110,6 +111,7 @@ class MapCreator {
       line(finishLineKoor[0], finishLineKoor[1], finishLineKoor[2], finishLineKoor[3]);
     }
 
+    printForgottenElement(forgotten);
     drawCurrentAction();
   }
 
@@ -157,7 +159,7 @@ class MapCreator {
 
   void mousePress() {
 
-    // Actual functions for creating map
+    // Funkcije za crtanje staze
 
     switch(flag) {
 
@@ -218,6 +220,7 @@ class MapCreator {
       }
       break;
     }
+    forgotten = "";
   }
 
   void keyPress() {
@@ -226,7 +229,7 @@ class MapCreator {
       y = 0;
     }
     if (key == ENTER) {
-      String msg = checkAllElements();
+      forgotten = checkAllElements();
 
       if (goInSim) {
         printInData();
@@ -260,7 +263,7 @@ class MapCreator {
 
         programFlow++;
       } else {
-        println(msg);
+        println(forgotten);
       }
     }
 
@@ -297,7 +300,7 @@ class MapCreator {
     }
   }
 
-
+  // Funkcija za poništavanje prošlih radnji
   void controlZ(String t) { // U t se upisuje trenutni element mape.
     switch(t) {
 
@@ -313,8 +316,6 @@ class MapCreator {
       } else {
         println("No more walls to delete!");
       }
-
-
       break;
 
     case "Checkpoints":
@@ -329,7 +330,6 @@ class MapCreator {
       } else {
         println("No more checkpoints to delete!");
       }
-
       break;
     }
   }
@@ -383,6 +383,13 @@ class MapCreator {
       goInSim = true;
       return "";
     }
+  }
+  
+  void printForgottenElement(String s){
+    textAlign(CENTER, CENTER);
+    textSize(26);
+    fill(200,0,0);
+    text(s, width/2, 696);  
   }
 
   // Sve ponovno inicijalizirati (resetirati)

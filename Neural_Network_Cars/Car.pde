@@ -18,7 +18,7 @@ class Car {
 
   Sensor f, fr, fl, r, l;
   Sensor sensors[] = new Sensor[5];
-  float frontS, frontRightS, frontLeftS, rightS, leftS;
+  //float frontS, frontRightS, frontLeftS, rightS, leftS;
 
   PImage carImage;
   PImage finishedCarImage;

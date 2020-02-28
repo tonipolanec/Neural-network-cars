@@ -95,7 +95,6 @@ class RadioButton extends Button {
   void clicked() {
     if (mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h) {
       //boolean currentState = chosen;
-
       for (RadioButton b : radioButtons[radioId]) {
         b.chosen = false;
       }

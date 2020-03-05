@@ -16,7 +16,7 @@ class Car {
 
   float distTravelled = 0;
 
-  Sensor f, fr, fl, r, l;
+  //Sensor f, fr, fl, r, l;
   Sensor sensors[] = new Sensor[5];
   //float frontS, frontRightS, frontLeftS, rightS, leftS;
 
@@ -241,11 +241,9 @@ class Car {
   // Crtanje senzornih zraka
   void showSensors() {
     if (!isDead) {
-      f.show();
-      fr.show();
-      fl.show();
-      r.show();
-      l.show();
+      for (Sensor s : sensors) {
+        s.show();
+      }
     }
   }
 

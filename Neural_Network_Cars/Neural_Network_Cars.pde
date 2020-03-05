@@ -113,7 +113,7 @@ void draw() {
     population.printPopulationDetails();
 
     m.showStartingPoint();
-    //m.showObstacles();
+    m.showObstacles();
     //m.showCheckpoints();
     m.showFinishLine();
 

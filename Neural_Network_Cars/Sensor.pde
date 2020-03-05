@@ -56,7 +56,7 @@ class Sensor {
     colorMode(HSB);
     stroke(carColor, 255, 255);
     strokeWeight(6);
-    point(sjecisteX, sjecisteY);
+    //point(sjecisteX, sjecisteY);
     colorMode(RGB);
 
     strokeWeight(2);

@@ -30,3 +30,20 @@ https://opengameart.org/content/red-car-top-down - 19.2.2020. Autek sprite(myb)
 https://opengameart.org/content/vary-car-pack-1   <<-------------this one author: Lowder2
 
 http://www.planetb.ca/syntax-highlight-word - 24.2.2020. sintaksa koda za Word
+
+Sadržaj
+1.	Uvod
+2.	Programiranje funkcionalnosti auta
+2.1.	Kretanje
+2.2.	Interakcija s okolinom
+2.2.1.	Staza
+2.2.2.	Kreator staza
+2.2.3.	Vidokrug auta
+3.	Programiranje inteligencije
+3.1.	Neuronska mreža
+3.2.	Genetski algoritam
+3.2.1.	Fitness
+4.	Zaključak
+5.	Bibliografija
+6.	Popis slika
+7.	Dodaci

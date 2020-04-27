@@ -39,6 +39,7 @@ int programFlow;
 void setup() {
   size(1280, 720, P2D); // Za bolje performanse dodati ", P2D"
   background(backgroundColorGray);
+  
 
   programFlow = 0;
 

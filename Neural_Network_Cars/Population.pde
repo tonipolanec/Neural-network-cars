@@ -32,6 +32,8 @@ class Population {
   Car[] newGenCars;
 
   int plenkiNumber = -1;
+  
+  boolean goInCreator = false;
 
   Population(int _numCars, int _popNumber) {
     populationNumber = _popNumber;
@@ -200,6 +202,8 @@ class Population {
   void makingBabies() {
     // Mijenjanje staze
     m = changeMap;
+    if(goInCreator)
+      programFlow = 1;
 
     for (int i=0; i<babyCars.length; i++) {
       // Prenosenje gena iz roditelja na dijete.

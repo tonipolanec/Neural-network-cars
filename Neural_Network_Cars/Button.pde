@@ -69,7 +69,7 @@ class Button {
       changeMap = m;
       break;
     case 3: 
-      programFlow = 1; // Program ulazi u stanje kreiranja mape.
+      //programFlow = 1; // Program ulazi u stanje kreiranja mape.     
       break;
     default:
       break;
@@ -154,7 +154,8 @@ class RadioButton extends Button {
         if (maps[3] != null)
           changeMap = maps[3];
         else
-          programFlow = 1;
+          //programFlow = 1;
+        population.goInCreator = true;
         break;
       default:
         break;

@@ -6,30 +6,31 @@ http://jeffreythompson.org/collision-detection/line-line.php - 28.11.2019.
 
 
 https://web.math.pmf.unizg.hr/nastava/su/index.php/download_file/-/view/109/ - 14.12.2019.
-http://matematika.fkit.hr/novo/izborni/referati/Popcevic_Varga_Zuvela_Neuronske_mreze.pdf - 14.12.2019.
-http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf - 14.12.2019.
-https://en.wikipedia.org/wiki/Activation_function - 14.12.2019.
+http://matematika.fkit.hr/novo/izborni/referati/Popcevic_Varga_Zuvela_Neuronske_mreze.pdf - 14.12.2019. -- potpuno povezana Neuronska mreza
+-------http://nn.cs.utexas.edu/downloads/papers/stanley.ec02.pdf - 14.12.2019.
+https://en.wikipedia.org/wiki/Activation_function - 14.12.2019. -- aktivacijska funkcija
 
-https://math.nist.gov/javanumerics/jama/#Package ----------Library za matrice - 11.01.2020.
+-------https://math.nist.gov/javanumerics/jama/#Package ----------Library za matrice - 11.01.2020.
 https://math.nist.gov/javanumerics/jama/doc/Jama/Matrix.html ----^
 
-https://www.pycon.it/media/conference/slides/a-gentle-introduction-to-neural-networks-with-python.pdf - 13.01.2020.
+-------https://www.pycon.it/media/conference/slides/a-gentle-introduction-to-neural-networks-with-python.pdf - 13.01.2020.
 
-https://towardsdatascience.com/artificial-neural-networks-optimization-using-genetic-algorithm-with-python-1fe8ed17733e ---> GA + ANN bitno - 13.01.2020.
+https://towardsdatascience.com/artificial-neural-networks-optimization-using-genetic-algorithm-with-python-1fe8ed17733e ---> GA + ANN bitno - 13.01.2020. -- tijek GA
 
-https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html - 15.01.2020.
+https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html - 15.01.2020. -- matrice forwardpropagation
 
-https://www.geeksforgeeks.org/tournament-selection-ga/ - 22.01.2020.
-https://forum.processing.org/one/topic/timer-in-processing.html - 28.01.2020.
+https://www.geeksforgeeks.org/tournament-selection-ga/ - 22.01.2020. --ime govori
 
-https://www.gicentre.net/utils -------Library za grafove - 4.2.2020. 
+-------https://forum.processing.org/one/topic/timer-in-processing.html - 28.01.2020.
 
-https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html - 12.2.2020.
+-------https://www.gicentre.net/utils -------Library za grafove - 4.2.2020. 
 
-https://opengameart.org/content/red-car-top-down - 19.2.2020. Autek sprite(myb)
-https://opengameart.org/content/vary-car-pack-1   <<-------------this one author: Lowder2
+-------https://docs.oracle.com/javase/8/docs/api/java/util/ArrayList.html - 12.2.2020.
 
-http://www.planetb.ca/syntax-highlight-word - 24.2.2020. sintaksa koda za Word
+-------https://opengameart.org/content/red-car-top-down - 19.2.2020. Autek sprite(myb)
+-------https://opengameart.org/content/vary-car-pack-1   <<-------------this one author: Lowder2
+
+-------http://www.planetb.ca/syntax-highlight-word - 24.2.2020. sintaksa koda za Word
 
 Sadržaj
 1.	Uvod
@@ -47,3 +48,18 @@ Sadržaj
 5.	Bibliografija
 6.	Popis slika
 7.	Dodaci
+
+
+------------------------------------------------------------------------------------------
+
+https://en.wikipedia.org/wiki/Activation_function - 14.12.2019. -- aktivacijska funkcija
+
+http://matematika.fkit.hr/novo/izborni/referati/Popcevic_Varga_Zuvela_Neuronske_mreze.pdf - 14.12.2019. -- potpuno povezana Neuronska mreza
+
+https://ml-cheatsheet.readthedocs.io/en/latest/forwardpropagation.html - 15.01.2020. -- matrice forwardpropagation
+
+https://math.nist.gov/javanumerics/jama/doc/Jama/Matrix.html
+
+https://towardsdatascience.com/artificial-neural-networks-optimization-using-genetic-algorithm-with-python-1fe8ed17733e ---> GA + ANN bitno - 13.01.2020. -- tijek GA
+
+https://www.geeksforgeeks.org/tournament-selection-ga/ - 22.01.2020. --ime govori

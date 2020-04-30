@@ -31,10 +31,12 @@ String carType = "2"; // "1" for classic, "2" for modern
 //int pop = 0;
 
 int backgroundColorGray = 151;
+color back = color(204,204,255);
 
 color c;
 
 int programFlow;
+int changeProgramFlow;
 
 void setup() {
   size(1280, 720, P2D); // Za bolje performanse dodati ", P2D"
@@ -76,7 +78,7 @@ void setup() {
 
 
 void draw() {
-  background(151);
+  background(backgroundColorGray);
 
   switch(programFlow) {              // programFlow : 0 - početni zaslon (odabiranje prve staze)
   case 0:                            //               1 - kreator staza
@@ -138,6 +140,7 @@ void draw() {
     text("Please press ENTER to restart simulation.", width/2, height/2);
     break;
   }
+
 }
 
 

@@ -17,6 +17,7 @@ class Sensor {
   }
 
   void show() {
+    
     //Crtanje senzora.
     stroke(255-backgroundColorGray);
     strokeWeight(1);
@@ -36,36 +37,44 @@ class Sensor {
       float x2 = o.x2;
       float y2 = o.y2;
 
-      float uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));  //Matematicki izracun za dobivanje tocke
-      float uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));  //do koje pojedini senzor "vidi".
+      // Matematicki izracun za dobivanje tocke do koje pojedini senzor "vidi".
+      float uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1)); 
+      float uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1)); 
 
       if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
         float tempX = x1 + (uA*(x2-x1));
         float tempY = y1 + (uA*(y2-y1));      
         tempUdaljenost = dist(x3, y3, tempX, tempY);
 
+        // Pronalazenje do koje tocke senzor vidi (ne vidi dalje od zida). 
         if (tempUdaljenost < udaljenost) {
           udaljenost = tempUdaljenost;
-          sjecisteX = tempX;    // Pronalazenje do koje tocke 
-          sjecisteY = tempY;    // senzor vidi (ne vidi dalje od zida).
+          sjecisteX = tempX;
+          sjecisteY = tempY;  
         }
       } else if (uA <= 0 && uA >= 1 && uB <= 0 && uB >= 1) {
         udaljenost = sensorStrength;
       }
     }        
-    colorMode(HSB);
-    stroke(carColor, 255, 255);
-    strokeWeight(6);
-    //point(sjecisteX, sjecisteY); // ---------------------- FORA
-    colorMode(RGB);
-
-    strokeWeight(2);
-    stroke(255, 230, 0, 55);
-    //line(x3,y3,sjecisteX,sjecisteY);   // Crtanje dijela senzora koji oznacuje vidno polje. -------------------------------------------FORA
-
+    
+    // Različiti načini prikazivanja senzora.
+    if(sensorState == 3 || sensorState == 4){
+      colorMode(HSB);
+      stroke(carColor, 255, 255);
+      strokeWeight(6);
+      point(sjecisteX, sjecisteY);
+      colorMode(RGB);
+    }
+    if(sensorState == 2 || sensorState == 3){
+      strokeWeight(2);
+      stroke(255, 230, 0, 155);
+      line(x3,y3,sjecisteX,sjecisteY);   // Crtanje dijela senzora koji oznacuje vidno polje.
+    }
     return udaljenost; // Vraca udaljenost od zida.
   }
 
+  // Funkcija koja vraca udaljenost od ciljne linije.
+  // (ako je cilj dovoljno blizu)
   float seeFinish(FinishLine fl) {
     float tempUdaljenost = 0;
     float udaljenost = sensorStrength;
@@ -90,6 +99,6 @@ class Sensor {
       udaljenost = sensorStrength;
     }
 
-    return udaljenost;  // Vraca udaljenost od cilja.
+    return udaljenost;
   }
 }

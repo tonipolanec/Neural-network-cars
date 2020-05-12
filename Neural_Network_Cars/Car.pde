@@ -134,7 +134,8 @@ class Car {
     translate(loc.x, loc.y);    
 
     //Crtanje senzornih zraka.
-    //showSensors(); -----------------------FORA
+    if(sensorState == 1)
+      showSensors();
 
     // Crtanje autića.    
     rotate(theta);
@@ -144,7 +145,6 @@ class Car {
     } else if (isDead) {
       image(grayAuto, 0, 0);
     } else {
-      //tint(255, 255, 255, 156); 
       image(carImage, 0, 0);
     }
 

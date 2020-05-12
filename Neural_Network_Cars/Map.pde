@@ -87,6 +87,7 @@ class Map {
   void showFinishLine() {
     finishLine.show();
   }
+  
 }
 
 class Obstacle {
@@ -104,6 +105,7 @@ class Obstacle {
     strokeWeight(5);
     line(x1, y1, x2, y2);
   }
+  
 }
 
 class Checkpoint {

@@ -1,4 +1,9 @@
 
+
+// File za razne funkcije koje su samo za vizualne efekte.
+// Funkcije koje nisu nuzno potrebne za funkcionalnost same simulacije.
+
+
 void showTitle(){
     textAlign(CENTER, TOP);
 
@@ -42,3 +47,22 @@ void showButtonsForTrackSelection(){
     showDifficulty(133, 420, "Hard");
     showDifficulty(701, 425, "Make your own");
 }
+
+
+void showSensorStates(){
+    imageMode(CORNER);
+    for (int i=0; i< sensorStatesImages.length; i++) {  // PNG slike za stanja senzora.
+      int xoff = i*60;
+      if(i == sensorState)
+        image(sensorStatesImages[i], xoff, height-45, 60, 45);
+      else{
+        tint(255, 75);
+        image(sensorStatesImages[i], xoff, height-45, 60, 45);
+        tint(255,255);
+      }
+    }
+    textAlign(LEFT, CENTER);
+    textSize(18);
+    fill(60);
+    text("Scroll to change sensor types.", 22, height - 62);
+  }

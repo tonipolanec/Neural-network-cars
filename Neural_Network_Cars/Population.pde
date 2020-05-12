@@ -156,11 +156,15 @@ class Population {
       temp.append(i);
     }
     for (int i=0; i<winnerCars.length/2; i++) {
+      
+      // Nasumicno odredivanje 2 roditelja.  
       int x = (int)random(temp.size());
-      temp.remove(x);                        // Nasumicno odredivanje 2 roditelja.      
+      temp.remove(x);                            
       int y = (int)random(temp.size());
       temp.remove(y);
-      parents[i] = new PVector(x, y); // postavljanje indeksi oba roditelja (x i y).
+      
+      // Postavljanje indeksi oba roditelja (x i y).
+      parents[i] = new PVector(x, y); 
     }
   }
 
@@ -171,13 +175,15 @@ class Population {
       programFlow = 1;
 
     for (int i=0; i<babyCars.length; i++) {
+      
       // Prenosenje gena iz roditelja na dijete.
       double[] parent1Genes = cars[int(parents[i].x)].nn.takeGenes();
       double[] parent2Genes = cars[int(parents[i].y)].nn.takeGenes();
 
       int babyColor = ( (cars[int(parents[i].x)].col + cars[int(parents[i].y)].col) /2 )  + (int)random(10)-5; 
 
-      double[] babyGenes = new double[parent1Genes.length];  // Baby auto dobiva pol gena od jednog, a pola od drugog roditelja.
+      // Baby auto dobiva pol gena od jednog, a pola od drugog roditelja.
+      double[] babyGenes = new double[parent1Genes.length];  
       for (int j=0; j<babyGenes.length; j++) {
         if (j < babyGenes.length/2)
           babyGenes[j] = parent1Genes[j];
@@ -186,7 +192,7 @@ class Population {
       }
 
       NeuralNetwork nnBaby = cars[i].nn.mutation(babyGenes);
-
+      // Kreiranje novog objekta Car, to je potomak auta iz prijasnje generacije.
       babyCars[i] = new Car(nnBaby, populationNumber, babyColor);
     }
   }
@@ -222,7 +228,6 @@ class Population {
 
   void populationIsDeadIRepeatPopulationIsDead() {
     println("Generacija " + populationNumber + " je gotova.");
-    //takeAvgSpeed();
     takeFitnesses();
     choosingWinnerCars();
     parentSelection();

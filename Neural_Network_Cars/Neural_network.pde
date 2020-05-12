@@ -39,8 +39,10 @@ class NeuralNetwork {
   }
 
 
-
+  // Kad prođe cijeli feedforward proces dobijemo rezultate NN-a koji su uvjetovani inputima.
   double[] feedForward(double[] inputs) {
+    // Output jednog layera NN-a su input sljedeceg.
+    // Output je izracun + aktivacijska funkcija.
     input = new Matrix(inputs, 1);
     output = input.copy();
     output = activationF(output.times(iToH1).copy());
@@ -53,7 +55,8 @@ class NeuralNetwork {
   }
 
 
-
+  // Postavljanje matrice sa randomiziranim vrijednostima.
+  // Za generiranje novih NN.
   double[][] randomValuesMatrice(double[][] mat) {
     for (int i=0; i<mat.length; i++) {
       for (int j=0; j<mat[0].length; j++) {
@@ -63,7 +66,8 @@ class NeuralNetwork {
     return mat;
   }
 
-  Matrix activationF(Matrix a) {   //funkcija koja "ugladuje" elemente matrice  €[-1,1]
+  // Funkcija koja "ugladuje" elemente matrice  €[-1,1].
+  Matrix activationF(Matrix a) {  
     double[][] tempArrayOfMatrix = a.getArray();
     double[][] outArray = new double[tempArrayOfMatrix.length][tempArrayOfMatrix[0].length];
 
@@ -81,21 +85,25 @@ class NeuralNetwork {
 
   double[] takeGenes() {
     // iToH1, h1ToH2, h2ToO <-- matrice weightova iz kojih uzimamo gene
+    // Pretvaramo matrice u 2D polja.
     double[][] ar2D1 = this.iToH1.getArrayCopy();
     double[][] ar2D2 = this.h1ToH2.getArrayCopy();
     double[][] ar2D3 = this.h2ToO.getArrayCopy();
 
+    // Pretvaramo 2D polja u 1D.
     double[] ar1 = twoDToOneD(ar2D1);
     double[] ar2 = twoDToOneD(ar2D2);
     double[] ar3 = twoDToOneD(ar2D3);
 
+    // Genom je rezultat spojenih 1D polja.
     double[] genes = (double[])concat((double[])concat(ar1, ar2), ar3);
     return genes;
   }
 
   NeuralNetwork mutation(double[] genes) {
 
-    // Mutacija
+    // Mutacija uvjetovana mutationRate-om
+    // Svaka vrijednost NN-a ima mogućnost mutiranja.
     for (int i=0; i<genes.length; i++) {
       double tempMR = random(1);
       if (tempMR < mutationRate) {
@@ -108,6 +116,7 @@ class NeuralNetwork {
     double[] g2 = new double[12];
     double[] g3 = new double[6];
 
+    // Pretvorba 1D polja sa mutiranim genima 2D polja pa matrice pa u NN.
     int g2Br = 0;
     int g3Br = 0;
     for (int i=0; i<genes.length; i++) {
@@ -134,6 +143,7 @@ class NeuralNetwork {
     return nn;
   }
 
+  // Funkcija koja pretvara 2D polje u 1D polje.
   double[] twoDToOneD(double[][] ar2) {
     double[] outArray = new double[ar2.length * ar2[0].length];
     int index = 0;
@@ -147,6 +157,7 @@ class NeuralNetwork {
     return outArray;
   }
 
+  // Funkcija koja pretvara 1D polje u 2D polje.
   double[][] oneDTo2D(double[] array, int rows, int cols) {
     if (rows * cols == array.length) {
       double[][] arrayToReturn = new double[rows][cols];

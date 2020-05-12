@@ -18,7 +18,9 @@ class Stopwatch {
   }
   
   int second() {
-    float timeSlower =  1; // Za sporija računala.  map(frameRate, 0, 60, 0, 1); // Ako padne framerate tada se i vrijeme ospori
+ 
+    // Ako padne framerate tada i vrijeme ospori
+    float timeSlower =  1; // Za sporija računala -> map(frameRate, 0, 60, 0, 1); 
     int seconds = int(((getElapsedTime()*timeSlower) / 1000) % 60);
     int time;
     if(seconds == 59 && flag == true){
@@ -27,7 +29,7 @@ class Stopwatch {
       seconds = 0;
       flag = false;
     }else{
-      time = seconds + minute*60;  /// TU NEKAJ NE VALA 119 za 59
+      time = seconds + minute*60;
     }
     if(seconds == 55)
       flag = true;

@@ -1,6 +1,7 @@
 
 PImage stockAuto, grayAuto, glowingAuto, finishLine, startingCar;
 PImage[] tracksImages;
+PImage[] sensorStatesImages;
 
 Population population;
 Population tempPopulation;
@@ -27,6 +28,7 @@ double mutationRate = 0.08;
 int nCarsInPopulation = 60;
 
 String carType = "2"; // "1" for classic, "2" for modern
+int sensorState = 0;
 
 //int pop = 0;
 
@@ -70,8 +72,12 @@ void setup() {
 
   c = color(0, 35, 250);
   tracksImages = new PImage[4];
-  for (int i=0; i< tracksImages.length; i++) {  // PNG slike za odabir staze
+  for (int i=0; i< tracksImages.length; i++) {  // PNG slike za odabir staze.
     tracksImages[i] = loadImage("data/maps/"+ i +"/staza.png");
+  }
+  sensorStatesImages = new PImage[5];
+  for (int i=0; i< sensorStatesImages.length; i++) {  // PNG slike za stanja senzora.
+    sensorStatesImages[i] = loadImage("data/img/sensorstates/sensor"+ i +".png");
   }
 }
 
@@ -116,7 +122,8 @@ void draw() {
     population.printPopulationDetails();
 
     m.showStartingPoint();
-    m.showObstacles();
+    if(sensorState == 0 || sensorState == 1 || sensorState == 2)
+      m.showObstacles();
     //m.showCheckpoints();
     m.showFinishLine();
 
@@ -128,6 +135,7 @@ void draw() {
     }
 
     showButtons();
+    showSensorStates(); // Program_flow tab.
 
     break;
 
@@ -193,5 +201,20 @@ void mouseWheel(MouseEvent event) {
       float scroll = -event.getCount() * 5;
       mapCreator.checkRadius += scroll;
     }
+  }else if (programFlow == 2){
+    // sensorState -> odreduje nacin prikaza senzora
+    // 0 - normalno
+    // 1 - senzorne linije + zid
+    // 2 - senzori + zid
+    // 3 - senzori + vid
+    // 4 - vid
+    float e = event.getCount();
+    if(sensorState + e == 5)
+      sensorState = 0;
+    else if(sensorState + e == -1)
+      sensorState = 4;
+    else 
+      sensorState += e;
+    //println(sensorState);
   }
 }

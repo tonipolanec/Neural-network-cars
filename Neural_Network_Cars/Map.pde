@@ -10,7 +10,9 @@ class Map {
 
   Map(int indexOfAMap) {
     index = indexOfAMap;
-
+    
+    // Sve funkcije čitaju iz mape staze.
+    // Svaka mapa staze ima datoteke za zidove, checkpointe, cilja i starting pointa.
     obstacles = inicijalizacijaObstaclei();
     checkpoints = inicijalizacijaCheckpointi();
     finishLine = inicijalizacijaFinishLinea();
@@ -154,7 +156,7 @@ class FinishLine {
   }
 }
 
-// Tekst crvene boje na početnom zaslonu
+// Tekst crvene boje na početnom zaslonu.
 void showDifficulty(int x, int y, String text) {
   pushMatrix();
   translate(x+20, y+20);

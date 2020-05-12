@@ -73,7 +73,7 @@ class Car {
       vel.add(acc);
       loc.add(vel);
 
-
+      // Zbraja se dužina vektora (svaki frame)
       distTravelled+= vel.copy().mag();
 
       //Inicijalizacija senzora. (Kutevi:  0.349rad = 20deg, 0.873 = 50deg)   
@@ -85,36 +85,17 @@ class Car {
       sensors[3] = new Sensor(loc, front.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
       sensors[4] = new Sensor(loc, front.copy().rotate(-0.873));   //
 
-      /* 
-       f = new Sensor(loc, front);                        //
-       fr = new Sensor(loc, front.copy().rotate(0.349));   // (0.349 rad = 20 stupnjeva)
-       fl = new Sensor(loc, front.copy().rotate(-0.349));  // Inicijalizacija i crtanje senzora.
-       r = new Sensor(loc, front.copy().rotate(0.873));    // (0.873 rad = 50 stupnjeva)
-       l = new Sensor(loc, front.copy().rotate(-0.873));   //
-       */
 
       if (sensors[0].seeFinish(m.finishLine) < 20) {
         finished = true; // Za finish gleda samo senzor koji gleda ravno.
         isDead = false;
       }
 
-
+      // Zove se funkcija see() svakog senzora
+      // Vraća se udaljenost od zida.
       for (int i=0; i< sensors.length; i++) {
         wallDists[i] = sensors[i].see(col);
       }
-
-      /*
-      frontS = f.see();  
-       wallDists[0] = f.see();;           
-       frontRightS = fr.see();    
-       wallDists[1] = fr.see();       
-       frontLeftS = fl.see();     
-       wallDists[2] = fl.see();  // Omogucavanje senzorima da "vide" te dodavanje distance od svakog senzora u polje
-       leftS = l.see();           
-       wallDists[3] = l.see();             
-       rightS = r.see();          
-       wallDists[4] = r.see();  
-       */
 
       float minWD = wallDists[4];
       for (int i=0; i<wallDists.length-1; i++) {
@@ -124,6 +105,8 @@ class Car {
       wallDist = minWD; 
       isDead();
 
+      // Timer potreban za beskonačne petlje.
+      // Ako auto ne prođe određen checkpoint u zadano vrijeme "umire".
       int sec = population.sw.second();
       //println(sec);
       if (fitnessMultiplier < 1.25 && sec > 25) {
@@ -151,7 +134,7 @@ class Car {
     translate(loc.x, loc.y);    
 
     //Crtanje senzornih zraka.
-    //showSensors();
+    //showSensors(); -----------------------FORA
 
     // Crtanje autića.    
     rotate(theta);
@@ -165,22 +148,12 @@ class Car {
       image(carImage, 0, 0);
     }
 
-    /*
-    if (isDead && avgSpeed == 0) {
-     float allSpeeds = 0;
-     for (int i=0; i< speedsForAvg.size(); i++) {
-     allSpeeds += speedsForAvg.get(i);
-     }
-     avgSpeed = allSpeeds/(speedsForAvg.size());
-     }
-     */
 
     // Ispis podataka svakog autica.
     textSize(12);
     fill(0, 0, 0);
     //text(fitnessMultiplier,15,15);
     //text(generation,15,15);
-
 
     popMatrix();
   }
@@ -205,8 +178,8 @@ class Car {
   void update() {
 
     //double[] inputsForNN = {rightS, frontRightS, frontS, frontLeftS, leftS}; // Postavljanje value-i od senzori u input polje za NN.
-    double[] inputsForNN = {wallDists[0], wallDists[1], wallDists[2], wallDists[3], wallDists[4]}, 
-      steeringSpeed = nn.feedForward(inputsForNN);  // Uzimanje outputa NN-a u polje steering-a i speed-a.
+    double[] inputsForNN = {wallDists[0], wallDists[1], wallDists[2], wallDists[3], wallDists[4]};
+    steeringSpeed = nn.feedForward(inputsForNN);  // Uzimanje outputa NN-a u polje steering-a i speed-a.
 
     // steeringSpeed[0] -> iznos skretanja, steeringSpeed[1] -> iznos brzine
     //Utjecanje na skretanje auta. (-1 -> lijevo; 1 -> desno)
@@ -217,16 +190,15 @@ class Car {
     float speed = map((float)steeringSpeed[1], -1, 1, 1, topSpeed);
     vel.limit(speed);
 
-    //speedsForAvg.append((float)speed);
 
     checkpointDetection();
     fitness = distTravelled * fitnessMultiplier;
   }
 
 
-
-  void checkpointDetection() {      // Provjerava je li auto došao do checkpointa te
-    // postavlja fitness multiplier ovisno o tome.
+  // Provjerava je li auto došao do checkpointa te
+  // postavlja fitness multiplier ovisno o tome.
+  void checkpointDetection() {      
     textSize(24);
     fill(0);
     stroke(255, 0, 0);
@@ -237,8 +209,9 @@ class Car {
       }
     }
   }
+  
 
-  // Crtanje senzornih zraka
+  // Crtanje senzornih zraka.
   void showSensors() {
     if (!isDead) {
       for (Sensor s : sensors) {
@@ -247,6 +220,7 @@ class Car {
     }
   }
 
+  // Mijenjanje boje auta (crne piksele mijenja u obojane)
   PImage coloringCar(PImage carImage, int col) {
     carImage.loadPixels();
     int dimensionsPic = carImage.height * carImage.width;

@@ -37,7 +37,7 @@ class MapCreator {
   void drawCreator() {
     background(151);
 
-    //--------------------------Ispisivanje instrukcija na zaslon------------------
+    //------------------Ispisivanje instrukcija na zaslon------------------
     textAlign(LEFT, CENTER);
 
     fill(95);
@@ -81,7 +81,7 @@ class MapCreator {
     text("ENTER - finish map", 1270, 675);
     text("backspace - reset map", 1270, 700);
 
-    //--------------------------Crtanje trenutno kreirane staze---------------------
+    //---------------Crtanje trenutno kreirane staze-----------------
 
     for (int i=0; i< obstaclesKoor.size(); i+=4) {
       stroke(0);
@@ -111,10 +111,12 @@ class MapCreator {
       line(finishLineKoor[0], finishLineKoor[1], finishLineKoor[2], finishLineKoor[3]);
     }
 
+    // Ako je neki element zaboravljen, tj. nije postavljen, ova funkcija na to upozorava.
     printForgottenElement(forgotten);
     drawCurrentAction();
   }
 
+  // Ovisno o odabranom elementu crta taj element.
   void drawCurrentAction() {
 
     switch(trenutno) {
@@ -160,7 +162,7 @@ class MapCreator {
   void mousePress() {
 
     // Funkcije za crtanje staze
-
+    // Kada se elementi "nacrtaju" oni se ispisuju u vanjsku datoteku na spremanje.
     switch(flag) {
 
     case 0:
@@ -182,8 +184,6 @@ class MapCreator {
         obstaclesKoor.append(mouseX);
         obstaclesKoor.append(mouseY);
 
-        //obstacleWriter.println(x + "," + y + "," + mouseX + "," + mouseY);
-
         x = mouseX;
         y = mouseY;
       }
@@ -194,8 +194,6 @@ class MapCreator {
       checkpointsKoor.append(mouseX);
       checkpointsKoor.append(mouseY);
       checkpointsKoor.append(checkRadius);
-
-      //checkpointWriter.println(mouseX + "," + mouseY + ", 170," + checkMultiplier);
 
       break;
     case 3:
@@ -229,8 +227,10 @@ class MapCreator {
       y = 0;
     }
     if (key == ENTER) {
+      // Provjeravanje svih elemenata.
       forgotten = checkAllElements();
 
+      // Ispis svih podataka o elementima u vanjske tekstualne datoteke.
       if (goInSim) {
         printInData();
 
@@ -255,9 +255,17 @@ class MapCreator {
           b.enabled = false;
         }
 
-        for (int i=0; i<population.cars.length; i++) {
-          population.cars[i] = new Car();
+        if(population.populationNumber == 1){
+          for (int i=0; i<population.cars.length; i++) {
+            population.cars[i] = new Car();
+          }
+        }else{
+          for (int i=0; i<population.cars.length; i++) {
+            Car c = population.cars[i];
+            population.cars[i] = new Car(c.nn, c.generation, c.col);
+          }
         }
+        
         radioButtons[0][m.index].chosen = true;
         population.sw.start();
 
@@ -268,7 +276,7 @@ class MapCreator {
     }
 
     if (key == 'q') {
-      flag = 0; // Slaze se za starting point
+      flag = 0; // Slaze se za starting point.
       //startWriter = createWriter("data/maps/3/startingpoint.txt");
       x = 0;
       y = 0;
@@ -300,7 +308,7 @@ class MapCreator {
     }
   }
 
-  // Funkcija za poništavanje prošlih radnji
+  // Funkcija za poništavanje prošlih radnji.
   void controlZ(String t) { // U t se upisuje trenutni element mape.
     switch(t) {
 

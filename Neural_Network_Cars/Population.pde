@@ -12,9 +12,6 @@ class Population {
   double[] carFitnesses;
   double totalFitness = 0;
   double maxFitness = 0;
-  double avgSpeed = 0;
-  double maxAvgSpeed = 0;
-  double minAvgSpeed = 10;
   double[] normFitnesses;
 
   double winnerConst = 0.2;
@@ -84,7 +81,6 @@ class Population {
     }
   }  
 
-
   void takeGenesOfCars() {
     for (int i=0; i<numCars; i++) {
       carGenes[i] = cars[i].nn.takeGenes();
@@ -100,41 +96,10 @@ class Population {
     return true;
   }
 
-  void takeAvgSpeed() {
-    /*
-    float allSpeeds = 0;
-     maxAvgSpeed = 0;
-     minAvgSpeed = 10;
-     for (Car c : cars) {
-     allSpeeds += c.avgSpeed;
-     
-     if(c.finished){
-     if (c.avgSpeed > maxAvgSpeed)
-     maxAvgSpeed = c.avgSpeed;
-     if (c.avgSpeed < minAvgSpeed)
-     minAvgSpeed = c.avgSpeed;
-     }
-     }
-     avgSpeed = allSpeeds / numCars;
-     */
-  }
-
 
   void takeFitnesses() {
     int bestCarIndex = 0;
-    /*
-    // Dodatno povecanje fitnesa ovisno o brzini (1x - 1.3x)
-     for (int i=0; i<numCars; i++) {
-     if(cars[i].finished){
-     if(cars[i].fitness == minAvgSpeed)
-     cars[i].fitness *= 1;
-     else if(cars[i].fitness == maxAvgSpeed)
-     cars[i].fitness *= 1.3;
-     else
-     cars[i].fitness *= map((float)cars[i].avgSpeed, (float)minAvgSpeed, (float)maxAvgSpeed, 1, 1.3);             
-     }
-     }
-     */
+
     totalFitness = 0;
     for (int i=0; i<numCars; i++) {
       totalFitness += cars[i].fitness;
@@ -266,9 +231,7 @@ class Population {
 
     //println("Najbolji fitness: " + (int)maxFitness);
     //println("Ukupni fitness: " + (int)totalFitness); 
-    //println("Average speed: " + avgSpeed);
   }
-
 
   void resetAll() {
     Population tempPopulation = new Population(nCarsInPopulation, 1);

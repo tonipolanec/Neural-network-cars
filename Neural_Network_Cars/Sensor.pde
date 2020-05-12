@@ -56,12 +56,12 @@ class Sensor {
     colorMode(HSB);
     stroke(carColor, 255, 255);
     strokeWeight(6);
-    //point(sjecisteX, sjecisteY);
+    //point(sjecisteX, sjecisteY); // ---------------------- FORA
     colorMode(RGB);
 
     strokeWeight(2);
     stroke(255, 230, 0, 55);
-    //line(x3,y3,sjecisteX,sjecisteY);   // Crtanje dijela senzora koji oznacuje vidno polje. 
+    //line(x3,y3,sjecisteX,sjecisteY);   // Crtanje dijela senzora koji oznacuje vidno polje. -------------------------------------------FORA
 
     return udaljenost; // Vraca udaljenost od zida.
   }

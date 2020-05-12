@@ -55,7 +55,7 @@ class Button {
   void action() {
 
     switch(id) { // Ucini bilo sto ovisno o id-u buttona,
-      // svaki switch case je kao onClicked funkcija.
+                 // Svaki switch case je kao onClicked funkcija.
     case 0: 
       m = maps[0];
       changeMap = m;
@@ -69,7 +69,8 @@ class Button {
       changeMap = m;
       break;
     case 3: 
-      //programFlow = 1; // Program ulazi u stanje kreiranja mape.     
+      if(programFlow == 0)
+        programFlow = 1; // Program ulazi u stanje kreiranja mape.     
       break;
     default:
       break;
@@ -96,9 +97,8 @@ class RadioButton extends Button {
     if (mouseX > x && mouseX < x+w && mouseY > y && mouseY < y+h) {
       //boolean currentState = chosen;
       for (RadioButton b : radioButtons[radioId]) {
-        b.chosen = false;
+        b.chosen = false;  // Ako se više gumbova stisne da samo jedan bude uključen.
       }
-      //chosen = !currentState; // Moguce "ugasiti" button
       chosen = true;
     }
   }
@@ -133,7 +133,7 @@ class RadioButton extends Button {
 
   void setActive() {
     for (RadioButton b : radioButtons[radioId]) {
-      b.chosen = false;
+      b.chosen = false;  // Ako se više gumbova stisne da samo jedan bude uključen.
     }
     chosen = true;
   }
@@ -141,13 +141,14 @@ class RadioButton extends Button {
   void action() {
     if (radioButtons[radioId][id].chosen) {
       switch(id) {
+              // Mijenja mape ovisno o odabranom gumbu tj. mapi.
       case 0: 
         changeMap = maps[0];
         break;
       case 1: 
         changeMap = maps[1];
         break;
-      case 2: 
+      case 2:
         changeMap = maps[2];
         break;
       case 3: 

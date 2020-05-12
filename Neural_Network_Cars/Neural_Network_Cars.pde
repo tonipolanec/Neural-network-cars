@@ -61,7 +61,7 @@ void setup() {
   radioButtons[0][3] = new RadioButton(459, 0, 60, 40, "4", 0, 3);
 
 
-  stockAuto = loadImage("data/img/cartype/"+carType+"/cartemplate.png");    //  PNG fileovi za auteke.
+  stockAuto = loadImage("data/img/cartype/"+carType+"/cartemplate.png");    //  PNG fileovi za aute.
   grayAuto = loadImage("data/img/cartype/"+carType+"/graycar.png");         //   
   glowingAuto = loadImage("data/img/cartype/"+carType+"/glowingcar.png");   //
   startingCar = loadImage("data/img/cartype/"+carType+"/startingcar.png");  //
@@ -134,6 +134,7 @@ void draw() {
 
 
   default:
+    // Ispis uputa za resetiranje simulacije.
     textAlign(CENTER, CENTER);
     textSize(22);
     fill(60);
@@ -174,12 +175,12 @@ void mousePressed() {
   if (programFlow == 1) {  // Ako je u map creatoru.
     mapCreator.mousePress();
   } else {
-
+    
     for (RadioButton b : radioButtons[0]) {
       b.clicked();
       b.action();
     }
-
+    
     for (Button b : buttonsForTrackSelection) {
       b.clicked();
     }

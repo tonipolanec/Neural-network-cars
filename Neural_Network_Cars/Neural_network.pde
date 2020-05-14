@@ -18,8 +18,8 @@ class NeuralNetwork {
     double[][] tempArray = new double[nInput][nHidden1];    //
     iToH1 = new Matrix(randomValuesMatrice(tempArray));     // 
     //    
-    tempArray = new double[nHidden1][nHidden2];             // Kreiranje matrica za weight-e    
-    h1ToH2 = new Matrix(randomValuesMatrice(tempArray));    // (veze izmedu perceptrona)
+    tempArray = new double[nHidden1][nHidden2];             // Kreiranje matrica za weight-ove    
+    h1ToH2 = new Matrix(randomValuesMatrice(tempArray));    // (veze izmedu perceptrona).
     //
     tempArray = new double[nHidden2][nOutput];              //
     h2ToO = new Matrix(randomValuesMatrice(tempArray));     //
@@ -34,13 +34,14 @@ class NeuralNetwork {
     output = new Matrix(nOutput, 1);
 
     iToH1 = m1;     // 
-    h1ToH2 = m2;    // (veze izmedu perceptrona dobivene mutacijom i crossoverom roditelja)
+    h1ToH2 = m2;    // Veze izmedu perceptrona dobivene mutacijom i crossoverom roditelja.
     h2ToO = m3;     //
   }
 
 
   // Kad prođe cijeli feedforward proces dobijemo rezultate NN-a koji su uvjetovani inputima.
   double[] feedForward(double[] inputs) {
+    
     // Output jednog layera NN-a su input sljedeceg.
     // Output je izracun + aktivacijska funkcija.
     input = new Matrix(inputs, 1);
@@ -84,7 +85,8 @@ class NeuralNetwork {
 
 
   double[] takeGenes() {
-    // iToH1, h1ToH2, h2ToO <-- matrice weightova iz kojih uzimamo gene
+    
+    // iToH1, h1ToH2, h2ToO su matrice weightova iz kojih uzimamo gene.
     // Pretvaramo matrice u 2D polja.
     double[][] ar2D1 = this.iToH1.getArrayCopy();
     double[][] ar2D2 = this.h1ToH2.getArrayCopy();

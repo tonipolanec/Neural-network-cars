@@ -77,7 +77,7 @@ class Population {
     }
     if (isPopulationDead()) {
       deadPopulation = true;
-      populationIsDeadIRepeatPopulationIsDead();
+      populationIsDead();
     }
   }  
 
@@ -226,7 +226,7 @@ class Population {
   }
 
 
-  void populationIsDeadIRepeatPopulationIsDead() {
+  void populationIsDead() {
     println("Generacija " + populationNumber + " je gotova.");
     takeFitnesses();
     choosingWinnerCars();

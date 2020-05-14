@@ -7,11 +7,11 @@
 void showTitle(){
     textAlign(CENTER, TOP);
 
-    fill(0, 20, 150);                             //
-    textSize(50);                                 //
-    text("Neural Network Cars", width/2+2, 2);    //  Shadow of a text
-    textSize(28);                                 //
-    text("Choose starting track", width/2+2, 59); //
+    fill(0, 20, 150);             
+    textSize(50);         
+    text("Neural Network Cars", width/2+2, 2);   
+    textSize(28);                                 
+    text("Choose starting track", width/2+2, 59); 
 
     fill(c);
     textSize(50);
@@ -48,10 +48,10 @@ void showButtonsForTrackSelection(){
     showDifficulty(701, 425, "Make your own");
 }
 
-
+ // PNG slike za stanja senzora.
 void showSensorStates(){
     imageMode(CORNER);
-    for (int i=0; i< sensorStatesImages.length; i++) {  // PNG slike za stanja senzora.
+    for (int i=0; i< sensorStatesImages.length; i++) { 
       int xoff = i*60;
       if(i == sensorState)
         image(sensorStatesImages[i], xoff, height-45, 60, 45);

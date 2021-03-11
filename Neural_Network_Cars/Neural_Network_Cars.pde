@@ -1,3 +1,6 @@
+// Završni rad - Tehnička škola Čakovec
+// Toni Polanec
+
 
 PImage stockAuto, grayAuto, glowingAuto, finishLine, startingCar;
 PImage[] tracksImages;
@@ -218,3 +221,5 @@ void mouseWheel(MouseEvent event) {
     //println(sensorState);
   }
 }
+
+// 1900+ lines of code
